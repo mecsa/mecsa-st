@@ -519,7 +519,7 @@ parser.add_argument('-c', '--certificates', help='specify path from where to loa
 args = parser.parse_args()
 
 if args.log:
-    path_log = args.path
+    path_log = args.log
 else:
     path_log = 'mecsa-st.log'
 

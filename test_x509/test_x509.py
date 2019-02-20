@@ -22,6 +22,7 @@ import OpenSSL.crypto
 from cache_x509 import CacheX509
 from datetime import date
 from datetime import datetime
+import hashlib
 
 
 class TestCertificate():
@@ -320,9 +321,16 @@ class TestCertificate():
         intermediate_certs = []
         try:
             if pem_chain is not None:
+                # To avoid loading duplicates.
+                certs_loaded = []
                 for cert in pem_chain:
                     if "-----BEGIN CERTIFICATE-----" in cert:
-                        intermediate_certs.append(OpenSSL.crypto.load_certificate(OpenSSL.crypto.FILETYPE_PEM, cert))
+                        sample = hashlib.sha256(cert).hexdigest()
+                        if sample not in certs_loaded:
+                            certs_loaded.append(sample)
+                            intermediate_certs.append(OpenSSL.crypto.load_certificate(OpenSSL.crypto.FILETYPE_PEM, cert))
+                        else:
+                            self.logger.warning("Intermediate Certificate duplicated!")
             else:
                 self.logger.warning("Empty Intermediate certs Chain.")
         except Exception as ex:
