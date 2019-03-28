@@ -294,9 +294,9 @@ class Dnssec(object):
                 # 'SEP' flag is not mandatory, therefore we will test all keys.
                 # if 'SEP' in flags:
                 if str(fqdn)[-1] == '.':
-                    owner = str(fqdn)
+                    owner = str(fqdn).lower()
                 else:
-                    owner = str(fqdn) + '.'
+                    owner = str(fqdn).lower() + '.'
                 owner_bin = ''
                 for name in owner.split('.'):
                     owner_bin += struct.pack('B', len(name)) + name
