@@ -1,4 +1,4 @@
-'''
+"""
 Copyright 2018 European Commission
 
 Licensed under the EUPL, Version 1.2 or as soon they will be approved by the European
@@ -14,9 +14,8 @@ Unless required by applicable law or agreed to in writing, software distributed 
 on an "AS IS" basis, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 See the Licence for the specific language governing permissions and limitations under the Licence.
-'''
+"""
 __author__ = 'Joint Research Centre (JRC) - E.3 Cyber and Digital Citizen\'s Security'
-
 
 import argparse
 import logging.handlers
@@ -33,10 +32,11 @@ from test_dane import test_dane
 from test_dnssec import test_dnssec
 from test_dnssec import cache_dnssec
 from test_dkim import test_dkim
+from test_mtasts import test_mta_sts
 
 
 def init_report(mx, priority, ipv4, is_mx=True):
-    '''
+    """
     Generates a dictionary containing all values obtained during the assessment for StartTLS, x509 and DANE.
 
     :param mx: MX hostname
@@ -67,9 +67,11 @@ def init_report(mx, priority, ipv4, is_mx=True):
     ir_valid_tlsa -------------  Boolean, is the ir_mx TLSA registry (if it has one) valid? True:False
     ir_tlsa_txt ---------------  String, DNS TLSA registry of ir_mx
     ir_tlsa_errors ------------  String, error (if any) when validating the DNS TLSA registry
+    ir_valid_mta_sts ----------  Boolean, is the MTA-STS policy (if it has one) valid? True:False
+    ir_mta_sts_errors ---------  String, error (if any) when validating the MTA-STS Policy
     ir_error  -----------------  String, General error message
 
-    '''
+    """
 
     report = {}
     report['ir_mx'] = mx
@@ -94,12 +96,14 @@ def init_report(mx, priority, ipv4, is_mx=True):
     report['ir_valid_tlsa'] = False
     report['ir_tlsa_txt'] = None
     report['ir_tlsa_errors'] = None
+    report['ir_valid_mta_sts'] = False
+    report['ir_mta_sts_errors'] = None
     report['ir_error'] = None
     return report
 
 
 def init_spf_row(domain):
-    '''
+    """
 
     :param domain: domain name tested
     :return: Dictionary,
@@ -111,7 +115,7 @@ def init_spf_row(domain):
     syntax_response --  String, response of the 'check_syntax'
     errors -----------  String, general error (if any) during the validation of the SPF
 
-    '''
+    """
 
     row = {}
     row['domain'] = domain
@@ -124,7 +128,7 @@ def init_spf_row(domain):
 
 
 def init_dmarc_row(domain):
-    '''
+    """
 
     :param domain: domain name tested
     :return: Dictionary,
@@ -136,7 +140,7 @@ def init_dmarc_row(domain):
     syntax_response --  String, response of the 'check_syntax'
     errors -----------  String, general error (if any) during the validation of the DMARC
 
-    '''
+    """
 
     row = {}
     row['domain'] = domain
@@ -149,7 +153,7 @@ def init_dmarc_row(domain):
 
 
 def execute_starttls(logger, domain):
-    '''
+    """
     This function executes the StartTLS tests
 
     The test will first obtain all MX records of 'domain' (DNS MX request).
@@ -161,7 +165,7 @@ def execute_starttls(logger, domain):
     :param domain: String, domain name tested.
     :return: List of 'init_report' dictionaries
 
-    '''
+    """
 
     logger.info('--------> Init StartTLS test')
 
@@ -187,7 +191,7 @@ def execute_x509(logger, root_cas, results, cache):
 
 
 def execute_spf(logger, domain):
-    '''
+    """
     This function executes the SPF test.
 
     The test will fetch the SPF record (DNS TXT request), and will check its syntax.
@@ -195,7 +199,7 @@ def execute_spf(logger, domain):
     :param logger: log object initialized
     :param domain: String, domain tested
     :return: dictionary (see init_spf_row function)
-    '''
+    """
 
     logger.info('--------> Init SPF test')
     row = init_spf_row(domain)
@@ -212,7 +216,6 @@ def execute_spf(logger, domain):
 
 
 def execute_dkim(logger, domain):
-
     logger.info('--------> Init DKIM test')
     tester = test_dkim.DkimTest(logger)
 
@@ -222,7 +225,7 @@ def execute_dkim(logger, domain):
 
 
 def execute_dmarc(logger, domain, tlds_list):
-    '''
+    """
     This function executes the DMARC test.
 
     The test will first, fetch the DMARC record with a DNS TXT request to '_dmarc.<domain>'.
@@ -236,7 +239,7 @@ def execute_dmarc(logger, domain, tlds_list):
     :param domain: String, domain tested
     :param tlds_list:
     :return: dictionary (see init_damrc_row)
-    '''
+    """
 
     logger.info('--------> Init DMARC test')
     row = init_dmarc_row(domain)
@@ -253,7 +256,7 @@ def execute_dmarc(logger, domain, tlds_list):
 
 
 def execute_dane(logger, reports, root_cas):
-    '''
+    """
     This function calls the DANE tests.
 
     For each MX that supports StartTLS, it will fetch its DNS TLSA record (_25._tcp.<domain>) and will validate its
@@ -265,7 +268,7 @@ def execute_dane(logger, reports, root_cas):
     :return: it fills the values 'ir_has_tlsa', 'ir_tlsa_txt', 'ir_tlsa' and 'ir_tlsa_errors'
              of the of 'init_report' list of dictionaries (reports).
 
-    '''
+    """
     logger.info('--------> Init TLSA test')
 
     tester = test_dane.DaneTLSA(logger, root_cas)
@@ -303,7 +306,7 @@ def execute_dane(logger, reports, root_cas):
 
 
 def execute_dnssec(logger, domain, records, i_reports, cache=None):
-    '''
+    """
     This function calls the DNSSEC tests.
 
     1. test if 'domain' supports DNSSEC.
@@ -322,7 +325,7 @@ def execute_dnssec(logger, domain, records, i_reports, cache=None):
     :param i_reports: list of 'init_report' dictionaries
     :param cache: an local cache of DNS records, to avoid repeating DNS requests.
     :return: A list of 'init_dd_row' dictionaries (see function 'init_dd_row' in 'test_dnssec.py')
-    '''
+    """
     logger.info("--------> Init DNSSEC test (%s)" % str(records))
 
     tester = test_dnssec.Dnssec(logger, cache)
@@ -345,14 +348,36 @@ def execute_dnssec(logger, domain, records, i_reports, cache=None):
     return tester.execute_test(domain, mxs, tlsas)
 
 
+def execute_mta_sts(logger, domain, records):
+    """
+
+    :param logger: log object initialized
+    :param domain: domain name tested
+    :param records: dictionary, see function init_report
+    :return: dictionary, records updated with mta-sts values (see function init_report)
+             dictionary, mta_sts dictionary (see function test_mta_sts.MtaSts.init_mta_sts_parameters)
+
+    """
+    row_mta_sts = None
+    try:
+        logger.info('---> Init MTA-STS test on domain %s' % domain)
+        tester = test_mta_sts.MtaSts(logger)
+        row_mta_sts = tester.test_mta_sts(domain)
+        if row_mta_sts['has_mta_sts']:
+            tester.validate_policy(row_mta_sts['mta_sts_policy'], records)
+    except Exception as ex:
+        logger.error("Error Testing MTA-STS for domain %s (%s)" % (domain, str(ex)))
+    return records, row_mta_sts
+
+
 def load_cas(logger, filepath):
-    '''
+    """
     Loads the default Root-CA certificates for Ubuntu.
 
     :param logger: log object initialized
     :param filepath: file from where to load the CA certificates (default: '/etc/ssl/certs/ca-certificates.crt')
     :return: a list of CAs certificates.
-    '''
+    """
 
     try:
         ca_certs = []
@@ -369,12 +394,12 @@ def load_cas(logger, filepath):
 
 
 def load_tlds(logger):
-    '''
+    """
     Loads the .tld file descriptor.
 
     :param logger: log object initialized
     :return: list of .tld domains
-    '''
+    """
     try:
         suffix_list_file = "public_suffix_list.dat"
         source = io.open(suffix_list_file, "r", encoding="utf-8")
@@ -390,7 +415,7 @@ def load_tlds(logger):
 
 
 def run_full_tests(logger, domain, filepath):
-    '''
+    """
     Main function, that initializes and executes all the tests
 
     :param logger: log object initialized
@@ -398,7 +423,7 @@ def run_full_tests(logger, domain, filepath):
     :param commands: List of tests to execute.
     :param filepath: file from where to load the CA certificates (default: '/etc/ssl/certs/ca-certificates.crt')
     :return: Prints the results.
-    '''
+    """
     try:
         root_cas = load_cas(logger, filepath)
         tlds_list = load_tlds(logger)
@@ -437,6 +462,9 @@ def run_full_tests(logger, domain, filepath):
             # Testing DNSSEC
             dnssec_report = execute_dnssec(logger, domain, test_records, inbound_reports, dnssec_cache)
 
+            # Testing MTA-STS
+            inbound_reports, mta_sts_report = execute_mta_sts(logger, domain, inbound_reports)
+
             # RESULTS
             logger.info('\n\n\n\n---- REPORT FOR DOMAIN %s -----' % domain)
             logger.info('---- domain has %d MX records. ' % len(inbound_reports))
@@ -444,7 +472,7 @@ def run_full_tests(logger, domain, filepath):
             for report in inbound_reports:
 
                 if report['ir_starttls']:
-                    logger.info('---- %s %s %s STARTTLS ENABLED   ' % (report['ir_mx'],
+                    logger.info('---- STARTTLS ENABLED %s %s %s   ' % (report['ir_mx'],
                                                                        report['ir_mx_ipv4'],
                                                                        str(report['ir_mx_priority'])))
                     logger.info('-------- StartTLS announced? %s' % str(report['ir_starttls_announced']))
@@ -462,6 +490,11 @@ def run_full_tests(logger, domain, filepath):
                         if report['ir_has_tlsa']:
                             logger.info('-------- Records: %s' % report['ir_tlsa_txt'])
                             logger.info('-------- ERRORS (%s)' % report['ir_tlsa_errors'])
+                    if mta_sts_report['has_mta_sts']:
+                        if report['ir_valid_mta_sts']:
+                            logger.info('-------- MTA-STS MX COMPLIES with POLICY')
+                        else:
+                            logger.info('-------- MTA-STS NOT! POLICY COMPLIANT')
 
                 else:
                     logger.info('---- %s %s %s STARTTLS DISABLED  ' % (report['ir_mx'],
@@ -504,6 +537,19 @@ def run_full_tests(logger, domain, filepath):
                 if report['ir_has_tlsa']:
                     logger.info('-------- dnssec TLSA %s' % dnssec_report['dd_dnssec_tlsa'])
                 logger.info('-------- error %s' % dnssec_report['dd_error'])
+
+            if mta_sts_report['has_mta_sts']:
+                logger.info('---- MTA-STS ENABLED :')
+                logger.info('-------- DNS Record      : %s' % mta_sts_report['mta_sts_dns'])
+                logger.info('-------- Policy Version  : %s' % mta_sts_report['mta_sts_policy']['version'])
+                logger.info('-------- Policy Mode     : %s' % mta_sts_report['mta_sts_policy']['mode'])
+                logger.info('-------- Policy MX       : %s' % mta_sts_report['mta_sts_policy']['mx'])
+                logger.info('-------- Policy max-age  : %s' % mta_sts_report['mta_sts_policy']['max_age'])
+            else:
+                logger.info('-------- Has DNS       : %s' % str(mta_sts_report['has_mta_sts_dns']))
+                logger.info('-------- Has Policy    : %s' % str(mta_sts_report['has_mta_sts_policy']))
+                logger.info('-------- MTA-STS errors: %s' % str(mta_sts_report['mta_sts_error']))
+
             logger.info('---> END of TEST -----------------------------------------------------------\n')
         else:
             logger.info('---> Domain %s Does not have MX records' % domain)
@@ -513,9 +559,10 @@ def run_full_tests(logger, domain, filepath):
 
 
 parser = argparse.ArgumentParser(description='MECSA Standalone Test')
-parser.add_argument('domain',  help='domain to test')
+parser.add_argument('domain', help='domain to test')
 parser.add_argument('-l', '--log', help='specify path and name of logfile. Default is mecsa-st.log ')
-parser.add_argument('-c', '--certificates', help='specify path from where to load the CA certificates. Default is \'/etc/ssl/certs/ca-certificates.crt\'')
+parser.add_argument('-c', '--certificates',
+                    help='specify path from where to load the CA certificates. Default is \'/etc/ssl/certs/ca-certificates.crt\'')
 args = parser.parse_args()
 
 if args.log:
