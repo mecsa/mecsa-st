@@ -209,11 +209,14 @@ class MtaSts(object):
             mta_sts_error = None
             self.logger.debug("sending POLICY request for domain %s " % mta_sts_domain)
             response = requests.get("https://" + mta_sts_domain)
-            has_policy, mta_sts_policy = self.parse_policy(response.text.splitlines())
+            has_policy, parsed_result = self.parse_policy(response.text.splitlines())
             headers = response.headers
             self.logger.debug("Content/Type: %s" % headers['Content-Type'])
-            self.logger.debug("request POLICY response:  %s " % mta_sts_policy)
-            return True, mta_sts_policy, mta_sts_error
+            self.logger.debug("request POLICY response:  %s " % parsed_result)
+            if has_policy:
+                return True, parsed_result, mta_sts_error
+            else:
+                mta_sts_error = parsed_result
         except Exception as ex:
             mta_sts_error = '[MTA-STS] General Exception %s (%s)' % (domain, str(ex))
         self.logger.warning(mta_sts_error)
@@ -235,17 +238,21 @@ class MtaSts(object):
             parsed_policy['max_age'] = None
             parsed_policy['error'] = None
             for line in policy:
-                key, value = line.strip().split(":")
-                self.logger.debug("KEY: %s; VALUE: %s" % (key, value))
-                if key == 'version' and parsed_policy['version'] is None:
-                    parsed_policy['version'] = value.strip()
-                elif key == 'mode' and parsed_policy['mode'] is None:
-                    parsed_policy['mode'] = value.strip()
-                elif key == 'mx':
-                    has_mx = True
-                    mxs.append(value.strip())
-                elif key == 'max_age' and parsed_policy['max_age'] is None:
-                    parsed_policy['max_age'] = value.strip()
+                if ':' in line:
+                    key, value = line.strip().split(":")
+                    self.logger.debug("KEY: %s; VALUE: %s" % (key, value))
+                    if key == 'version' and parsed_policy['version'] is None:
+                        parsed_policy['version'] = value.strip()
+                    elif key == 'mode' and parsed_policy['mode'] is None:
+                        parsed_policy['mode'] = value.strip()
+                    elif key == 'mx':
+                        has_mx = True
+                        mxs.append(value.strip())
+                    elif key == 'max_age' and parsed_policy['max_age'] is None:
+                        parsed_policy['max_age'] = value.strip()
+                else:
+                    self.logger.warning("[MTA-STS] Parsing Policy Unknown line found: '%s' " % str(line))
+                    return False, "Parsing Policy, Unknown line found: '%s' " % str(line)
             if has_mx:
                 parsed_policy['mx'] = ",".join(mxs)
             return True, parsed_policy
