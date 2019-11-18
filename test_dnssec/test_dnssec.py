@@ -451,6 +451,7 @@ class Dnssec(object):
                  Set of RRSET values
                  String, error (if any)
         '''
+        unsupported_algo = ['12', '15', '16']
 
         dns_name = dns.name.from_text(domain)
         # a list of ns_set
@@ -463,11 +464,16 @@ class Dnssec(object):
             # a pair of (key,value) where key = hash(value)
             ns_rrset = {}
             rrsig, rrset, error_msg = self.getRRSIG(domain, ns, record)
+            sigarray = str(rrset).split()
             if rrsig is None or rrset is None:
                 return None, None, error_msg
             try:
                 dns.dnssec.validate(rrset, rrsig, {dns_name: rrset})
             except Exception as ex:
+                if sigarray[6] in unsupported_algo:
+                    unsupported_error = "MECSA does not support this algorithm yet, we cannot validate DNSSEC."
+                    self.logger.warning("Unsupported algorithm %s (%s)" % (domain, str(ex)))
+                    return None, None, unsupported_error
                 error_msg = ("Validating DNSKEYS %s (%s)" % (domain, str(ex)))
                 self.logger.warning(error_msg)
                 return None, None, error_msg
