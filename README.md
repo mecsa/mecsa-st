@@ -79,3 +79,4 @@ The file [public_suffix_list.dat](https://github.com/mecsa/mecsa-st/blob/master/
 
 * [My Email Communications Security Assessment (MECSA)](https://mecsa.jrc.ec.europa.eu)
 * [Internet NL](https://internet.nl/)
+* [Webcheck PT](https://webcheck.pt/en/)
