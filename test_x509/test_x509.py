@@ -19,7 +19,7 @@ __author__ = 'Joint Research Centre (JRC) - E.3 Cyber and Digital Citizen\'s Sec
 
 
 import OpenSSL.crypto
-from cache_x509 import CacheX509
+from .cache_x509 import CacheX509
 from datetime import date
 from datetime import datetime
 import hashlib
@@ -101,21 +101,21 @@ class TestCertificate():
             cert = OpenSSL.crypto.load_certificate(OpenSSL.crypto.FILETYPE_PEM, pem)
             extensions = []
             for i in range(cert.get_extension_count()):
-                if cert.get_extension(i).get_short_name() == "subjectAltName":
+                if cert.get_extension(i).get_short_name() == b"subjectAltName":
                     extensions.append(cert.get_extension(i))
             components = dict(cert.get_subject().get_components())
             hostname = mx.lower()
-            if 'CN' in components:
-                if components['CN'].lower() == hostname:
-                    self.logger.debug('*** CN Exact MATCH!: %s - %s' % (hostname, components['CN']))
+            if b'CN' in components:
+                if str(components[b'CN'].lower(), 'utf-8') == hostname:
+                    self.logger.debug('*** CN Exact MATCH!: %s - %s' % (hostname, components[b'CN']))
                     return True
-                elif '*' in components['CN']:
+                elif b'*' in components[b'CN']:
                     tests = len(hostname.split('.'))
                     for index in range(1, tests):
                         sample = '*' + hostname[hostname.index('.'):]
                         hostname = sample[2:]
-                        if sample == components['CN']:
-                            self.logger.debug('*** CN Wildcard MATCH!: %s - %s' % (sample, components['CN']))
+                        if sample == str(components[b'CN'].lower(), 'utf-8'):
+                            self.logger.debug('*** CN Wildcard MATCH!: %s - %s' % (sample, components[b'CN']))
                             return True
             for extension in extensions:
                 alt_name = extension.__str__()
@@ -148,8 +148,8 @@ class TestCertificate():
             current = date.today()
             expired = cert.has_expired()
             try:
-                valid_from = datetime.strptime(cert.get_notBefore(), "%Y%m%d%H%M%SZ")
-                valid_to = datetime.strptime(cert.get_notAfter(), "%Y%m%d%H%M%SZ")
+                valid_from = datetime.strptime(str(cert.get_notBefore(), "utf-8"), "%Y%m%d%H%M%SZ")
+                valid_to = datetime.strptime(str(cert.get_notAfter(), "utf-8"), "%Y%m%d%H%M%SZ")
             except Exception as ex:
                 self.logger.warning("Error parsing dates for cert: %s (%s)" % (subject, str(ex)))
                 return False
@@ -256,7 +256,7 @@ class TestCertificate():
             serial_number = int(cert.get_serial_number())
             errors = []
             for i in range(cert.get_extension_count()):
-                if cert.get_extension(i).get_short_name() == "crlDistributionPoints":
+                if cert.get_extension(i).get_short_name() == b"crlDistributionPoints":
                     has_crl = True
                     content = cert.get_extension(i).__str__().split('\n')
                     crl_uris = []
@@ -324,7 +324,7 @@ class TestCertificate():
                 # To avoid loading duplicates.
                 certs_loaded = []
                 for cert in pem_chain:
-                    if "-----BEGIN CERTIFICATE-----" in cert:
+                    if b"-----BEGIN CERTIFICATE-----" in cert:
                         sample = hashlib.sha256(cert).hexdigest()
                         if sample not in certs_loaded:
                             certs_loaded.append(sample)

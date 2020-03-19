@@ -143,7 +143,7 @@ class Dmarc:
             for answer in answers:
                 record = ""
                 for element in answer.strings:
-                    record = record + element
+                    record = record + str(element, "utf-8")
                 if record.lower().startswith("v=dmarc1"):
                     if records < 1:
                         dmarc_record = record

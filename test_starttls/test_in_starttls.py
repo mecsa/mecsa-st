@@ -167,7 +167,7 @@ class TestStartTLS(object):
             tcp_socket = connection.sock
             tcp_socket.setblocking(1)
             context = SSL.Context(SSL.SSLv23_METHOD)
-            context.set_cipher_list('ALL')
+            context.set_cipher_list(b'ALL')
             connection = OpenSSL.SSL.Connection(context, tcp_socket)
             connection.set_connect_state()
             timeval = struct.pack('ll', 30, 100)

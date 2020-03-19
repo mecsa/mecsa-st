@@ -15,11 +15,20 @@ on an "AS IS" basis, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either expres
 
 See the Licence for the specific language governing permissions and limitations under the Licence.
 """
+
 __author__ = 'Joint Research Centre (JRC) - E.3 Cyber and Digital Citizen\'s Security'
+
+__name__ = 'mecsa-st'
+__version__= '2.0'
+
+
+import sys
+if (sys.version_info < (3, 0)):
+    print("ERROR: this program requires python 3 to run. See README for more information")
+    exit(1)
 
 import argparse
 import logging.handlers
-import sys
 import ssl
 import io
 import OpenSSL
@@ -33,7 +42,11 @@ from test_dnssec import test_dnssec
 from test_dnssec import cache_dnssec
 from test_dkim import test_dkim
 from test_mtasts import test_mta_sts
+from commons import scoring
 
+def banner():
+	print("%s version %s\n" % (__name__, __version__))
+	
 
 def init_report(mx, priority, ipv4, is_mx=True):
     """
@@ -94,6 +107,7 @@ def init_report(mx, priority, ipv4, is_mx=True):
     report['ir_certificate_revocated'] = False
     report['ir_has_tlsa'] = False
     report['ir_valid_tlsa'] = False
+    report['ir_tlsa'] = False
     report['ir_tlsa_txt'] = None
     report['ir_tlsa_errors'] = None
     report['ir_valid_mta_sts'] = False
@@ -207,12 +221,7 @@ def execute_spf(logger, domain):
 
     spf_row = tester.test_spf(domain)
 
-    row['has_spf'] = spf_row['has_spf']
-    row['spf_records'] = spf_row['spf_record']
-    row['syntax_check'] = spf_row['spf_syntax_check']
-    row['syntax_response'] = spf_row['spf_syntax_response']
-    row['errors'] = spf_row['spf_error']
-    return row
+    return spf_row
 
 
 def execute_dkim(logger, domain):
@@ -247,12 +256,7 @@ def execute_dmarc(logger, domain, tlds_list):
 
     dmarc_row = tester.test_dmarc(domain)
 
-    row['has_dmarc'] = dmarc_row['has_dmarc']
-    row['dmarc_records'] = dmarc_row['dmarc_record']
-    row['syntax_check'] = dmarc_row['dmarc_syntax_check']
-    row['syntax_response'] = dmarc_row['dmarc_syntax_response']
-    row['errors'] = dmarc_row['dmarc_error']
-    return row
+    return dmarc_row
 
 
 def execute_dane(logger, reports, root_cas):
@@ -289,12 +293,12 @@ def execute_dane(logger, reports, root_cas):
 
                 if report['ir_has_tlsa']:
                     errors = []
-                    logger.info('MX %s HAS %d tlsa records:' % (report['ir_mx'], len(report['ir_tlsa_txt'])))
+                    logger.info('MX {0} HAS {1} tlsa records:'.format(report['ir_mx'], len(report['ir_tlsa_txt'])))
                     for tlsa in report['ir_tlsa_txt']:
                         dane_valid, dane_error = tester.execute(report['ir_certificate'],
                                                                 report['ir_certificate_chain'], tlsa)
                         if dane_valid:
-                            logger.info('MX %s HAS DANE: %s' % (report['ir_mx'], tlsa))
+                            logger.info('MX {0} HAS DANE: {0}'.format(report['ir_mx'], tlsa))
                             report['ir_tlsa_txt'] = tlsa
                             report['ir_valid_tlsa'] = True
                             report['ir_tlsa'] = True
@@ -302,7 +306,7 @@ def execute_dane(logger, reports, root_cas):
                             errors.append(dane_error)
                     report['ir_tlsa_errors'] = '\n'.join(errors)
         except Exception as ex:
-            logger.error('GENERAL ERROR DANE %s' % str(ex))
+            logger.error('GENERAL ERROR DANE {0}'.format(ex))
 
 
 def execute_dnssec(logger, domain, records, i_reports, cache=None):
@@ -326,7 +330,7 @@ def execute_dnssec(logger, domain, records, i_reports, cache=None):
     :param cache: an local cache of DNS records, to avoid repeating DNS requests.
     :return: A list of 'init_dd_row' dictionaries (see function 'init_dd_row' in 'test_dnssec.py')
     """
-    logger.info("--------> Init DNSSEC test (%s)" % str(records))
+    logger.info("--------> Init DNSSEC test ({0})".format(records))
 
     tester = test_dnssec.Dnssec(logger, cache)
 
@@ -360,13 +364,13 @@ def execute_mta_sts(logger, domain, records):
     """
     row_mta_sts = None
     try:
-        logger.info('---> Init MTA-STS test on domain %s' % domain)
+        logger.info('---> Init MTA-STS test on domain {0}'.format(domain))
         tester = test_mta_sts.MtaSts(logger)
         row_mta_sts = tester.test_mta_sts(domain)
         if row_mta_sts['has_mta_sts']:
             tester.validate_policy(row_mta_sts['mta_sts_policy'], records)
     except Exception as ex:
-        logger.error("Error Testing MTA-STS for domain %s (%s)" % (domain, str(ex)))
+        logger.error("Error Testing MTA-STS for domain {0} ({1})".format(domain, ex))
     return records, row_mta_sts
 
 
@@ -389,7 +393,7 @@ def load_cas(logger, filepath):
             ca_certs.append(c.load_certificate(c.FILETYPE_ASN1, cert))
         return ca_certs
     except Exception as ex:
-        logger.error('loading CAs from %s (%s)' % (filepath, str(ex)))
+        logger.error('loading CAs from {0} ({1})'.format(filepath, str(ex)))
         return []
 
 
@@ -410,7 +414,7 @@ def load_tlds(logger):
                 tlds.append(line.rstrip('\n'))
         return tlds
     except Exception as ex:
-        logger.error('loading TLDS from %s (%s)' % (suffix_list_file, str(ex)))
+        logger.error('loading TLDS from {0} ({1})'.format(suffix_list_file, str(ex)))
         return []
 
 
@@ -427,11 +431,11 @@ def run_full_tests(logger, domain, filepath):
     try:
         root_cas = load_cas(logger, filepath)
         tlds_list = load_tlds(logger)
-        logger.debug('---- TLDS LIST SIZE %d -----' % len(tlds_list))
+        logger.debug('---- TLDS LIST SIZE {0} -----'.format(len(tlds_list)))
         dnssec_cache = cache_dnssec.CacheDnssec(logger)
         x509_cache = cache_x509.CacheX509(logger)
 
-        logger.info('---> Init test on domain %s' % domain)
+        logger.info('---> Init test on domain {0}'.format(domain))
         test_records = []
 
         # Testing StartTLS
@@ -442,16 +446,27 @@ def run_full_tests(logger, domain, filepath):
 
             # Testing SPF
             spf_report = execute_spf(logger, domain)
-            if spf_report['has_spf'] and spf_report['syntax_check']:
+            if spf_report['has_spf'] and spf_report['spf_syntax_check']:
                 test_records.append('TXT')
+                spf_report['supports_spf'] = True
+                spf_report['spf_txt'] = spf_report['spf_record']
+            else:
+                spf_report['supports_spf'] = False
+                spf_report['spf_txt'] = spf_report['spf_error']
 
             # Testing DKIM
             has_dkim, dkim_txt = execute_dkim(logger, domain)
 
             # Testing DMARC
             dmarc_report = execute_dmarc(logger, domain, tlds_list)
-            if dmarc_report['has_dmarc'] and dmarc_report['syntax_check']:
+            if dmarc_report['has_dmarc'] and dmarc_report['dmarc_syntax_check']:
                 test_records.append('DMARC')
+                dmarc_report['supports_dmarc'] = True
+                dmarc_report['dmarc_txt'] = dmarc_report['dmarc_record']
+            else:
+                dmarc_report['supports_dmarc'] = False
+                dmarc_report['dmarc_txt'] = dmarc_report['dmarc_error']
+
 
             # Testing DANE
             execute_dane(logger, inbound_reports, root_cas)
@@ -465,31 +480,37 @@ def run_full_tests(logger, domain, filepath):
             # Testing MTA-STS
             inbound_reports, mta_sts_report = execute_mta_sts(logger, domain, inbound_reports)
 
+            # Calculating values for Summary Report
+            score_points = scoring.load_score_function(logger)
+            score = scoring.ScoreOperations(logger, score_points)
+            scores = score.domain_update(
+                inbound_reports, [], dnssec_report, dmarc_report, spf_report, mta_sts_report, (has_dkim, dkim_txt))
+
             # RESULTS
-            logger.info('\n\n\n\n---- REPORT FOR DOMAIN %s -----' % domain)
-            logger.info('---- domain has %d MX records. ' % len(inbound_reports))
+            logger.info('\n\n\n\n---- REPORT FOR DOMAIN {0} -----'.format(domain))
+            logger.info('---- domain has {0} MX records. '.format(len(inbound_reports)))
 
             for report in inbound_reports:
 
                 if report['ir_starttls']:
-                    logger.info('---- STARTTLS ENABLED %s %s %s   ' % (report['ir_mx'],
-                                                                       report['ir_mx_ipv4'],
-                                                                       str(report['ir_mx_priority'])))
-                    logger.info('-------- StartTLS announced? %s' % str(report['ir_starttls_announced']))
-                    logger.info('-------- %s (protocol, cipher, keysize)' % report['ir_starttls_enc'])
-                    logger.info('-------- x509 CA validated %s' % str(report['ir_certificate_ca_valid']))
-                    logger.info('-------- x509 FQDN match MX %s' % str(report['ir_certificate_fqdn_valid']))
-                    logger.info('-------- x509 Date Valid  %s' % str(report['ir_certificate_date_valid']))
-                    logger.info('-------- x509 Revocated %s' % str(report['ir_certificate_revocated']))
+                    logger.info('---- STARTTLS ENABLED {0} {1} {2}   '.format(report['ir_mx'],
+                                                                              report['ir_mx_ipv4'],
+                                                                              report['ir_mx_priority']))
+                    logger.info('-------- StartTLS announced: {0}'.format(report['ir_starttls_announced']))
+                    logger.info('-------- {0} (protocol, cipher, keysize)'.format(report['ir_starttls_enc']))
+                    logger.info('-------- x509 CA validated {0}'.format(report['ir_certificate_ca_valid']))
+                    logger.info('-------- x509 FQDN match MX {0}'.format(report['ir_certificate_fqdn_valid']))
+                    logger.info('-------- x509 Date Valid  {0}'.format(report['ir_certificate_date_valid']))
+                    logger.info('-------- x509 Revocated {0}'.format(report['ir_certificate_revocated']))
                     if report['ir_valid_tlsa']:
                         logger.info('-------- DANE ENABLED')
-                        logger.info('-------- TLSA record: %s' % str(report['ir_tlsa_txt']))
+                        logger.info('-------- TLSA record: {0}'.format(report['ir_tlsa_txt']))
                     else:
                         logger.info('-------- DANE DISABLED')
-                        logger.info('-------- TLSA record %s' % str(report['ir_has_tlsa']))
+                        logger.info('-------- TLSA record {0}'.format(report['ir_has_tlsa']))
                         if report['ir_has_tlsa']:
-                            logger.info('-------- Records: %s' % report['ir_tlsa_txt'])
-                            logger.info('-------- ERRORS (%s)' % report['ir_tlsa_errors'])
+                            logger.info('-------- Records: {0}'.format(report['ir_tlsa_txt']))
+                            logger.info('-------- ERRORS ({0})'.format(report['ir_tlsa_errors']))
                     if mta_sts_report['has_mta_sts']:
                         if report['ir_valid_mta_sts']:
                             logger.info('-------- MTA-STS MX COMPLIES with POLICY')
@@ -497,66 +518,99 @@ def run_full_tests(logger, domain, filepath):
                             logger.info('-------- MTA-STS NOT! POLICY COMPLIANT')
 
                 else:
-                    logger.info('---- %s %s %s STARTTLS DISABLED  ' % (report['ir_mx'],
-                                                                       report['ir_mx_ipv4'],
-                                                                       str(report['ir_mx_priority'])))
-                    logger.info('-------- Error: (%s)' % report['ir_error'])
-
-            if spf_report['has_spf'] and spf_report['syntax_check']:
+                    logger.info('---- {0} {1} {2} STARTTLS DISABLED  '.format(report['ir_mx'],
+                                                                              report['ir_mx_ipv4'],
+                                                                              report['ir_mx_priority']))
+                    logger.info('-------- Error: ({0})'.format(report['ir_error']))
+            
+            if spf_report['has_spf'] and spf_report['spf_syntax_check']:
                 logger.info('---- SPF ENABLED')
-                logger.info('-------- spf record: %s ' % str(spf_report['spf_records']))
+                logger.info('-------- spf record: {0} '.format(spf_report['spf_record']))
             else:
                 logger.info('---- SPF DISABLED')
-                logger.info('-------- Errors (%s)' % str(spf_report['errors']))
-                logger.info('-------- Syntax check (%s)' % str(spf_report['syntax_response']))
+                logger.info('-------- Errors ({0})'.format(spf_report['spf_error']))
+                logger.info('-------- Syntax check ({0})'.format(spf_report['spf_syntax_response']))
 
             if has_dkim:
                 logger.info('---- DKIM ENABLED')
             else:
                 logger.info('---- DKIM DISABLED')
-            logger.info('-------- test response: %s ' % str(dkim_txt))
+            logger.info('-------- test response: {0} '.format(dkim_txt))
 
-            if dmarc_report['has_dmarc'] and dmarc_report['syntax_check']:
+            if dmarc_report['has_dmarc'] and dmarc_report['dmarc_syntax_check']:
                 logger.info('---- DMARC ENABLED')
-                logger.info('-------- dmarc record: %s ' % str(dmarc_report['dmarc_records']))
+                logger.info('-------- dmarc record: {0}'.format(dmarc_report['dmarc_record']))
             else:
                 logger.info('---- DMARC DISABLED')
-                logger.info('-------- Errors (%s)' % str(dmarc_report['errors']))
-                logger.info('-------- Syntax Check (%s)' % str(dmarc_report['syntax_response']))
+                logger.info('-------- Errors ({0})'.format(dmarc_report['dmarc_error']))
+                logger.info('-------- Syntax Check ({0})'.format(dmarc_report['dmarc_syntax_response']))
 
             if dnssec_report['dd_dnssec']:
                 logger.info('---- DNSSEC ENABLED')
             else:
                 logger.info('---- DNSSEC DISABLED')
-                logger.info('-------- dnssec MX %s' % dnssec_report['dd_dnssec_mx'])
-                logger.info('-------- dnssec MX-A %s' % dnssec_report['dd_dnssec_mx_a'])
-                if spf_report['has_spf'] and spf_report['syntax_check']:
-                    logger.info('-------- dnssec TXT %s' % dnssec_report['dd_dnssec_spf'])
-                if dmarc_report['has_dmarc'] and dmarc_report['syntax_check']:
-                    logger.info('-------- dnssec DMARC %s' % dnssec_report['dd_dnssec_spf'])
+                logger.info('-------- dnssec MX {0}'.format(dnssec_report['dd_dnssec_mx']))
+                logger.info('-------- dnssec MX-A {0}'.format(dnssec_report['dd_dnssec_mx_a']))
+                if spf_report['has_spf'] and spf_report['spf_syntax_check']:
+                    logger.info('-------- dnssec TXT {0}'.format(dnssec_report['dd_dnssec_spf']))
+                if dmarc_report['has_dmarc'] and dmarc_report['dmarc_syntax_check']:
+                    logger.info('-------- dnssec DMARC {0}'.format(dnssec_report['dd_dnssec_spf']))
                 if report['ir_has_tlsa']:
-                    logger.info('-------- dnssec TLSA %s' % dnssec_report['dd_dnssec_tlsa'])
-                logger.info('-------- error %s' % dnssec_report['dd_error'])
+                    logger.info('-------- dnssec TLSA {0}'.format(dnssec_report['dd_dnssec_tlsa']))
+                logger.info('-------- error {0}'.format(dnssec_report['dd_error']))
 
             if mta_sts_report['has_mta_sts']:
                 logger.info('---- MTA-STS ENABLED :')
-                logger.info('-------- DNS Record      : %s' % mta_sts_report['mta_sts_dns'])
-                logger.info('-------- Policy Version  : %s' % mta_sts_report['mta_sts_policy']['version'])
-                logger.info('-------- Policy Mode     : %s' % mta_sts_report['mta_sts_policy']['mode'])
-                logger.info('-------- Policy MX       : %s' % mta_sts_report['mta_sts_policy']['mx'])
-                logger.info('-------- Policy max-age  : %s' % mta_sts_report['mta_sts_policy']['max_age'])
+                logger.info('-------- DNS Record      : {0}'.format(mta_sts_report['mta_sts_dns']))
+                logger.info('-------- Policy Version  : {0}'.format(mta_sts_report['mta_sts_policy']['version']))
+                logger.info('-------- Policy Mode     : {0}'.format(mta_sts_report['mta_sts_policy']['mode']))
+                logger.info('-------- Policy MX       : {0}'.format(mta_sts_report['mta_sts_policy']['mx']))
+                logger.info('-------- Policy max-age  : {0}'.format(mta_sts_report['mta_sts_policy']['max_age']))
             else:
-                logger.info('-------- Has DNS       : %s' % str(mta_sts_report['has_mta_sts_dns']))
-                logger.info('-------- Has Policy    : %s' % str(mta_sts_report['has_mta_sts_policy']))
-                logger.info('-------- MTA-STS errors: %s' % str(mta_sts_report['mta_sts_error']))
+                logger.info('---- MTA-STS DISABLED :')
+                logger.info('-------- Has DNS       : {0}'.format(mta_sts_report['has_mta_sts_dns']))
+                logger.info('-------- Has Policy    : {0}'.format(mta_sts_report['has_mta_sts_policy']))
+                logger.info('-------- MTA-STS errors: {0}'.format(mta_sts_report['mta_sts_error']))
 
+            logger.info('---------------------------------------------------------------------------\n')
+            logger.info('---> SUMMARY REPORT for domain {0}  --------------------------------------'.format(domain))
+            logger.info('---> ')
+            logger.info('---> Confidentiality {:.1f}'.format(scores['dr_confidential']/2)) 
+            logger.info('---> Spoofing        {:.1f}'.format(scores['dr_spoofing']/2))
+            logger.info('---> Integrity       {:.1f}'.format(scores['dr_integrity']/2))
+            logger.info('---> ')
+            conf_protocols = score.get_summary('confidentiality')[0]
+            conf_missing = score.get_summary('confidentiality')[2]
+            spoof_protocols = score.get_summary('spoofing')[0]
+            spoof_missing = score.get_summary('spoofing')[2]
+            int_protocols = score.get_summary('integrity')[0]
+            int_missing = score.get_summary('integrity')[2]
+            logger.info('---> **** Confidentiality evaluated on: {0}'.format(conf_protocols))
+            logger.info('---> **** Missing                     : {0}'.format(conf_missing))
+            logger.info('---> ****  ****')
+            logger.info('---> **** Spoofing evaluated on       : {0}'.format(spoof_protocols))
+            logger.info('---> **** Missing                     : {0}'.format(spoof_missing))
+            logger.info('---> ****  ****')
+            logger.info('---> **** Integrity evaluated on      : {0}'.format(int_protocols))
+            logger.info('---> **** Missing                     : {0}'.format(int_missing))
+            logger.info('---> ****  ****')
+            logger.info('---> **** These results might differ from the ones given by the MECSA platform ****')
+            logger.info('---> **** because we have less data. MECSA also has outbound tests:            ****')
+            logger.info('---> **** _ StartTLS check on email delivery                                   ****')
+            logger.info('---> **** _ SPF policy verification on delivery servers                        ****')
+            logger.info('---> **** _ DKIM signature check                                               ****')
+            logger.info('---> ****                                                                      ****')
+            logger.info('---> **** https://mecsa.jrc.ec.europa.eu                                       ****')
+            logger.info('---> ')
             logger.info('---> END of TEST -----------------------------------------------------------\n')
         else:
-            logger.info('---> Domain %s Does not have MX records' % domain)
+            logger.info('---> Domain {0} Does not have MX records'.format(domain))
 
     except Exception as ex:
-        logger.error("General ERROR (%s) " % str(ex))
+        logger.error("General ERROR ({0}) ".format(ex))
 
+
+banner()
 
 parser = argparse.ArgumentParser(description='MECSA Standalone Test')
 parser.add_argument('domain', help='domain to test')
@@ -596,4 +650,7 @@ else:
     logger.warning(error_exit)
     sys.exit(-1)
 
+logger.info(__author__)
+logger.info("{0} v{1}".format(__name__, __version__))
+logger.info('')
 run_full_tests(logger, domain, filepath)

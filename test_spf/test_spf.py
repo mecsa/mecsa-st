@@ -48,26 +48,27 @@ class Spf(object):
         spf_row['spf_error'] = None
         return spf_row
 
-    def check_syntax_spf(self, spftext):
+    def check_syntax_spf(self, spf_text, domain):
         '''
         Given an SPF record, it will check its syntax.
 
-        :param spftext: String, the SPF record to test
+        :param spf_text: String, the SPF record to test
+        :param domain: String, domain name tested
         :return:  Boolean, SPF syntax OK? True:False
                   String, code returned by the check() function (250, 500,..)
                   String, if failed, description of the syntax error.
         '''
         try:
             check_result, check_code, check_description = (None, None, None)
-            q = spf.query(s='userd@email.example.com', h='mx.example.org', i='127.0.0.1')
-            check_result, check_code, check_description = q.check(spf=spftext)
+            q = spf.query(s='postmaster@%s' % domain, h=domain, i='127.0.0.1')
+            check_result, check_code, check_description = q.check(spf=spf_text)
             self.logger.debug("SPF-SYNTAX-CHECK: %s %s %s" % (str(check_result), str(check_code), str(check_description)))
             if check_result in ["none", "permerror", "temperror"]:
                 return False, check_code, check_description
             else:
                 return True, check_code, check_description
         except Exception as error:
-            self.logger.error("SPF-Text Syntax-Error " + str(spftext) + ". " + str(error))
+            self.logger.error("SPF-Text Syntax-Error " + str(spf_text) + ". " + str(error))
             return False, str(check_code), "SPF-Text Syntax-Error " + str(error)
 
     def test_spf(self, domain):
@@ -82,11 +83,11 @@ class Spf(object):
         try:
             row['has_spf'], row['spf_record'], row['spf_error'] = self.fecth_spf(domain)
             if row['has_spf']:
-                row['spf_syntax_check'], code, description = self.check_syntax_spf(row['spf_record'])
+                row['spf_syntax_check'], code, description = self.check_syntax_spf(row['spf_record'], domain)
                 if row['spf_syntax_check']:
-                    row['spf_syntax_response'] = str(code) + " : " + str(description)
+                    row['spf_syntax_response'] = "%s : %s" % (str(code), str(description))
                 else:
-                    row['spf_error'] = str(code) + " : " + str(description)
+                    row['spf_error'] = "%s : %s" % (str(code), str(description))
         except Exception as ex:
             row['spf_error'] = "SPF-Test Generic Error %s (%s)" % (str(domain), str(ex))
             self.logger.error(row['spf_error'])
@@ -98,7 +99,8 @@ class Spf(object):
 
         :param domain: Domain name tested
         :return: Boolean, domain has SPF record? True:False
-                 String[], List of TXT records for domain OR Errors in the query
+                 String[], List of TXT records for domain
+                 Errors in the query
         '''
         try:
             records = 0
@@ -110,7 +112,7 @@ class Spf(object):
             for answer in answers:
                 record = ""
                 for element in answer.strings:
-                    record = record + element
+                    record = record + str(element, "utf-8")
                 if record.lower().startswith("v=spf1"):
                     if records < 1:
                         spf_record = record
