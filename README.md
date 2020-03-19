@@ -90,7 +90,7 @@ optional arguments:
 ![screenshot](https://github.com/mecsa/mecsa-st/blob/master/media/execution_sample.gif)
 
 
-## Security analysis carried about by MECSA-ST
+## Security analysis executed by mecsa-st
 
 * **StartTLS**: A DNS request is performed to retrieve all MX records of the domain tested. For each MX, an SMTP connection is established and a TLS communication channel is negotiated. If successful, the provided server certificate and the intermediate certificates are downloaded.  
 * **x509 Certificate Validation**: The following test are executed to validate the x509 certificates:
