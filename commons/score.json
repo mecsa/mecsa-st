@@ -1,0 +1,96 @@
+{
+  "confidentiality": {
+    "protocols" : "starttls,x509,dane,dnssec,mta-sts",
+    "10":[
+      "starttls,x509,dane,dnssec,mta-sts",
+      "starttls,dane,dnssec",
+      "starttls,x509,dane,dnssec",
+      "starttls,x509,dane,mta-sts",
+      "starttls,x509,mta-sts"
+    ],
+    "9": [],
+    "8": ["starttls,x509,dnssec"],
+    "7": [
+      "starttls,x509",
+      "starttls,x509,dane"
+    ],
+    "6": [
+      "starttls,dnssec",
+      "starttls,dane",
+      "starttls,mta-sts"
+    ],
+    "5": ["starttls"],
+    "4": [],
+    "3": [],
+    "2": [],
+    "1": []
+  },
+  "spoofing": {
+    "protocols" : "spf,spf_policy,dkim,dmarc,dmarc_policy,dnssec",
+    "10":["spf,spf_policy,dkim,dmarc,dmarc_policy,dnssec"],
+    "9": [
+      "spf,dkim,dmarc,dmarc_policy,dnssec",
+      "spf,spf_policy,dkim,dmarc,dnssec"
+    ],
+    "8": [
+      "spf,dkim,dmarc,dnssec",
+      "spf,dmarc,dmarc_policy,dnssec",
+      "spf,spf_policy,dkim,dnssec",
+      "spf,spf_policy,dkim,dmarc,dmarc_policy",
+      "dkim,dmarc,dmarc_policy,dnssec"
+    ],
+    "7": [
+      "spf,dmarc,dmarc_policy",
+      "spf,dkim,dmarc,dmarc_policy",
+      "spf,spf_policy,dmarc,dnssec",
+      "spf,spf_policy,dkim,dmarc",
+      "dkim,dmarc,dmarc_policy"
+    ],
+    "6": [
+      "dkim,dmarc,dnssec",
+      "dkim,dmarc,dmarc_policy",
+      "spf,dkim,dnssec",
+      "spf,dkim,dmarc",
+      "spf,spf_policy,dkim",
+      "spf,dmarc,dnssec",
+      "spf,dmarc,dmarc_policy",
+      "spf,spf_policy,dmarc",
+      "spf,spf_policy",
+      "spf,spf_policy,dnssec"
+    ],
+    "5": [
+      "spf,dmarc",
+      "dkim,spf",
+      "dkim,dmarc"
+    ],
+    "4": [
+      "dkim,dnssec",
+      "spf,dnssec",
+      "dmarc,dnssec",
+      "dmarc,dmarc_policy,dnssec"
+    ],
+    "3": [
+      "spf",
+      "dkim",
+      "dmarc"
+    ],
+    "2": [],
+    "1": []
+  },
+  "integrity": {
+    "protocols" : "dkim,dmarc,dmarc_policy,dnssec",
+    "10":["dkim,dmarc,dmarc_policy,dnssec"],
+    "9": [],
+    "8": [
+      "dkim,dmarc,dnssec",
+      "dkim,dnssec"
+    ],
+    "7": ["dkim,dmarc,dmarc_policy"],
+    "6": ["dkim,dmarc"],
+    "5": [],
+    "4": ["dmarc,dnssec"],
+    "3": [],
+    "2": ["dmarc","dnssec"],
+    "1": []
+  }
+}

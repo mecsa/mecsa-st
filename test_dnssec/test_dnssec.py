@@ -22,8 +22,8 @@ import dns.resolver
 import hashlib
 import struct
 import base64
-from chain_dnssec import ChainDnssec
-from cache_dnssec import CacheDnssec
+from .chain_dnssec import ChainDnssec
+from .cache_dnssec import CacheDnssec
 
 
 __default_ns__ = '8.8.8.8'
@@ -287,9 +287,12 @@ class Dnssec(object):
         try:
             key_digest = dict()
             for dskey in dskeys:
-                key_digest[dskey.digest.encode('hex')] = dskey
+                key_digest[dskey.digest.hex()] = dskey
+            self.logger.debug("DSKEY key digest:\n{0}".format(key_digest))
             for rrkey in rrkeys:
-                flags = rrkey.flags_to_text_set()
+                self.logger.info(rrkey)
+                #flags = rrkey.flags_to_text_set()
+                flags = rrkey.flags
                 self.logger.debug("Flags of RRKEYs for %s: %s" % (str(fqdn), str(flags)))
                 # 'SEP' flag is not mandatory, therefore we will test all keys.
                 # if 'SEP' in flags:
@@ -297,9 +300,9 @@ class Dnssec(object):
                     owner = str(fqdn).lower()
                 else:
                     owner = str(fqdn).lower() + '.'
-                owner_bin = ''
+                owner_bin = b''
                 for name in owner.split('.'):
-                    owner_bin += struct.pack('B', len(name)) + name
+                    owner_bin += struct.pack('B', len(name)) + name.encode()
                 key = base64.b64encode(rrkey.key)
                 raw = struct.pack(
                     '!HBB',
@@ -310,7 +313,11 @@ class Dnssec(object):
                 raw = owner_bin + raw
                 sha1_digest = hashlib.sha1(raw).hexdigest()
                 sha2_digest = hashlib.sha256(raw).hexdigest()
-                if sha2_digest in key_digest:
+                sha3_digest = hashlib.sha384(raw).hexdigest()
+                if sha3_digest in key_digest:
+                    self.logger.info('SHA384 digest match! %s' % str(fqdn))
+                    return True, None
+                elif sha2_digest in key_digest:
                     return True, None
                 elif sha1_digest in key_digest:
                     self.logger.warning('SHA1 digest match! %s' % str(fqdn))
@@ -350,7 +357,7 @@ class Dnssec(object):
 
                     responses = resolver.query(children_domain, 'DS')
                     for response in responses:
-                        key = hashlib.sha256(response.to_text()).hexdigest()
+                        key = hashlib.sha256(response.to_text().encode("utf-8")).hexdigest()
                         ns_set.add(key)
                         ns_dskey[key] = response
                         ns_dskeys.append(ns_dskey)
@@ -474,11 +481,11 @@ class Dnssec(object):
                     unsupported_error = "MECSA does not support this algorithm yet, we cannot validate DNSSEC."
                     self.logger.warning("Unsupported algorithm %s (%s)" % (domain, str(ex)))
                     return None, None, unsupported_error
-                error_msg = ("Validating DNSKEYS %s (%s)" % (domain, str(ex)))
+                error_msg = ("Validating DNSKEYS %s (%s)" % (domain, str(ex)))                
                 self.logger.warning(error_msg)
                 return None, None, error_msg
             for value in rrset:
-                key = hashlib.sha256(value.to_text()).hexdigest()
+                key = hashlib.sha256(value.to_text().encode("utf-8")).hexdigest()
                 ns_set.add(key)
                 ns_rrset[key] = value
                 ns_rrsets.append(ns_rrset)
@@ -531,7 +538,7 @@ class Dnssec(object):
                     self.logger.warning(error_msg)
                     return False, error_msg
                 for value in rrset:
-                    key = hashlib.sha256(value.to_text()).hexdigest()
+                    key = hashlib.sha256(value.to_text().encode("utf-8")).hexdigest()
                     ns_set.add(key)
                     ns_rrset[key] = value
                     ns_rrsets.append(ns_rrset)

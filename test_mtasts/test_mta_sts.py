@@ -33,7 +33,7 @@ class MtaSts(object):
         Initializes the dictionary used in the MTA-STS assessment.
 
         :return: Dictionary,
-        mta_sts ---------------- Boolean, MTA-STS is supported
+        has_mta_sts ---------------- Boolean, MTA-STS is supported
         has_mta_sts_dns ---------Boolean, has MTA-STS DNS record? True:False
         mta_sts_dns_syntax ----- Boolean, MTA-STS DNS record passed syntax check? True:False
         mta_sts_dns ------------ String, MTA-STS DNS record
@@ -168,7 +168,7 @@ class MtaSts(object):
             for answer in answers:
                 record = ""
                 for element in answer.strings:
-                    record = record + element
+                    record += str(element, "utf-8")
                 if record.lower().startswith("v=stsv1"):
                     if records < 1:
                         mta_sts_record = record
