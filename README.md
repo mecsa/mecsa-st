@@ -40,34 +40,29 @@ Mecsa-st has been tested in a Linux environment, although it should also work in
 
 **Installation Steps**
 
-1. Clone the official mecsa-st git repository:
+Clone the official mecsa-st git repository:
 
 ```
 git clone https://github.com/mecsa/mecsa-st.git
 ```
-
-2. Install prerequisites:
-
-2.1. Install python3
+Install python3
 ```
 sudo apt-get update
 sudo apt-get install python3 python3-pip python3-venv 
-pip install wheel
-sudo pip3 install py3dns pyopenssl urllib3 pyspf ipaddr pycryptodome requests ECPy
 ```
-2.2. Create and activate a Python 3 Virtual Environment to run mecsa-st
+Create and activate a Python 3 Virtual Environment to run mecsa-st
 ```
 cd mecsa-st
 python3 -m venv mecsa-st_venv
 source mecsa-st_venv/bin/activate
 ```
-2.3. Install required libraries using pip
+Install required libraries using pip
 ```
 pip install wheel
 pip install py3dns pyopenssl urllib3 pyspf ipaddr pycryptodome requests ECPy
 ```
 
-2.4. Install the latest version of dnspython from the official git repository
+Install the latest version of dnspython from the official git repository
 ```
 git clone https://github.com/rthalley/dnspython.git
 cd dnspython
@@ -150,3 +145,4 @@ The file [public_suffix_list.dat](https://github.com/mecsa/mecsa-st/blob/master/
 * [My Email Communications Security Assessment (MECSA)](https://mecsa.jrc.ec.europa.eu)
 * [Internet NL](https://internet.nl/)
 * [Webcheck PT](https://webcheck.pt/)
+* [TU Delft research study](https://www.email-security-scans.org/)
