@@ -26,6 +26,20 @@ mecsa-st, on the other hand, only requires the domain name of the email service 
 
 The objective of these protocols is to protect the reception of emails.
 
+***Update!*** We have recently published a paper in the [IEEE Access](https://ieeeaccess.ieee.org/) peer reviewed journal.
+You can find it int the [EU Science Hub](https://ec.europa.eu/jrc/en/publication/what-email-servers-can-tell-johnny-empirical-study-provider-provider-email-security):
+
+Please use the following bibtex entry to cite the paper:
+```
+@ARTICLE{Kambourakis2020,
+  author={G. {Kambourakis} and G. {Draper} and I. {Sanchez}},
+  journal={IEEE Access}, 
+  title={What Email Servers Can Tell to Johnny: An Empirical Study of Provider-to-Provider Email Security}, 
+  year={2020},
+  volume={8},
+  pages={130066-130081},}
+```
+
 ***Update!*** the new version of mecsa-st released on 20/03/2020 contains the following changes:
 
 * Upgraded to python3
@@ -139,6 +153,7 @@ It is important to note that given the limitations of meca-st, the command line 
 This project is licensed under the EUPL 1.2 License - see the [LICENSE](LICENSE) file for details
 
 The file [public_suffix_list.dat](https://github.com/mecsa/mecsa-st/blob/master/public_suffix_list.dat) is licensed under the [Mozilla Public License v2.0](https://mozilla.org/MPL/2.0/)
+
 
 ## Links of interest
 
