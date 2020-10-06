@@ -397,7 +397,7 @@ class Dnssec(object):
             self.logger.error()
             return None, error_msg
 
-    def getRRSIG(self, domain, name_server, record):
+    def getRRSIG(self, domain, name_server, record, use_tcp=True, attempt=1):
         '''
         Return the set of RRSIG records for the given domain, as obtained from
         the given server: 'name_server'
@@ -405,6 +405,8 @@ class Dnssec(object):
         :param domain: String, domain name assessed
         :param name_server:  String, IPv4 address of the Name Server used in the DNS query
         :param record: String, DNS record type requested e.g. (TXT, A, ...)
+        :param use_tcp: Boolean, indicates if the DNS request is TCP or UDP.
+        :param attempt: integer, to ensure we repeat the DNS request only once, when the result is Timeout.
         :return: Set of RRSIG values
                  Set of RRSET values
                  String, error (if any)
@@ -420,7 +422,7 @@ class Dnssec(object):
 
         error_msg, rrsig, rrset = (None, None, None)
         try:
-            response = resolver.query(domain_name, rd_type, rd_class, tcp=True).response
+            response = resolver.query(domain_name, rd_type, rd_class, tcp=use_tcp).response
             rrsig = response.find_rrset(response.answer, domain_name, rd_class, dns.rdatatype.RRSIG, rd_type)
             rrset = response.find_rrset(response.answer, domain_name, rd_class, rd_type)
         except dns.resolver.NXDOMAIN:
@@ -429,11 +431,14 @@ class Dnssec(object):
         except dns.resolver.Timeout:
             error_msg = ("getRRSIG %s, %s Timeout " % (record, domain))
             self.logger.warning(error_msg)
-        except dns.exception.DNSException as dex:
-            error_msg = ("getRRSIG %s, %s  DNSException (%s)" % (record, domain, str(dex)))
-            self.logger.warning(error_msg)
+            if attempt == 1:
+                self.logger.warning("TCP Query Failed, attempting UDP for %s %s" % (record, domain))
+                rrsig, rrset, error_msg = self.getRRSIG(domain, name_server, record, use_tcp=False, attempt=2)
         except dns.resolver.NoAnswer:
             error_msg = ("getRRSIG %s, %s No Answer Returned " % (record, domain))
+            self.logger.warning(error_msg)
+        except dns.exception.DNSException as dex:
+            error_msg = ("getRRSIG %s, %s  DNSException (%s)" % (record, domain, str(dex)))
             self.logger.warning(error_msg)
         except KeyError as kex:
             error_msg = ("getRRSIG %s, %s KeyError (%s)" % (record, domain, str(kex)))
