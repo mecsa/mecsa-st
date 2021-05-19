@@ -89,6 +89,7 @@ class TestStartTLS(object):
                       'ir_esmtp_features', string - the list of ESMTP features supported (announced) by the MX
                       'ir_starttls', boolean - indicates if the MX supports STARTTLS
                       'ir_starttls_announced', boolean - indicates if STARTTLS is announced in the ESMTP list
+                      'ir_requiretls_announced', boolean - indicates if REQUIRETLS is announced in the ESMTP list
                       'ir_starttls_enc', string - cipher negotiated to create the TLS connection
                       'ir_certificate', string - certificate of the MX in .pem format
                       'ir_certificate_error', string - description of errors (if any) occurred while
@@ -102,7 +103,7 @@ class TestStartTLS(object):
         '''
 
         # 1.- We create an SMTP connection and we check that it supports ESMTP.
-        #     (if ESMTP is supported, we check if STARTTLS is announced)
+        #     (if ESMTP is supported, we check if STARTTLS and REQUIRETLS are announced)
         (banner, connection, error) = self.get_smtp_connection(row['ir_mx_ipv4'])
         if error is not None:
             row['ir_error'] = error
@@ -121,6 +122,7 @@ class TestStartTLS(object):
             row['ir_esmtp_features'] = str(connection.esmtp_features)
             self.logger.debug('ESMTP features announced: (%s)' % row['ir_esmtp_features'])
             row['ir_starttls_announced'] = connection.has_extn("starttls")
+            row['ir_requiretls_announced'] = connection.has_extn("requiretls")
         except Exception as ex:
             row['ir_error'] = "EHLO Communication Exception (%s)" % str(ex)
             self.logger.error(row['ir_error'])

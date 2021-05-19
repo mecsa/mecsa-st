@@ -11,11 +11,12 @@ This is the official git repository of **mecsa-st**, the command line version of
 
 This command line version of the [MECSA](https://mecsa.jrc.ec.europa.eu) service engine, mecsa-st, is limited to the analysis of the inbound email services (the analysis of the security standards supported by the email provider to receive email from other email providers). Further analysis of the security standards used to protect email delivery (outbound email services) is not supported, as this would require the reception of an email sent by the email provider tested.
 
-A full assessment of both inbound and outbound email services is available in our free online tool [MECSA](https://mecsa.jrc.ec.europa.eu) This online service allows any user, with a valid email account in an email service, to carry out a complete assessment of the capabilities of that email provider, to protect both the reception and delivery of emails.
+A full assessment of both inbound and outbound email services is available in our free online tool [MECSA](https://mecsa.jrc.ec.europa.eu). This online service allows any user, with a valid email account in an email service, to carry out a complete assessment of the capabilities of that email provider, to protect both the reception and delivery of emails.
 
 mecsa-st, on the other hand, only requires the domain name of the email service to be analysed, which is given as a command line argument. A series of non-intrusive tests will be executed to determine which of the following security standards are properly supported by the email provider. 
 
 * [StartTLS](http://www.ietf.org/rfc/rfc3207.txt)
+* [RequireTLS](https://www.ietf.org/rfc/rfc8689.txt)
 * [Analysis of signatures, chain of trust and validity of x509 certificates]()
 * [SPF](http://www.ietf.org/rfc/rfc7208.txt)
 * [DKIM (presence estimation only)](http://www.ietf.org/rfc/rfc6376.txt)
@@ -25,6 +26,10 @@ mecsa-st, on the other hand, only requires the domain name of the email service 
 * [MTA-STS](https://www.ietf.org/rfc/rfc8461.txt)
 
 The objective of these protocols is to protect the reception of emails.
+
+***Update!*** the new version of mecsa-st released on 20/05/2021 contains the following changes:
+
+* Checks the presence of the SMTP Require TLS option when sending a message
 
 ***Update!*** We have recently published a paper in the [IEEE Access](https://ieeeaccess.ieee.org/) peer reviewed journal.
 You can find it int the [EU Science Hub](https://ec.europa.eu/jrc/en/publication/what-email-servers-can-tell-johnny-empirical-study-provider-provider-email-security):
@@ -112,8 +117,9 @@ optional arguments:
 
 ## Security analysis carried about by MECSA-ST
 
-* **StartTLS**: A DNS request is performed to retrieve all MX records of the domain tested. For each MX, an SMTP connection is established and a TLS communication channel is negotiated. If successful, the provided server certificate and the intermediate certificates are downloaded.  
-* **x509 Certificate Validation**: The following test are executed to validate the x509 certificates:
+* **StartTLS**: A DNS request is performed to retrieve all MX records of the domain tested. For each MX, an SMTP connection is established and a TLS communication channel is negotiated. If successful, the provided server certificate and the intermediate certificates are downloaded.
+* **RequireTLS**: During the establishment of the SMTP connection (see above) it is checked whether the REQUIRETLS SMTP service extension is announced (in the form of the EHLO keyword value "REQUIRETLS"). This extension specifies that a message must be sent over a TLS communication channel.
+* **x509 Certificate Validation**: The following tests are executed to validate the x509 certificates:
   * Full certificate chain of trust validation (digital signatures).
   * Check that root CA signing the certificate is trusted. The list of trusted CAs is loaded from the file indicated as parameter -c. If no file is specific, the default is */etc/ssl/certs/ca-certificates.crt* (file with concatenated .pem certificates)
   * Check that the CN or SAN of the certificate matches the FQDN (Full Qualified Domain Name) it refers to (MX records). 
@@ -138,15 +144,15 @@ optional arguments:
 ## Scoring
 In addition to the technical results of the analysis, mecsa-st provides an accessible and easy to understand summary of the results scoring the email service analysed in the following categories: confidentiality, authenticity (protection against phishing and identity theft) and integrity.
 
-* **Confidentiality**: Evaluates the capacity to protect the incoming/outgoing email communications, from being read by third parties that could be listening the communication channel or impersonating the recipient. The protocols that ([MECSA](https://mecsa.jrc.ec.europa.eu)) uses to score this category are StartTLS, x509, DANE, DNSSEC and MTA-STS.
+* **Confidentiality**: Evaluates the capacity to protect the incoming/outgoing email communications, from being read by third parties that could be listening the communication channel or impersonating the recipient. The protocols that [MECSA](https://mecsa.jrc.ec.europa.eu) uses to score this category are StartTLS, x509, DANE, DNSSEC and MTA-STS.
 
-* **Phishing and Identity Theft**: Measures the capacity of email providers to facilitate the identification of email messages sent from unauthorized third parties. In particular, ([MECSA](https://mecsa.jrc.ec.europa.eu)) uses SPF, DKIM, DMARC, and DNSSEC to evaluate this category.
+* **Phishing and Identity Theft**: Measures the capacity of email providers to facilitate the identification of email messages sent from unauthorized third parties. In particular, [MECSA](https://mecsa.jrc.ec.europa.eu) uses SPF, DKIM, DMARC, and DNSSEC to evaluate this category.
 
-* **Integrity**: Evaluates the capacity to facilitate the detection of modified messages (content received differs from content sent), and the generation of evidence that messages have not been modified. The security standards that ([MECSA](https://mecsa.jrc.ec.europa.eu)) applies to score this category are DKIM, DMARC and DNSSEC
+* **Integrity**: Evaluates the capacity to facilitate the detection of modified messages (content received differs from content sent), and the generation of evidence that messages have not been modified. The security standards that [MECSA](https://mecsa.jrc.ec.europa.eu) applies to score this category are DKIM, DMARC and DNSSEC
 
 The score value assigned to each category depends on which email security protocols are supported by the email provider tested, the specific way in which they are implemented and the policies deployed. This relation can be modified through a .json file (commons/scoring.json). The specific score value will be calculated on the basis of the combination of supported protocols and policy evaluations described in this file.
 
-It is important to note that given the limitations of meca-st, the command line version of [(MECSA)](https://mecsa.jrc.ec.europa.eu), the score values obtained here will not be aligned by those provided in the online [(MECSA)](https://mecsa.jrc.ec.europa.eu). As explained above in this README, this is because the online [(MECSA)](https://mecsa.jrc.ec.europa.eu) service provides a more exhaustive security analysis of the communications considering not only the email inbound services (email reception) but also the outbound ones (email delivery).  
+It is important to note that given the limitations of mecsa-st, the command line version of [MECSA](https://mecsa.jrc.ec.europa.eu), the score values obtained here will not be aligned by those provided in the online [MECSA](https://mecsa.jrc.ec.europa.eu). As explained above in this README, this is because the online [MECSA](https://mecsa.jrc.ec.europa.eu) service provides a more exhaustive security analysis of the communications considering not only the email inbound services (email reception) but also the outbound ones (email delivery).  
 
 ## License
 

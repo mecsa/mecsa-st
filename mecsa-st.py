@@ -67,6 +67,7 @@ def init_report(mx, priority, ipv4, is_mx=True):
     ir_esmtp_features ---------  String, list of ESMTP features returned by ir_mx as answer to the HELO command
     ir_starttls ---------------  Boolean, does ir_mx support StartTLS? True:False
     ir_starttls_announced -----  Boolean, does ir_mx announces StartTLS in the ESMTP response? True:False
+    ir_requiretls_announced -----  Boolean, does ir_mx announces RequireTLS in the ESMTP response? True:False
     ir_starttls_enc -----------  String, TLS protocol used, cipher and  keysize
     ir_certificate ------------  String, StartTLS certificate in .pem format
     ir_certificate_error ------  String, Message error if the certificate validation process fails
@@ -96,6 +97,7 @@ def init_report(mx, priority, ipv4, is_mx=True):
     report['ir_esmtp_features'] = None
     report['ir_starttls'] = False
     report['ir_starttls_announced'] = False
+    report['ir_requiretls_announced'] = False
     report['ir_starttls_enc'] = None
     report['ir_certificate'] = None
     report['ir_certificate_error'] = None
@@ -497,6 +499,10 @@ def run_full_tests(logger, domain, filepath):
                                                                               report['ir_mx_ipv4'],
                                                                               report['ir_mx_priority']))
                     logger.info('-------- StartTLS announced: {0}'.format(report['ir_starttls_announced']))
+                    if report['ir_requiretls_announced']:
+                        logger.info('-------- REQUIRETLS ENABLED')
+                    else:
+                        logger.info('-------- REQUIRETLS DISABLED')
                     logger.info('-------- {0} (protocol, cipher, keysize)'.format(report['ir_starttls_enc']))
                     logger.info('-------- x509 CA validated {0}'.format(report['ir_certificate_ca_valid']))
                     logger.info('-------- x509 FQDN match MX {0}'.format(report['ir_certificate_fqdn_valid']))
