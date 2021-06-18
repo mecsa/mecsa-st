@@ -78,14 +78,8 @@ source mecsa-st_venv/bin/activate
 Install required libraries using pip
 ```
 pip install wheel
-pip install py3dns pyopenssl urllib3 pyspf ipaddr pycryptodome requests ECPy
-```
-
-Install the latest version of dnspython from the official git repository
-```
-git clone https://github.com/rthalley/dnspython.git
-cd dnspython
-python setup.py install
+pip install --upgrade pip
+pip install py3dns pyopenssl urllib3 pyspf ipaddr pycryptodome requests ECPy dnspython
 ```
 
 **Usage**
