@@ -17,21 +17,26 @@ mecsa-st, on the other hand, only requires the domain name of the email service 
 
 * [StartTLS](http://www.ietf.org/rfc/rfc3207.txt)
 * [RequireTLS](https://www.ietf.org/rfc/rfc8689.txt)
+* [TLS Reporting](https://www.ietf.org/rfc/rfc8460.txt)
 * [Analysis of signatures, chain of trust and validity of x509 certificates]()
 * [SPF](http://www.ietf.org/rfc/rfc7208.txt)
 * [DKIM (presence estimation only)](http://www.ietf.org/rfc/rfc6376.txt)
 * [DMARC](http://www.ietf.org/rfc/rfc7489.txt)
 * [DANE](http://www.ietf.org/rfc/rfc7671.txt) 
-* [DNSSEC](http://www.ietf.org/rfc/rfc4033.txt).
+* [DNSSEC](http://www.ietf.org/rfc/rfc4033.txt)
 * [MTA-STS](https://www.ietf.org/rfc/rfc8461.txt)
 
 The objective of these protocols is to protect the reception of emails.
 
-***Update!*** the new version of mecsa-st released on 20/05/2021 contains the following changes:
+***Update!***  The new version of mecsa-st released on 01/07/2021 contains the following changes:
+
+* Checks that a domain supports SMTP TLS Reporting and checks the syntax of the relevant DNS record
+
+***Update!***  The new version of mecsa-st released on 20/05/2021 contains the following changes:
 
 * Checks the presence of the SMTP Require TLS option when sending a message
 
-***Update!*** We have recently published a paper in the [IEEE Access](https://ieeeaccess.ieee.org/) peer reviewed journal.
+***Update!***  We have recently published a paper in the [IEEE Access](https://ieeeaccess.ieee.org/) peer reviewed journal.
 You can find it int the [EU Science Hub](https://ec.europa.eu/jrc/en/publication/what-email-servers-can-tell-johnny-empirical-study-provider-provider-email-security):
 
 Please use the following bibtex entry to cite the paper:
@@ -79,7 +84,7 @@ Install required libraries using pip
 ```
 pip install wheel
 pip install --upgrade pip
-pip install py3dns pyopenssl urllib3 pyspf ipaddr pycryptodome requests ECPy dnspython
+pip install py3dns pyopenssl urllib3 pyspf ipaddr pycryptodome requests ECPy abnf dnspython
 ```
 
 **Usage**
@@ -113,13 +118,14 @@ optional arguments:
 
 * **StartTLS**: A DNS request is performed to retrieve all MX records of the domain tested. For each MX, an SMTP connection is established and a TLS communication channel is negotiated. If successful, the provided server certificate and the intermediate certificates are downloaded.
 * **RequireTLS**: During the establishment of the SMTP connection (see above) it is checked whether the REQUIRETLS SMTP service extension is announced (in the form of the EHLO keyword value "REQUIRETLS"). This extension specifies that a message must be sent over a TLS communication channel.
+* **TLS Reporting**: This mechanism allows sending domains to report failures on communications among SMTP Mail Transfer Agents (MTAs). Recipient domains can use a DNS TXT record to indicate where TLS RPT reports should be sent. First the existence of the DNS TXT record is checked, followed by its syntax validation. 
 * **x509 Certificate Validation**: The following tests are executed to validate the x509 certificates:
   * Full certificate chain of trust validation (digital signatures).
   * Check that root CA signing the certificate is trusted. The list of trusted CAs is loaded from the file indicated as parameter -c. If no file is specific, the default is */etc/ssl/certs/ca-certificates.crt* (file with concatenated .pem certificates)
   * Check that the CN or SAN of the certificate matches the FQDN (Full Qualified Domain Name) it refers to (MX records). 
   * Check that the certificate is not expired. 
   * Check that the certificate has not been revoked (CLR).
-* **SPF**: Validate that a DNS SPF record exists, test that the syntax is correct and check the defauk policy value (parameter "*all*"). 
+* **SPF**: Validate that a DNS SPF record exists, test that the syntax is correct and check the default policy value (parameter "*all*"). 
 * **DKIM**: Check for evidence of the existence of a DKIM DNS record by sending a DNS request to the authoritative DNS servers for the domain tested (NS records), requesting the URL domainkey.*somedomain*. If the NS servers follow the DNS standard and the domain supports DKIM, the NS should answer NOERROR, otherwise, it should answer NXDOMAIN. 
 * **DMARC**: Validate that a DNS DMARC record exists, test that the syntax is correct and check the policy value (parameter *p=*).
 * **DANE**: Validation of DANE records for each MX (if they exist). This test is independent from the DNSSEC test. 

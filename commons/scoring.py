@@ -113,7 +113,7 @@ class ScoreOperations():
             missing = "Error getting missing protocols"
         return [self.scores[category], self.scored, missing]
 
-    def domain_update(self, in_reports, out_reports, dnssec_row, dmarc_row, spf_row, mta_sts_row, mecsa_st_dkim=None):
+    def domain_update(self, in_reports, out_reports, dnssec_row, dmarc_row, spf_row, mta_sts_row, tlsrpt_report, mecsa_st_dkim=None):
         """
         This class calculates the final score, given the results of the assessment.
 
@@ -126,6 +126,8 @@ class ScoreOperations():
         :param spf_row:Dictionary of values form the SPF test.
         {}
         :param mta_sts_row: Dictionary of values form the MTA-STS test.
+        {}
+        :param tlsrpt_report: Dictionary of values form the TLS-REPORT test.
         {}
         :param mecsa_st_dkim: DKIM test results for the command line version of the tests.
         {boolean, txt}

@@ -41,6 +41,7 @@ from test_dane import test_dane
 from test_dnssec import test_dnssec
 from test_dnssec import cache_dnssec
 from test_dkim import test_dkim
+from test_tlsrpt import test_tlsrpt
 from test_mtasts import test_mta_sts
 from commons import scoring
 
@@ -142,6 +143,30 @@ def init_spf_row(domain):
     row['errors'] = None
     return row
 
+def init_tlsrpt_row(domain):
+    """
+
+    :param domain: domain name tested
+    :return: Dictionary,
+
+    domain -----------  String, domain name tested
+    has_tlsrpt ----------  Boolean, indicates if the domain has a DNS TLS RPT record
+    tlsrpt_records ------  String, TLS RPT records of the domain 'domain'
+    syntax_check -----  Boolean, Does the TLS RPT record passed the syntax check? True:False
+    syntax_response --  String, response of the 'check_syntax'
+    errors -----------  String, general error (if any) during the validation of the TLS RPT
+
+    """
+
+    row = {}
+    row['domain'] = domain
+    row['has_tlsrpt'] = False
+    row['tlsrpt_records'] = None
+    row['syntax_check'] = False
+    row['syntax_response'] = None
+    row['errors'] = None
+    return row
+
 
 def init_dmarc_row(domain):
     """
@@ -225,6 +250,25 @@ def execute_spf(logger, domain):
 
     return spf_row
 
+def execute_tlsrpt(logger, domain):
+    """
+    This function executes the TLS RPT test.
+
+    The test will fetch the TLS RPT record (DNS TXT request), and will check its syntax.
+
+    :param logger: log object initialized
+    :param domain: String, domain tested
+    :return: dictionary (see init_tlsrpt_row function)
+    """
+
+    logger.info('--------> Init TLS RPT test')
+    row = init_tlsrpt_row(domain)
+    tester = test_tlsrpt.Tlsrpt(logger)
+
+    tlsrpt_row = tester.test_tlsrpt(domain)
+
+    return tlsrpt_row
+
 
 def execute_dkim(logger, domain):
     logger.info('--------> Init DKIM test')
@@ -233,7 +277,6 @@ def execute_dkim(logger, domain):
     has_dkim, dkim_txt = tester.test_dkim(domain)
 
     return has_dkim, dkim_txt
-
 
 def execute_dmarc(logger, domain, tlds_list):
     """
@@ -458,7 +501,18 @@ def run_full_tests(logger, domain, filepath):
 
             # Testing DKIM
             has_dkim, dkim_txt = execute_dkim(logger, domain)
-
+            
+            # Testing TLSRPT
+            #has_tlsrpt, tlsrpt_txt = execute_tlsrpt(logger, domain)
+            tlsrpt_report = execute_tlsrpt(logger, domain)
+            if tlsrpt_report['has_tlsrpt'] and tlsrpt_report['tlsrpt_syntax_check']:
+                test_records.append('TXT')
+                tlsrpt_report['supports_tlsrpt'] = True
+                tlsrpt_report['tlsrpt_txt'] = tlsrpt_report['tlsrpt_record']
+            else:
+                tlsrpt_report['supports_tlsrpt'] = False
+                tlsrpt_report['tlsrpt_txt'] = tlsrpt_report['tlsrpt_error']
+            
             # Testing DMARC
             dmarc_report = execute_dmarc(logger, domain, tlds_list)
             if dmarc_report['has_dmarc'] and dmarc_report['dmarc_syntax_check']:
@@ -486,7 +540,8 @@ def run_full_tests(logger, domain, filepath):
             score_points = scoring.load_score_function(logger)
             score = scoring.ScoreOperations(logger, score_points)
             scores = score.domain_update(
-                inbound_reports, [], dnssec_report, dmarc_report, spf_report, mta_sts_report, (has_dkim, dkim_txt))
+                inbound_reports, [], dnssec_report, dmarc_report, spf_report, mta_sts_report, tlsrpt_report,
+                (has_dkim, dkim_txt))
 
             # RESULTS
             logger.info('\n\n\n\n---- REPORT FOR DOMAIN {0} -----'.format(domain))
@@ -536,6 +591,14 @@ def run_full_tests(logger, domain, filepath):
                 logger.info('---- SPF DISABLED')
                 logger.info('-------- Errors ({0})'.format(spf_report['spf_error']))
                 logger.info('-------- Syntax check ({0})'.format(spf_report['spf_syntax_response']))
+
+            if tlsrpt_report['has_tlsrpt'] and tlsrpt_report['tlsrpt_syntax_check']:
+                logger.info('---- TLS RPT ENABLED')
+                logger.info('-------- tlsrpt record: {0} '.format(tlsrpt_report['tlsrpt_record']))
+            else:
+                logger.info('---- TLS RPT DISABLED')
+                logger.info('-------- Errors ({0})'.format(tlsrpt_report['tlsrpt_error']))
+                logger.info('-------- Syntax check ({0})'.format(tlsrpt_report['tlsrpt_syntax_check']))
 
             if has_dkim:
                 logger.info('---- DKIM ENABLED')
