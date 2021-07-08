@@ -26,25 +26,25 @@ class DkimTest(object):
     def __init__(self, logger):
         self.logger = logger
 
-    def test_dkim(self, domain):
-
+    def test_dkim(self, domain, record_type):
+        has_dkim = False
         try:
-            has_dkim = False
-            name_servers, ns_addressess = self.get_name_servers(domain)
-            if ns_addressess is None or len(ns_addressess) < 1:
-                ns_addressess = [__default_ns__]
-            has_dkim, dkim_error = self.check_dkim(domain, ns_addressess)
+            name_servers, ns_addresses = self.get_name_servers(domain, record_type)
+            if ns_addresses is None or len(ns_addresses) < 1:
+                ns_addresses = [__default_ns__]
+            has_dkim, dkim_error = self.check_dkim(domain, ns_addresses)
         except Exception as ex:
             dkim_error = "General error Testing DKIM for domain %s (%s)" % (domain, str(ex))
             self.logger.error(dkim_error)
         return has_dkim, dkim_error
 
-    def get_name_servers(self, domain):
+    def get_name_servers(self, domain, record_type):
         '''
         Returns a list of authoritative Name Servers for the domain 'domain', and a list
-        of 'A' records for these NS.
+        of record_type records (either IPv4 or IPv6) for these NS.
 
         :param domain: String, domain name we are testing.
+        :param record_type: String, either 'A' or 'AAAA', inticates the type of IP address we request from the NS
         :return: List of NameServers
                  List of Ips
         '''
@@ -61,16 +61,15 @@ class DkimTest(object):
             return None, None
         for ns in response_ns:
             try:
-                response_a = resolver.query(ns.target, 'A')
+                response_a = resolver.query(ns.target, record_type)
                 ns_names.append(ns.target.to_text())
                 for a in response_a:
                     ns_ips.append(a.address)
             except Exception as ex:
-                self.logger.warning("DKIM Resolving A %s (%s)" % (ns.target.to_text(), str(ex)))
+                self.logger.warning(f"DKIM Resolving {record_type} {ns.target.to_text()} ({str(ex)})")
         if len(ns_names) == 0 or len(ns_ips) == 0:
             return None, None
         return ','.join(ns_names), ns_ips
-
 
     def check_dkim(self, domain, ns):
         '''
@@ -84,32 +83,32 @@ class DkimTest(object):
                   answer sent from the domain Server
         '''
         try:
-            self.logger.info('DKIM for domain _domainkey.%s with NS (%s)' % (domain, str(ns)))
+            self.logger.info(f'DKIM for domain _domainkey.{domain} with NS ({str(ns)})')
             resolver = dns.resolver.Resolver()
             resolver.use_edns(0, dns.flags.DO, 4096)
             resolver.nameservers = ns
-            resolver.query('_domainkey.' + domain, 'TXT')
+            resolver.query(f'_domainkey.{domain}', 'TXT')
             has_dkim = True
             dkim_error = 'NO Error.'
         except dns.resolver.NXDOMAIN:
             has_dkim = False
-            dkim_error = 'NXDOMAIN: _domainkey.' + domain + ' [DKIM]'
+            dkim_error = f'NXDOMAIN: _domainkey.{domain} [DKIM]'
             self.logger.warning(dkim_error)
         except dns.resolver.Timeout:
             has_dkim = True
-            dkim_error = 'Timeout: _domainkey.' + domain + '  [DKIM]'
+            dkim_error = f'Timeout: _domainkey.{domain}  [DKIM]'
             self.logger.warning(dkim_error)
         except dns.resolver.NoAnswer:
             has_dkim = True
-            dkim_error = 'NoAnswer: _domainkey.' + domain + ' [DKIM]'
+            dkim_error = f'NoAnswer: _domainkey.{domain} [DKIM]'
             self.logger.warning(dkim_error)
         except dns.exception.DNSException as dex:
             has_dkim = True
-            dkim_error = 'DNSException: _domainkey.' + domain + ' [DKIM] ' + str(dex)
+            dkim_error = f'DNSException: _domainkey.{domain} [DKIM] {dex}'
             self.logger.warning(dkim_error)
         except Exception as ex:
             has_dkim = True
-            dkim_error = 'General Exception [DKIM] (%s)' % str(ex)
+            dkim_error = f'General Exception [DKIM] ({ex})'
             self.logger.warning(dkim_error)
         return has_dkim, dkim_error
 

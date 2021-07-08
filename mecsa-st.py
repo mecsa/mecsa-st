@@ -19,7 +19,7 @@ See the Licence for the specific language governing permissions and limitations 
 __author__ = 'Joint Research Centre (JRC) - E.3 Cyber and Digital Citizen\'s Security'
 
 __name__ = 'mecsa-st'
-__version__= '2.0'
+__version__= '2.5'
 
 
 import sys
@@ -32,6 +32,7 @@ import logging.handlers
 import ssl
 import io
 import OpenSSL
+import ipaddress
 from test_starttls import test_in_starttls
 from test_x509 import test_x509
 from test_x509 import cache_x509
@@ -49,19 +50,19 @@ def banner():
 	print("%s version %s\n" % (__name__, __version__))
 	
 
-def init_report(mx, priority, ipv4, is_mx=True):
+def init_report(mx, priority, ipaddr, is_mx=True):
     """
     Generates a dictionary containing all values obtained during the assessment for StartTLS, x509 and DANE.
 
     :param mx: MX hostname
     :param priority: priority of the MX
-    :param ipv4: IP address of the MX
+    :param ipaddr: IPv4 or IPv6 address of the MX
     :param is_mx: boolean, indicates whether the domain has MX records or not.
     :return: Dictionary:
 
     ir_mx ---------------------  String, Mail Exchanger (MX) hostname
     ir_is_mx ------------------  Boolean, does the domain has MX? True:False (if False, ir_mx is the domain name)
-    ir_mx_ipv4 ----------------  String, IPv4 address of ir_mx
+    ir_mx_ipaddr --------------  String, IPv4 or IPv6 address of ir_mx
     ir_mx_priority ------------  Integer, value representing the priority of ir_mx as MX of domain.
     ir_smtp_success -----------  Boolean, Was the SMTP connection with ir_mx successful? True:False
     ir_banner -----------------  String, The ir_mx SMTP connection banner
@@ -91,7 +92,7 @@ def init_report(mx, priority, ipv4, is_mx=True):
     report = {}
     report['ir_mx'] = mx
     report['ir_is_mx'] = is_mx
-    report['ir_mx_ipv4'] = ipv4
+    report['ir_mx_ipaddr'] = ipaddr
     report['ir_mx_priority'] = priority
     report['ir_smtp_success'] = False
     report['ir_banner'] = None
@@ -193,7 +194,7 @@ def init_dmarc_row(domain):
     return row
 
 
-def execute_starttls(logger, domain):
+def execute_starttls(logger, domain, ipv6_addresses):
     """
     This function executes the StartTLS tests
 
@@ -211,15 +212,22 @@ def execute_starttls(logger, domain):
     logger.info('--------> Init StartTLS test')
 
     tester = test_in_starttls.TestStartTLS(logger)
-    servers = tester.init_test(domain)
-    test_results = []
+    servers_ipv4, servers_ipv6 = tester.init_test(domain, ipv6_addresses)
+    test_results_ipv4 = []
+    test_results_ipv6 = []
 
-    for server in servers:
+    for server in servers_ipv4:
         row = init_report(server['mx'], server['priority'], server['ipv4'], server['is_mx'])
         tester.supports_starttls(row)
-        test_results.append(row)
+        test_results_ipv4.append(row)
 
-    return test_results
+    if ipv6_addresses:
+        for server in servers_ipv6:
+            row = init_report(server['mx'], server['priority'], server['ipv6'], server['is_mx'])
+            tester.supports_starttls(row)
+            test_results_ipv6.append(row)
+
+    return test_results_ipv4, test_results_ipv6
 
 
 def execute_x509(logger, root_cas, results, cache):
@@ -270,11 +278,11 @@ def execute_tlsrpt(logger, domain):
     return tlsrpt_row
 
 
-def execute_dkim(logger, domain):
+def execute_dkim(logger, domain, record_type):
     logger.info('--------> Init DKIM test')
     tester = test_dkim.DkimTest(logger)
 
-    has_dkim, dkim_txt = tester.test_dkim(domain)
+    has_dkim, dkim_txt = tester.test_dkim(domain, record_type)
 
     return has_dkim, dkim_txt
 
@@ -309,7 +317,7 @@ def execute_dane(logger, reports, root_cas):
     This function calls the DANE tests.
 
     For each MX that supports StartTLS, it will fetch its DNS TLSA record (_25._tcp.<domain>) and will validate its
-    value against the certificate obtained when establishing the TLS connection with he MX.
+    value against the certificate obtained when establishing the TLS connection with the MX.
 
     :param logger: log object initialized
     :param reports: list of 'init_report' dictionaries
@@ -463,7 +471,7 @@ def load_tlds(logger):
         return []
 
 
-def run_full_tests(logger, domain, filepath):
+def run_full_tests(logger, domain, filepath, ipv6_addresses):
     """
     Main function, that initializes and executes all the tests
 
@@ -484,7 +492,13 @@ def run_full_tests(logger, domain, filepath):
         test_records = []
 
         # Testing StartTLS
-        inbound_reports = execute_starttls(logger, domain)
+        inbound_reports_ipv4, inbound_reports_ipv6 = execute_starttls(logger, domain, ipv6_addresses)
+        
+        if ipv6_addresses:
+            inbound_reports = inbound_reports_ipv4 + inbound_reports_ipv6
+        else:
+            inbound_reports = inbound_reports_ipv4
+
         if len(inbound_reports) > 0:
             # Testing x509
             execute_x509(logger, root_cas, inbound_reports, x509_cache)
@@ -500,10 +514,9 @@ def run_full_tests(logger, domain, filepath):
                 spf_report['spf_txt'] = spf_report['spf_error']
 
             # Testing DKIM
-            has_dkim, dkim_txt = execute_dkim(logger, domain)
-            
+            has_dkim, dkim_txt = execute_dkim(logger, domain, 'A')
+
             # Testing TLSRPT
-            #has_tlsrpt, tlsrpt_txt = execute_tlsrpt(logger, domain)
             tlsrpt_report = execute_tlsrpt(logger, domain)
             if tlsrpt_report['has_tlsrpt'] and tlsrpt_report['tlsrpt_syntax_check']:
                 test_records.append('TXT')
@@ -512,7 +525,7 @@ def run_full_tests(logger, domain, filepath):
             else:
                 tlsrpt_report['supports_tlsrpt'] = False
                 tlsrpt_report['tlsrpt_txt'] = tlsrpt_report['tlsrpt_error']
-            
+
             # Testing DMARC
             dmarc_report = execute_dmarc(logger, domain, tlds_list)
             if dmarc_report['has_dmarc'] and dmarc_report['dmarc_syntax_check']:
@@ -522,7 +535,6 @@ def run_full_tests(logger, domain, filepath):
             else:
                 dmarc_report['supports_dmarc'] = False
                 dmarc_report['dmarc_txt'] = dmarc_report['dmarc_error']
-
 
             # Testing DANE
             execute_dane(logger, inbound_reports, root_cas)
@@ -551,8 +563,8 @@ def run_full_tests(logger, domain, filepath):
 
                 if report['ir_starttls']:
                     logger.info('---- STARTTLS ENABLED {0} {1} {2}   '.format(report['ir_mx'],
-                                                                              report['ir_mx_ipv4'],
-                                                                              report['ir_mx_priority']))
+                                                                            report['ir_mx_ipaddr'],
+                                                                            report['ir_mx_priority']))
                     logger.info('-------- StartTLS announced: {0}'.format(report['ir_starttls_announced']))
                     if report['ir_requiretls_announced']:
                         logger.info('-------- REQUIRETLS ENABLED')
@@ -580,10 +592,10 @@ def run_full_tests(logger, domain, filepath):
 
                 else:
                     logger.info('---- {0} {1} {2} STARTTLS DISABLED  '.format(report['ir_mx'],
-                                                                              report['ir_mx_ipv4'],
-                                                                              report['ir_mx_priority']))
+                                                                            report['ir_mx_ipaddr'],
+                                                                            report['ir_mx_priority']))
                     logger.info('-------- Error: ({0})'.format(report['ir_error']))
-            
+
             if spf_report['has_spf'] and spf_report['spf_syntax_check']:
                 logger.info('---- SPF ENABLED')
                 logger.info('-------- spf record: {0} '.format(spf_report['spf_record']))
@@ -644,7 +656,7 @@ def run_full_tests(logger, domain, filepath):
             logger.info('---------------------------------------------------------------------------\n')
             logger.info('---> SUMMARY REPORT for domain {0}  --------------------------------------'.format(domain))
             logger.info('---> ')
-            logger.info('---> Confidentiality {:.1f}'.format(scores['dr_confidential']/2)) 
+            logger.info('---> Confidentiality {:.1f}'.format(scores['dr_confidential']/2))
             logger.info('---> Spoofing        {:.1f}'.format(scores['dr_spoofing']/2))
             logger.info('---> Integrity       {:.1f}'.format(scores['dr_integrity']/2))
             logger.info('---> ')
@@ -686,6 +698,7 @@ parser.add_argument('domain', help='domain to test')
 parser.add_argument('-l', '--log', help='specify path and name of logfile. Default is mecsa-st.log ')
 parser.add_argument('-c', '--certificates',
                     help='specify path from where to load the CA certificates. Default is \'/etc/ssl/certs/ca-certificates.crt\'')
+parser.add_argument('-v6',"--ipv6",action="store_true",help='specify whether IPv6 addresses of the MX hosts should be checked along with IPv4. Default is IPv4 only. If the local host does not support IPv6, the IPv6 tests will time out.')
 args = parser.parse_args()
 
 if args.log:
@@ -697,6 +710,9 @@ if args.certificates:
     filepath = args.certificates
 else:
     filepath = '/etc/ssl/certs/ca-certificates.crt'
+
+ipv6_addresses = args.ipv6
+
 
 logger = logging.getLogger('MECSA-ST')
 formatter_file = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -723,4 +739,10 @@ else:
 logger.info(__author__)
 logger.info("{0} v{1}".format(__name__, __version__))
 logger.info('')
-run_full_tests(logger, domain, filepath)
+
+if ipv6_addresses:
+    logger.info('Please note that if the local host does not support IPv6, the IPv6 tests will time out.')
+    logger.info('')
+    
+
+run_full_tests(logger, domain, filepath, ipv6_addresses)

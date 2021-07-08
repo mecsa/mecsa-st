@@ -28,6 +28,10 @@ mecsa-st, on the other hand, only requires the domain name of the email service 
 
 The objective of these protocols is to protect the reception of emails.
 
+***Update!***  The new version of mecsa-st released on 08/07/2021 contains the following changes:
+
+* Added IPv6 support to StartTLS tests
+
 ***Update!***  The new version of mecsa-st released on 01/07/2021 contains the following changes:
 
 * Checks that a domain supports SMTP TLS Reporting and checks the syntax of the relevant DNS record
@@ -98,7 +102,7 @@ Quick usage (remember to activate the python3 venv):
 Full usage syntax:
 
 ```
-usage: mecsa-st.py [-h] [-l LOG] [-c CERTIFICATES] domain
+usage: mecsa-st.py [-h] [-l LOG] [-c CERTIFICATES] [-v6] domain
 
 MECSA Standalone Test
 
@@ -109,12 +113,13 @@ optional arguments:
   -h, --help            show this help message and exit
   -l LOG, --log LOG     specify path and name of logfile. Default is mecsa-st.log
   -c CERTIFICATES, --certificates CERTIFICATES specify path from where to load the CA certificates. Default is '/etc/ssl/certs/ca-certificates.crt'
+  -v6, --ipv6           specify whether IPv6 addresses of the MX hosts should be checked along with IPv4. Default is IPv4 only. If the local host does not support IPv6, the IPv6 tests will time out.
 ```
 
 ![screenshot](https://github.com/mecsa/mecsa-st/blob/master/media/execution_sample.gif)
 
 
-## Security analysis carried about by MECSA-ST
+## Security analysis carried out by MECSA-ST
 
 * **StartTLS**: A DNS request is performed to retrieve all MX records of the domain tested. For each MX, an SMTP connection is established and a TLS communication channel is negotiated. If successful, the provided server certificate and the intermediate certificates are downloaded.
 * **RequireTLS**: During the establishment of the SMTP connection (see above) it is checked whether the REQUIRETLS SMTP service extension is announced (in the form of the EHLO keyword value "REQUIRETLS"). This extension specifies that a message must be sent over a TLS communication channel.

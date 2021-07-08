@@ -35,12 +35,13 @@ class TestStartTLS(object):
     def __init__(self, logger):
         self.logger = logger
 
-    def init_test(self, domain):
+    def init_test(self, domain, ipv6_addresses):
         '''
         For a domain name it will request the MX records, and for each MX record
         the list of records A published.
 
         :param domain:  email domain name we are evaluating
+        :param ipv6_addresses: boolean, indicates whether we want to test the IPv6 of the MX hosts
         :return: list of parameters
                     'mx'         MX hostname, if the domain has MX records,
                                  otherwise it returns the same domain name
@@ -49,18 +50,19 @@ class TestStartTLS(object):
                     'is_mx'      boolean: domain has MX records?True:False
                                  (if False, 'mx' will be the same domain)
         '''
-        tests = []
+        tests_ipv4 = []
+        tests_ipv6 = []
         try:
             has_mx_records, mx_records, mx_error = self.fecth_mx(domain)
             if not has_mx_records:
-                self.logger.warning('Domain %s does NOT have MX records!' % domain)
+                self.logger.warning(f'Domain {domain} does NOT have MX records!')
                 mx_records = []
                 mx_record = {}
                 mx_record['mx'] = domain
                 mx_record['priority'] = '10'
                 mx_records.append(mx_record)
             for mx in mx_records:
-                has_a_records, a_records, a_error = self.fecth_a(mx['mx'])
+                has_a_records, a_records, a_error = self.fecth_records(mx['mx'], 'A')
                 if has_a_records:
                     for ipv4 in a_records:
                         test = {}
@@ -68,10 +70,20 @@ class TestStartTLS(object):
                         test['priority'] = mx['priority']
                         test['ipv4'] = ipv4
                         test['is_mx'] = has_mx_records
-                        tests.append(test)
+                        tests_ipv4.append(test)
+                if ipv6_addresses:
+                    has_aaaa_records, aaaa_records, aaaa_error = self.fecth_records(mx['mx'], 'AAAA')
+                    if has_aaaa_records:
+                        for ipv6 in aaaa_records:
+                            test = {}
+                            test['mx'] = mx['mx']
+                            test['priority'] = mx['priority']
+                            test['ipv6'] = ipv6
+                            test['is_mx'] = has_mx_records
+                            tests_ipv6.append(test)
         except Exception as ex:
-            self.logger.error('General Exception init_test_starttls %s (%s)' % (domain, str(ex)))
-        return tests
+            self.logger.error(f'General Exception init_test_starttls {domain} ({ex})')
+        return tests_ipv4, tests_ipv6
 
     def supports_starttls(self, row):
         '''
@@ -104,12 +116,12 @@ class TestStartTLS(object):
 
         # 1.- We create an SMTP connection and we check that it supports ESMTP.
         #     (if ESMTP is supported, we check if STARTTLS and REQUIRETLS are announced)
-        (banner, connection, error) = self.get_smtp_connection(row['ir_mx_ipv4'])
+        (banner, connection, error) = self.get_smtp_connection(row['ir_mx_ipaddr'])
         if error is not None:
             row['ir_error'] = error
-            self.logger.debug('SMTP connection exception %s (%s)' % (row['ir_mx'], error))
+            self.logger.debug(f'SMTP connection exception {row["ir_mx"]} ({error})')
             return row
-        self.logger.debug('processing STARTTLS... for MX %s, IPv4 %s' % (row['ir_mx'], row['ir_mx_ipv4']))
+        self.logger.debug(f"processing STARTTLS... for MX {row['ir_mx']}, IP {row['ir_mx_ipaddr']}")
         row['ir_banner'] = banner
         row['ir_smtp_success'] = True
 
@@ -117,14 +129,14 @@ class TestStartTLS(object):
             (c, msg) = connection.ehlo()
             esmtp_support = (200 <= c <= 299)
             if not esmtp_support:
-                row['ir_error'] = "SMTP server does not support EHLO (%s)" % msg
+                row['ir_error'] = f"SMTP server does not support EHLO ({msg})"
                 return row
             row['ir_esmtp_features'] = str(connection.esmtp_features)
-            self.logger.debug('ESMTP features announced: (%s)' % row['ir_esmtp_features'])
+            self.logger.debug(f"ESMTP features announced: ({row['ir_esmtp_features']})")
             row['ir_starttls_announced'] = connection.has_extn("starttls")
             row['ir_requiretls_announced'] = connection.has_extn("requiretls")
         except Exception as ex:
-            row['ir_error'] = "EHLO Communication Exception (%s)" % str(ex)
+            row['ir_error'] = f"EHLO Communication Exception ({ex})"
             self.logger.error(row['ir_error'])
             return row
 
@@ -133,15 +145,15 @@ class TestStartTLS(object):
         self.logger.debug("Starting STARTTLS...")
         try:
             (resp, reply) = connection.docmd("STARTTLS")
-            self.logger.debug("STARTTLS reply: %s" % reply)
+            self.logger.debug(f"STARTTLS reply: {reply}")
             if resp != 220:
-                row['ir_error'] = "STARTTLS command unsuccessful (%s)" % reply
+                row['ir_error'] = f"STARTTLS command unsuccessful ({reply})"
                 self.logger.debug(row['ir_error'])
                 return row
-            self.logger.debug("%s, %s  Supports StartTLS" % (row['ir_mx'], row['ir_mx_ipv4']))
+            self.logger.debug(f"{row['ir_mx']}, {row['ir_mx_ipaddr']}  Supports StartTLS")
             row['ir_starttls'] = self.download_certificate(row, connection)
         except Exception as smtpe:
-            row['ir_error'] = "ERROR processing STARTTLS %s (%s)" % (row['ir_mx'], str(smtpe))
+            row['ir_error'] = f"ERROR processing STARTTLS {row['ir_mx']} ({smtpe})"
             self.logger.error(row['ir_error'])
         return row
 
@@ -189,22 +201,22 @@ class TestStartTLS(object):
             intermediate_certs = []
             chain = connection.get_peer_cert_chain()
             for (idx, cert) in enumerate(chain):
-                self.logger.debug("Certificate: %s" % cert.get_subject())
+                self.logger.debug(f"Certificate: {cert.get_subject()}")
                 pem_cert = OpenSSL.crypto.dump_certificate(OpenSSL.crypto.FILETYPE_PEM, cert)
                 if pem_cert != row['ir_certificate']:
                     intermediate_certs.append(pem_cert)
             if len(intermediate_certs) > 0:
                 row['ir_certificate_chain'] = intermediate_certs
         except Exception as ex:
-            row['ir_certificate_error'] = ('ERROR Downloading certificate (%s)' % str(ex))
+            row['ir_certificate_error'] = (f'ERROR Downloading certificate ({ex})')
             self.logger.error(row['ir_certificate_error'])
         return has_cert
 
-    def get_smtp_connection(self, ipv4):
+    def get_smtp_connection(self, ip_addr):
         '''
         Creates an SMTP connection with the MX on the IP address ipv4.
 
-        :param ipv4: IP address of the SMTP server to test.
+        :param ip_addr: IP address of the SMTP server to test.
         :return banner: string - response code + content of the banner received from the MX when creating a connection
                 connection: SMTP connection - the connection created with the MX server
                 error: string - description of an error occurred (if any) during the creation of the SMTP connection
@@ -212,61 +224,61 @@ class TestStartTLS(object):
 
         try:
             connection = smtplib.SMTP(timeout=35, local_hostname=local_hostname)
-            (c, msg) = connection.connect(ipv4)
-            banner = "%d %s " % (c, msg)
-            self.logger.debug("Server response: %s" % banner)
-            if c not in success_codes:
+            (code, msg) = connection.connect(ip_addr)
+            banner = f"{code} {msg}"
+            self.logger.debug(f"Server response: {banner}")
+            if code not in success_codes:
                 error = banner
-                self.logger.debug('SMTP connection failed: (code!=220) ' + ipv4 + ' ' + error)
+                self.logger.debug(f'SMTP connection failed: (code!=220) {ip_addr} {error}')
                 return None, None, error
         except Exception as ex:
-            error = 'SMTP  Connection Exception %s (%s)' % (ipv4, str(ex))
+            error = f'SMTP  Connection Exception {ip_addr} ({ex})'
             self.logger.error(error)
             return None, None, error
         return banner, connection, None
 
-    def fecth_a(self, mx):
+    def fecth_records(self, mx, r_type):
         '''
-        Given a hostname (mx), it will return the A records.
+        Given a hostname (mx), it will return the 'type' records.
 
-        :param:  mx string, Domain name tested
+        :param:  mx: String, Domain name tested
+        :param:  r_type: String, either 'A' for ipv4 or 'AAAA' for ipv6
         :return: (boolean, String[], String)
                   MX has A record? True:False
                   List of A records for mx
                   Errors in the query
         '''
-
+        has_ipaddr = False
+        a_error = None
+        ips = []
         try:
-            has_ipv4 = False
-            a_error = None
-            ips = []
-            self.logger.debug('sending DNS A request for MX ' + mx)
-            answers = dns.resolver.query(mx, 'A')
-            self.logger.debug(mx + ' has ' + str(len(answers)) + ' IPv4 addresses')
+            self.logger.debug(f'sending DNS {r_type} request for MX {mx}')
+            answers = dns.resolver.query(mx, r_type)
+            self.logger.debug(f'{mx} has {len(answers)} IP addresses of type {r_type}')
             for ip in answers:
                 try:
-                    ipv4 = ip.address
-                    ips.append(ipv4)
+                    ipaddr = ip.address
+                    ips.append(ipaddr)
                 except Exception as ex:
-                    self.logger.error("Error fetching A records " + mx + " " + str(ex))
+                    self.logger.error(f"Error fetching {r_type} records " + mx + " " + str(ex))
             if len(ips) > 0:
-                has_ipv4 = True
+                has_ipaddr = True
         except dns.resolver.NXDOMAIN:
-            a_error = 'NXDOMAIN: ' + mx + ' [A]'
+            a_error = f'NXDOMAIN: {mx} {r_type}'
             self.logger.warning(a_error)
         except dns.resolver.Timeout:
-            a_error = 'Timeout: ' + mx + '  [A]'
+            a_error = f'Timeout: {mx} {r_type}'
             self.logger.warning(a_error)
         except dns.resolver.NoAnswer:
-            a_error = 'NoAnswer: ' + mx + ' [A]'
+            a_error = f'NoAnswer: {mx} {r_type}'
             self.logger.warning(a_error)
         except dns.exception.DNSException as dex:
-            a_error = 'DNSException: ' + mx + ' [A] ' + str(dex)
+            a_error = f'DNSException: {mx} {r_type} {str(dex)}'
             self.logger.warning(a_error)
         except Exception as ex:
             a_error = str(ex)
             self.logger.warning(a_error)
-        return has_ipv4, ips, a_error
+        return has_ipaddr, ips, a_error
 
     def fecth_mx(self, domain):
         '''
@@ -278,13 +290,13 @@ class TestStartTLS(object):
                   .List of MX records for domain
                   .Errors in the query
         '''
+        has_mx = False
+        mx_error = None
+        mx_records = []
         try:
-            has_mx = False
-            mx_error = None
-            mx_records = []
-            self.logger.debug('sending DNS MX request for domain %s' % domain)
+            self.logger.debug(f'sending DNS MX request for domain {domain}')
             answers = dns.resolver.query(domain, 'MX')
-            self.logger.debug('%s has %s MX records' % (domain, str(len(answers))))
+            self.logger.debug(f'{domain} has {len(answers)} MX records')
             for answer in answers:
                 try:
                     mx_record = {}
@@ -292,22 +304,22 @@ class TestStartTLS(object):
                     mx_record['priority'] = str(answer.preference)
                     mx_records.append(mx_record)
                 except Exception as gex:
-                    self.logger.warning("Error fetching MX for domain %s (%s)" % (domain, str(gex)))
-            if len(mx_records)>0:
+                    self.logger.warning(f"Error fetching MX for domain {domain} ({gex})")
+            if len(mx_records) > 0:
                 has_mx = True
         except dns.resolver.NXDOMAIN:
-            mx_error = 'fetch_mx NXDOMAIN: %s [MX]' % domain
+            mx_error = f'fetch_mx NXDOMAIN: {domain} [MX]'
             self.logger.warning(mx_error)
         except dns.resolver.Timeout:
-            mx_error = 'fetch_mx Timeout: %s [MX]' % domain
+            mx_error = f'fetch_mx Timeout: {domain} [MX]'
             self.logger.warning(mx_error)
         except dns.resolver.NoAnswer:
-            mx_error = 'fetch_mx NoAnswer:  %s  [MX]' % domain
+            mx_error = f'fetch_mx NoAnswer:  {domain}  [MX]'
             self.logger.warning(mx_error)
         except dns.exception.DNSException as dex:
-            mx_error = 'fetch_mx DNSException:  %s  [MX] (%s)' % (domain, str(dex))
+            mx_error = f'fetch_mx DNSException:  {domain}  [MX] ({dex})'
             self.logger.warning(mx_error)
         except Exception as ex:
-            mx_error = 'fetch_mx General Exception:  %s  [MX] (%s)' % (domain, str(ex))
+            mx_error = f'fetch_mx General Exception:  {domain}  [MX] ({ex})'
             self.logger.warning(mx_error)
         return has_mx, mx_records, mx_error
