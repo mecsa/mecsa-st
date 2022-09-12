@@ -440,6 +440,9 @@ class Dnssec(object):
         except dns.exception.DNSException as dex:
             error_msg = ("getRRSIG %s, %s  DNSException (%s)" % (record, domain, str(dex)))
             self.logger.warning(error_msg)
+            if attempt == 1:
+                self.logger.warning("TCP Query Failed, attempting UDP for %s %s" % (record, domain))
+                rrsig, rrset, error_msg = self.getRRSIG(domain, name_server, record, use_tcp=False, attempt=2)
         except KeyError as kex:
             error_msg = ("getRRSIG %s, %s KeyError (%s)" % (record, domain, str(kex)))
             self.logger.warning(error_msg)

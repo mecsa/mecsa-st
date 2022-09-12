@@ -1,4 +1,4 @@
-
+i
 <p>
 <a href="https://mecsa.jrc.ec.europa.eu">
 	<img src="https://github.com/mecsa/mecsa-st/blob/master/media/ecjrc_horizontal.png" alt="European Commission - Joint Research Center" align="left" width="300">
@@ -27,6 +27,10 @@ mecsa-st, on the other hand, only requires the domain name of the email service 
 * [MTA-STS](https://www.ietf.org/rfc/rfc8461.txt)
 
 The objective of these protocols is to protect the reception of emails.
+
+***Update!***  The new version of mecsa-st released on 12/09/2022 contains the following changes:
+
+* During the DNSSEC test mecsa-st will now retry once the DNS queries using UDP instead of TCP if the DNS server drops the connection or does not reply to a TCP query
 
 ***Update!***  The new version of mecsa-st released on 08/07/2021 contains the following changes:
 
