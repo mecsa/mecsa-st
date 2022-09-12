@@ -1,4 +1,3 @@
-i
 <p>
 <a href="https://mecsa.jrc.ec.europa.eu">
 	<img src="https://github.com/mecsa/mecsa-st/blob/master/media/ecjrc_horizontal.png" alt="European Commission - Joint Research Center" align="left" width="300">
