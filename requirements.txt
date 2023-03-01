@@ -1,0 +1,12 @@
+wheel
+py3dns 
+pyopenssl 
+urllib3 
+pyspf 
+ipaddr 
+pycryptodome 
+requests 
+ECPy 
+abnf 
+dnspython
+pytest
