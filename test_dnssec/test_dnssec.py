@@ -345,6 +345,8 @@ class Dnssec(object):
         resolver = dns.resolver.Resolver()
         resolver.use_edns(0, dns.flags.DO, 4096)
         responses = None
+        valid_responses = 0
+        timeouts = 0
         try:
             sets = []
             dskeys = []
@@ -361,6 +363,7 @@ class Dnssec(object):
                         ns_set.add(key)
                         ns_dskey[key] = response
                         ns_dskeys.append(ns_dskey)
+                        valid_responses += 1 #increment valid responses
                     sets.append(ns_set)
                     dskeys.append(ns_dskeys)
                 except dns.resolver.NXDOMAIN:
@@ -370,7 +373,7 @@ class Dnssec(object):
                 except dns.resolver.Timeout:
                     error_msg = "getDSrecord Timeout: %s" % children_domain
                     self.logger.warning(error_msg)
-                    return None, error_msg
+                    timeouts += 1 # increment timeouts
                 except dns.resolver.NoAnswer:
                     error_msg = "getDSrecord NoAnswer: %s" % children_domain
                     self.logger.warning(error_msg)
@@ -391,6 +394,17 @@ class Dnssec(object):
             # What happens if we have: R1 = [a,b]; R2 = [a,b,c]
             # should the 'c' result raise a Warning or Erorr?
             # should we have only One common result?
+            
+            # If no valid_responses or too many timeouts show error
+            if valid_responses == 0:
+                error_msg = "Not enough valid responses"
+                self.logger.warning(error_msg) 
+                return None, error_msg
+            if timeouts > valid_responses:
+                error_msg = "Too many timeouts: %s (valid responses: %s)" % (timeouts, valid_responses)
+                self.logger.warning(error_msg) 
+                return None, error_msg
+            
             return responses, None
         except Exception as ex:
             error_msg = "getDSrecord: %s (%s)" % (children_domain, str(ex))
