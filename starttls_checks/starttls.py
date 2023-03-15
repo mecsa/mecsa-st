@@ -53,7 +53,7 @@ class TestStartTLS(object):
         tests_ipv4 = []
         tests_ipv6 = []
         try:
-            has_mx_records, mx_records, mx_error = self.fecth_mx(domain)
+            has_mx_records, mx_records, mx_error = self.fetch_mx(domain)
             if not has_mx_records:
                 self.logger.warning(f'Domain {domain} does NOT have MX records!')
                 mx_records = []
@@ -62,7 +62,7 @@ class TestStartTLS(object):
                 mx_record['priority'] = '10'
                 mx_records.append(mx_record)
             for mx in mx_records:
-                has_a_records, a_records, a_error = self.fecth_records(mx['mx'], 'A')
+                has_a_records, a_records, a_error = self.fetch_records(mx['mx'], 'A')
                 if has_a_records:
                     for ipv4 in a_records:
                         test = {}
@@ -72,7 +72,7 @@ class TestStartTLS(object):
                         test['is_mx'] = has_mx_records
                         tests_ipv4.append(test)
                 if ipv6_addresses:
-                    has_aaaa_records, aaaa_records, aaaa_error = self.fecth_records(mx['mx'], 'AAAA')
+                    has_aaaa_records, aaaa_records, aaaa_error = self.fetch_records(mx['mx'], 'AAAA')
                     if has_aaaa_records:
                         for ipv6 in aaaa_records:
                             test = {}
@@ -237,7 +237,7 @@ class TestStartTLS(object):
             return None, None, error
         return banner, connection, None
 
-    def fecth_records(self, mx, r_type):
+    def fetch_records(self, mx, r_type):
         '''
         Given a hostname (mx), it will return the 'type' records.
 
@@ -280,7 +280,7 @@ class TestStartTLS(object):
             self.logger.warning(a_error)
         return has_ipaddr, ips, a_error
 
-    def fecth_mx(self, domain):
+    def fetch_mx(self, domain):
         '''
         Given a domain, it will return the MX records.
 

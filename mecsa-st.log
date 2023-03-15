@@ -1,0 +1,803 @@
+2023-03-13 15:04:25,939 - MECSA-ST - INFO - Joint Research Centre (JRC) - E.3 Cyber and Digital Citizen's Security
+2023-03-13 15:04:25,939 - MECSA-ST - INFO - mecsa-st v2.5
+2023-03-13 15:04:25,939 - MECSA-ST - INFO - 
+2023-03-13 15:04:25,956 - MECSA-ST - ERROR - loading CAs from /etc/ssl/certs/ca-certificates.crt ([Errno 2] No such file or directory)
+2023-03-13 15:04:25,966 - MECSA-ST - DEBUG - ---- TLDS LIST SIZE 10406 -----
+2023-03-13 15:04:25,966 - MECSA-ST - INFO - ---> Init test on domain internet.nl
+2023-03-13 15:04:25,966 - MECSA-ST - INFO - --------> Init StartTLS test
+2023-03-13 15:04:25,966 - MECSA-ST - DEBUG - sending DNS MX request for domain internet.nl
+2023-03-13 15:04:26,003 - MECSA-ST - DEBUG - internet.nl has 1 MX records
+2023-03-13 15:04:26,004 - MECSA-ST - DEBUG - sending DNS A request for MX internet.nl
+2023-03-13 15:04:26,032 - MECSA-ST - DEBUG - internet.nl has 1 IP addresses of type A
+2023-03-13 15:04:26,152 - MECSA-ST - DEBUG - Server response: 220 b'internet.nl ESMTP Exim 4.90_1 Mon, 13 Mar 2023 15:04:27 +0100'
+2023-03-13 15:04:26,153 - MECSA-ST - DEBUG - processing STARTTLS... for MX internet.nl, IP 62.204.66.10
+2023-03-13 15:04:26,177 - MECSA-ST - DEBUG - ESMTP features announced: ({'size': '52428800', '8bitmime': '', 'pipelining': '', 'chunking': '', 'starttls': '', 'prdr': '', 'help': ''})
+2023-03-13 15:04:26,177 - MECSA-ST - DEBUG - Starting STARTTLS...
+2023-03-13 15:04:26,229 - MECSA-ST - DEBUG - STARTTLS reply: b'TLS go ahead'
+2023-03-13 15:04:26,229 - MECSA-ST - DEBUG - internet.nl, 62.204.66.10  Supports StartTLS
+2023-03-13 15:04:26,321 - MECSA-ST - DEBUG - Certificate: <X509Name object '/CN=internet.nl'>
+2023-03-13 15:04:26,321 - MECSA-ST - DEBUG - Certificate: <X509Name object '/C=GB/ST=Greater Manchester/L=Salford/O=Sectigo Limited/CN=Sectigo RSA Domain Validation Secure Server CA'>
+2023-03-13 15:04:26,322 - MECSA-ST - INFO - --------> Init x509 test
+2023-03-13 15:04:26,323 - MECSA-ST - DEBUG - *** CN Exact MATCH!: internet.nl - b'internet.nl'
+2023-03-13 15:04:26,330 - MECSA-ST - DEBUG - certificate is NOT self-signed [(b'C', b'US'), (b'ST', b'New Jersey'), (b'L', b'Jersey City'), (b'O', b'The USERTRUST Network'), (b'CN', b'USERTrust RSA Certification Authority')] (unable to get local issuer certificate)
+2023-03-13 15:04:26,331 - MECSA-ST - WARNING - FAILED CA validation! subject: [(b'CN', b'internet.nl')], issuer: [(b'C', b'GB'), (b'ST', b'Greater Manchester'), (b'L', b'Salford'), (b'O', b'Sectigo Limited'), (b'CN', b'Sectigo RSA Domain Validation Secure Server CA')] (unable to get issuer certificate)
+2023-03-13 15:04:26,331 - MECSA-ST - INFO - --------> Init SPF test
+2023-03-13 15:04:26,331 - MECSA-ST - DEBUG - sending DNS TXT request for domain internet.nl
+2023-03-13 15:04:26,533 - MECSA-ST - DEBUG - SPF-SYNTAX-CHECK: softfail 250 domain owner discourages use of this host
+2023-03-13 15:04:26,533 - MECSA-ST - INFO - --------> Init DKIM test
+2023-03-13 15:04:26,614 - MECSA-ST - INFO - DKIM for domain _domainkey.internet.nl with NS (['145.40.68.55', '94.198.159.8', '194.0.30.2'])
+2023-03-13 15:04:26,645 - MECSA-ST - WARNING - NoAnswer: _domainkey.internet.nl [DKIM]
+2023-03-13 15:04:26,645 - MECSA-ST - INFO - --------> Init TLS RPT test
+2023-03-13 15:04:26,645 - MECSA-ST - DEBUG - sending DNS TXT request for domain internet.nl
+2023-03-13 15:04:26,679 - MECSA-ST - INFO - --------> Init DMARC test
+2023-03-13 15:04:26,706 - MECSA-ST - INFO - --------> Init TLSA test
+2023-03-13 15:04:26,741 - MECSA-ST - INFO - MX internet.nl HAS 2 tlsa records:
+2023-03-13 15:04:26,742 - MECSA-ST - DEBUG - Matching Selector 1 
+2023-03-13 15:04:26,744 - MECSA-ST - DEBUG - Matching against 1 (0 - exact, 1 - SHA256, 2 - SHA512)
+2023-03-13 15:04:26,744 - MECSA-ST - INFO - MX internet.nl HAS DANE: internet.nl
+2023-03-13 15:04:26,745 - MECSA-ST - DEBUG - Matching Selector 1 
+2023-03-13 15:04:26,746 - MECSA-ST - DEBUG - Matching against 1 (0 - exact, 1 - SHA256, 2 - SHA512)
+2023-03-13 15:04:26,746 - MECSA-ST - INFO - MX internet.nl HAS DANE: internet.nl
+2023-03-13 15:04:26,746 - MECSA-ST - INFO - --------> Init DNSSEC test (['TXT', 'DMARC', 'TLSA'])
+2023-03-13 15:04:26,746 - MECSA-ST - DEBUG - Sending DNS request for type internet.nl. and domain MX
+2023-03-13 15:04:26,776 - MECSA-ST - DEBUG - Sending DNS request for type internet.nl and domain A
+2023-03-13 15:04:26,794 - MECSA-ST - DEBUG - Sending DNS request for type internet.nl. and domain TXT
+2023-03-13 15:04:26,824 - MECSA-ST - DEBUG - Sending DNS request for type _dmarc.internet.nl. and domain TXT
+2023-03-13 15:04:26,882 - MECSA-ST - DEBUG - Sending DNS request for type _25._tcp.internet.nl and domain TLSA
+2023-03-13 15:04:26,951 - MECSA-ST - DEBUG - get_dns_chain, domain _25._tcp.internet.nl. has CNAME proloprod.mail._dane.internet.nl. 
+2023-03-13 15:04:26,951 - MECSA-ST - INFO - DNSSEC-TEST [MX]: check if domain internet.nl. is DNSSEC
+2023-03-13 15:04:26,952 - MECSA-ST - DEBUG - -----> DNSSEC Testing internet.nl.
+2023-03-13 15:04:26,952 - MECSA-ST - DEBUG - Select SOA results NOT found in Cache for internet.nl.
+2023-03-13 15:04:27,033 - MECSA-ST - DEBUG - [SOA Resolver] Domain internet.nl. IS SOA.
+2023-03-13 15:04:27,033 - MECSA-ST - DEBUG - Select SOA results NOT found in Cache for nl.
+2023-03-13 15:04:27,147 - MECSA-ST - DEBUG - [SOA Resolver] Domain nl. IS SOA.
+2023-03-13 15:04:27,147 - MECSA-ST - DEBUG - Select SOA results NOT found in Cache for .
+2023-03-13 15:04:27,314 - MECSA-ST - DEBUG - [SOA Resolver] Domain . IS SOA.
+2023-03-13 15:04:27,314 - MECSA-ST - DEBUG -  Chain of children-parent: [{'children': {'domain': 'nl.', 'ns': '194.0.28.53,194.0.25.24,185.159.199.200'}, 'parent': {'domain': '.', 'ns': '202.12.27.33,198.97.190.53,192.112.36.4,199.7.91.13,193.0.14.129,199.9.14.201,192.5.5.241,192.33.4.12,192.36.148.17,199.7.83.42,192.203.230.10,192.58.128.30,198.41.0.4'}}, {'children': {'domain': 'internet.nl.', 'ns': '145.40.68.55,94.198.159.8,194.0.30.2'}, 'parent': {'domain': 'nl.', 'ns': '194.0.28.53,194.0.25.24,185.159.199.200'}}]
+2023-03-13 15:04:27,314 - MECSA-ST - DEBUG - Trust Chain: [{'children': {'domain': 'nl.', 'ns': '194.0.28.53,194.0.25.24,185.159.199.200'}, 'parent': {'domain': '.', 'ns': '202.12.27.33,198.97.190.53,192.112.36.4,199.7.91.13,193.0.14.129,199.9.14.201,192.5.5.241,192.33.4.12,192.36.148.17,199.7.83.42,192.203.230.10,192.58.128.30,198.41.0.4'}}, {'children': {'domain': 'internet.nl.', 'ns': '145.40.68.55,94.198.159.8,194.0.30.2'}, 'parent': {'domain': 'nl.', 'ns': '194.0.28.53,194.0.25.24,185.159.199.200'}}] 
+2023-03-13 15:04:28,018 - MECSA-ST - DEBUG - nl. has DS records? True
+2023-03-13 15:04:28,064 - MECSA-ST - WARNING - Validating DNSKEYS nl. (module 'dns' has no attribute 'dnssec')
+2023-03-13 15:04:28,064 - MECSA-ST - DEBUG - nl. has DNSKEYS? False
+2023-03-13 15:04:28,064 - MECSA-ST - INFO - ---> Init MTA-STS test on domain internet.nl
+2023-03-13 15:04:28,064 - MECSA-ST - DEBUG - sending DNS TXT request for domain _mta-sts.internet.nl
+2023-03-13 15:04:28,105 - MECSA-ST - INFO - Summary confidentiality protocols supported: starttls,dane
+2023-03-13 15:04:28,105 - MECSA-ST - DEBUG - Found coincidence in the scoring table for 'confidentiality' - starttls,dane 6
+2023-03-13 15:04:28,105 - MECSA-ST - INFO - Summary spoofing protocols supported: spf,spf_policy,dkim,dmarc
+2023-03-13 15:04:28,105 - MECSA-ST - DEBUG - Found coincidence in the scoring table for 'spoofing' - spf,spf_policy,dkim,dmarc 7
+2023-03-13 15:04:28,105 - MECSA-ST - INFO - Summary integrity protocols supported: dkim,dmarc
+2023-03-13 15:04:28,105 - MECSA-ST - DEBUG - Found coincidence in the scoring table for 'integrity' - dkim,dmarc 6
+2023-03-13 15:04:28,105 - MECSA-ST - INFO - 
+
+
+
+---- REPORT FOR DOMAIN internet.nl -----
+2023-03-13 15:04:28,105 - MECSA-ST - INFO - ---- domain has 1 MX records. 
+2023-03-13 15:04:28,105 - MECSA-ST - INFO - ---- STARTTLS ENABLED internet.nl 62.204.66.10 10   
+2023-03-13 15:04:28,106 - MECSA-ST - INFO - -------- StartTLS announced: True
+2023-03-13 15:04:28,106 - MECSA-ST - INFO - -------- REQUIRETLS DISABLED
+2023-03-13 15:04:28,106 - MECSA-ST - INFO - -------- Using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256 bits) (protocol, cipher, keysize)
+2023-03-13 15:04:28,106 - MECSA-ST - INFO - -------- x509 CA validated False
+2023-03-13 15:04:28,106 - MECSA-ST - INFO - -------- x509 FQDN match MX True
+2023-03-13 15:04:28,106 - MECSA-ST - INFO - -------- x509 Date Valid  True
+2023-03-13 15:04:28,106 - MECSA-ST - INFO - -------- x509 Revocated False
+2023-03-13 15:04:28,106 - MECSA-ST - INFO - -------- DANE ENABLED
+2023-03-13 15:04:28,106 - MECSA-ST - INFO - -------- TLSA record: 3 1 1 d6fea64d4e68caeab7cbb2e0f905d7f3ca3308b12fd88c5b469f08ad7e05c7c7
+2023-03-13 15:04:28,106 - MECSA-ST - INFO - ---- SPF ENABLED
+2023-03-13 15:04:28,106 - MECSA-ST - INFO - -------- spf record: v=spf1 a include:spfinc.prolocation.net ~all 
+2023-03-13 15:04:28,107 - MECSA-ST - INFO - ---- TLS RPT DISABLED
+2023-03-13 15:04:28,107 - MECSA-ST - INFO - -------- Errors (Error: No valid TLS RPT record found.)
+2023-03-13 15:04:28,107 - MECSA-ST - INFO - -------- Syntax check (None)
+2023-03-13 15:04:28,107 - MECSA-ST - INFO - ---- DKIM ENABLED
+2023-03-13 15:04:28,107 - MECSA-ST - INFO - -------- test response: NoAnswer: _domainkey.internet.nl [DKIM] 
+2023-03-13 15:04:28,107 - MECSA-ST - INFO - ---- DMARC ENABLED
+2023-03-13 15:04:28,107 - MECSA-ST - INFO - -------- dmarc record: v=DMARC1; p=reject; sp=reject;
+2023-03-13 15:04:28,107 - MECSA-ST - INFO - ---- DNSSEC DISABLED
+2023-03-13 15:04:28,107 - MECSA-ST - INFO - -------- dnssec MX False
+2023-03-13 15:04:28,107 - MECSA-ST - INFO - -------- dnssec MX-A False
+2023-03-13 15:04:28,107 - MECSA-ST - INFO - -------- dnssec TXT False
+2023-03-13 15:04:28,108 - MECSA-ST - INFO - -------- dnssec DMARC False
+2023-03-13 15:04:28,108 - MECSA-ST - INFO - -------- dnssec TLSA False
+2023-03-13 15:04:28,108 - MECSA-ST - INFO - -------- error Validating DNSKEYS nl. (module 'dns' has no attribute 'dnssec')
+2023-03-13 15:04:28,108 - MECSA-ST - INFO - ---- MTA-STS DISABLED :
+2023-03-13 15:04:28,108 - MECSA-ST - INFO - -------- Has DNS       : False
+2023-03-13 15:04:28,108 - MECSA-ST - INFO - -------- Has Policy    : False
+2023-03-13 15:04:28,108 - MECSA-ST - INFO - -------- MTA-STS errors: Error: No valid MTA-STS record found.
+2023-03-13 15:04:28,108 - MECSA-ST - INFO - ---------------------------------------------------------------------------
+
+2023-03-13 15:04:28,108 - MECSA-ST - INFO - ---> SUMMARY REPORT for domain internet.nl  --------------------------------------
+2023-03-13 15:04:28,108 - MECSA-ST - INFO - ---> 
+2023-03-13 15:04:28,108 - MECSA-ST - INFO - ---> Confidentiality 3.0
+2023-03-13 15:04:28,109 - MECSA-ST - INFO - ---> Spoofing        3.5
+2023-03-13 15:04:28,109 - MECSA-ST - INFO - ---> Integrity       3.0
+2023-03-13 15:04:28,109 - MECSA-ST - INFO - ---> 
+2023-03-13 15:04:28,109 - MECSA-ST - INFO - ---> **** Confidentiality evaluated on: starttls,x509,dane,dnssec,mta-sts
+2023-03-13 15:04:28,109 - MECSA-ST - INFO - ---> **** Missing                     : x509,dnssec,mta-sts
+2023-03-13 15:04:28,109 - MECSA-ST - INFO - ---> ****  ****
+2023-03-13 15:04:28,109 - MECSA-ST - INFO - ---> **** Spoofing evaluated on       : spf,spf_policy,dkim,dmarc,dmarc_policy,dnssec
+2023-03-13 15:04:28,109 - MECSA-ST - INFO - ---> **** Missing                     : dmarc_policy,dnssec
+2023-03-13 15:04:28,110 - MECSA-ST - INFO - ---> ****  ****
+2023-03-13 15:04:28,110 - MECSA-ST - INFO - ---> **** Integrity evaluated on      : dkim,dmarc,dmarc_policy,dnssec
+2023-03-13 15:04:28,110 - MECSA-ST - INFO - ---> **** Missing                     : dmarc_policy,dnssec
+2023-03-13 15:04:28,110 - MECSA-ST - INFO - ---> ****  ****
+2023-03-13 15:04:28,110 - MECSA-ST - INFO - ---> **** These results might differ from the ones given by the MECSA platform ****
+2023-03-13 15:04:28,110 - MECSA-ST - INFO - ---> **** because we have less data. MECSA also has outbound tests:            ****
+2023-03-13 15:04:28,110 - MECSA-ST - INFO - ---> **** _ StartTLS check on email delivery                                   ****
+2023-03-13 15:04:28,110 - MECSA-ST - INFO - ---> **** _ SPF policy verification on delivery servers                        ****
+2023-03-13 15:04:28,110 - MECSA-ST - INFO - ---> **** _ DKIM signature check                                               ****
+2023-03-13 15:04:28,110 - MECSA-ST - INFO - ---> ****                                                                      ****
+2023-03-13 15:04:28,110 - MECSA-ST - INFO - ---> **** https://mecsa.jrc.ec.europa.eu                                       ****
+2023-03-13 15:04:28,110 - MECSA-ST - INFO - ---> 
+2023-03-13 15:04:28,110 - MECSA-ST - INFO - ---> END of TEST -----------------------------------------------------------
+
+2023-03-13 15:32:33,174 - MECSA-ST - INFO - Joint Research Centre (JRC) - E.3 Cyber and Digital Citizen's Security
+2023-03-13 15:32:33,175 - MECSA-ST - INFO - mecsa-st v2.5
+2023-03-13 15:32:33,175 - MECSA-ST - INFO - 
+2023-03-13 15:32:33,217 - MECSA-ST - ERROR - loading CAs from /etc/ssl/certs/ca-certificates.crt ([Errno 2] No such file or directory)
+2023-03-13 15:32:33,234 - MECSA-ST - DEBUG - ---- TLDS LIST SIZE 10406 -----
+2023-03-13 15:32:33,234 - MECSA-ST - INFO - ---> Init test on domain google.com
+2023-03-13 15:32:33,234 - MECSA-ST - INFO - --------> Init StartTLS test
+2023-03-13 15:32:33,234 - MECSA-ST - DEBUG - sending DNS MX request for domain google.com
+2023-03-13 15:32:33,259 - MECSA-ST - DEBUG - google.com has 1 MX records
+2023-03-13 15:32:33,259 - MECSA-ST - DEBUG - sending DNS A request for MX smtp.google.com
+2023-03-13 15:32:33,290 - MECSA-ST - DEBUG - smtp.google.com has 4 IP addresses of type A
+2023-03-13 15:32:33,349 - MECSA-ST - DEBUG - Server response: 220 b'mx.google.com ESMTP i5-20020aa7c9c5000000b004ab4b753aabsi7991816edt.386 - gsmtp'
+2023-03-13 15:32:33,350 - MECSA-ST - DEBUG - processing STARTTLS... for MX smtp.google.com, IP 142.250.27.26
+2023-03-13 15:32:33,382 - MECSA-ST - DEBUG - ESMTP features announced: ({'size': '157286400', '8bitmime': '', 'starttls': '', 'enhancedstatuscodes': '', 'pipelining': '', 'chunking': '', 'smtputf8': ''})
+2023-03-13 15:32:33,382 - MECSA-ST - DEBUG - Starting STARTTLS...
+2023-03-13 15:32:33,412 - MECSA-ST - DEBUG - STARTTLS reply: b'2.0.0 Ready to start TLS'
+2023-03-13 15:32:33,412 - MECSA-ST - DEBUG - smtp.google.com, 142.250.27.26  Supports StartTLS
+2023-03-13 15:32:33,530 - MECSA-ST - DEBUG - Certificate: <X509Name object '/CN=mx.google.com'>
+2023-03-13 15:32:33,530 - MECSA-ST - DEBUG - Certificate: <X509Name object '/C=US/O=Google Trust Services LLC/CN=GTS CA 1C3'>
+2023-03-13 15:32:33,530 - MECSA-ST - DEBUG - Certificate: <X509Name object '/C=US/O=Google Trust Services LLC/CN=GTS Root R1'>
+2023-03-13 15:32:33,590 - MECSA-ST - DEBUG - Server response: 220 b'mx.google.com ESMTP gx5-20020a170906f1c500b008d2060ebc6esi297708ejb.564 - gsmtp'
+2023-03-13 15:32:33,590 - MECSA-ST - DEBUG - processing STARTTLS... for MX smtp.google.com, IP 142.250.102.27
+2023-03-13 15:32:33,622 - MECSA-ST - DEBUG - ESMTP features announced: ({'size': '157286400', '8bitmime': '', 'starttls': '', 'enhancedstatuscodes': '', 'pipelining': '', 'chunking': '', 'smtputf8': ''})
+2023-03-13 15:32:33,622 - MECSA-ST - DEBUG - Starting STARTTLS...
+2023-03-13 15:32:33,653 - MECSA-ST - DEBUG - STARTTLS reply: b'2.0.0 Ready to start TLS'
+2023-03-13 15:32:33,653 - MECSA-ST - DEBUG - smtp.google.com, 142.250.102.27  Supports StartTLS
+2023-03-13 15:32:33,688 - MECSA-ST - DEBUG - Certificate: <X509Name object '/CN=mx.google.com'>
+2023-03-13 15:32:33,688 - MECSA-ST - DEBUG - Certificate: <X509Name object '/C=US/O=Google Trust Services LLC/CN=GTS CA 1C3'>
+2023-03-13 15:32:33,688 - MECSA-ST - DEBUG - Certificate: <X509Name object '/C=US/O=Google Trust Services LLC/CN=GTS Root R1'>
+2023-03-13 15:32:33,745 - MECSA-ST - DEBUG - Server response: 220 b'mx.google.com ESMTP nd5-20020a170907628500b00925a428b655si296780ejc.699 - gsmtp'
+2023-03-13 15:32:33,746 - MECSA-ST - DEBUG - processing STARTTLS... for MX smtp.google.com, IP 142.250.102.26
+2023-03-13 15:32:33,777 - MECSA-ST - DEBUG - ESMTP features announced: ({'size': '157286400', '8bitmime': '', 'starttls': '', 'enhancedstatuscodes': '', 'pipelining': '', 'chunking': '', 'smtputf8': ''})
+2023-03-13 15:32:33,777 - MECSA-ST - DEBUG - Starting STARTTLS...
+2023-03-13 15:32:33,807 - MECSA-ST - DEBUG - STARTTLS reply: b'2.0.0 Ready to start TLS'
+2023-03-13 15:32:33,808 - MECSA-ST - DEBUG - smtp.google.com, 142.250.102.26  Supports StartTLS
+2023-03-13 15:32:33,841 - MECSA-ST - DEBUG - Certificate: <X509Name object '/CN=mx.google.com'>
+2023-03-13 15:32:33,841 - MECSA-ST - DEBUG - Certificate: <X509Name object '/C=US/O=Google Trust Services LLC/CN=GTS CA 1C3'>
+2023-03-13 15:32:33,841 - MECSA-ST - DEBUG - Certificate: <X509Name object '/C=US/O=Google Trust Services LLC/CN=GTS Root R1'>
+2023-03-13 15:32:33,899 - MECSA-ST - DEBUG - Server response: 220 b'mx.google.com ESMTP g13-20020a50ee0d000000b004fd218ea165si603170eds.434 - gsmtp'
+2023-03-13 15:32:33,899 - MECSA-ST - DEBUG - processing STARTTLS... for MX smtp.google.com, IP 142.250.27.27
+2023-03-13 15:32:33,932 - MECSA-ST - DEBUG - ESMTP features announced: ({'size': '157286400', '8bitmime': '', 'starttls': '', 'enhancedstatuscodes': '', 'pipelining': '', 'chunking': '', 'smtputf8': ''})
+2023-03-13 15:32:33,932 - MECSA-ST - DEBUG - Starting STARTTLS...
+2023-03-13 15:32:33,962 - MECSA-ST - DEBUG - STARTTLS reply: b'2.0.0 Ready to start TLS'
+2023-03-13 15:32:33,962 - MECSA-ST - DEBUG - smtp.google.com, 142.250.27.27  Supports StartTLS
+2023-03-13 15:32:33,996 - MECSA-ST - DEBUG - Certificate: <X509Name object '/CN=mx.google.com'>
+2023-03-13 15:32:33,996 - MECSA-ST - DEBUG - Certificate: <X509Name object '/C=US/O=Google Trust Services LLC/CN=GTS CA 1C3'>
+2023-03-13 15:32:33,996 - MECSA-ST - DEBUG - Certificate: <X509Name object '/C=US/O=Google Trust Services LLC/CN=GTS Root R1'>
+2023-03-13 15:32:33,996 - MECSA-ST - INFO - --------> Init x509 test
+2023-03-13 15:32:33,998 - MECSA-ST - DEBUG - *** SAN Exact MATCH!: smtp.google.com - DNS:mx.google.com, DNS:smtp.google.com, DNS:aspmx.l.google.com, DNS:alt1.aspmx.l.google.com, DNS:alt2.aspmx.l.google.com, DNS:alt3.aspmx.l.google.com, DNS:alt4.aspmx.l.google.com, DNS:gmail-smtp-in.l.google.com, DNS:alt1.gmail-smtp-in.l.google.com, DNS:alt2.gmail-smtp-in.l.google.com, DNS:alt3.gmail-smtp-in.l.google.com, DNS:alt4.gmail-smtp-in.l.google.com, DNS:gmr-smtp-in.l.google.com, DNS:alt1.gmr-smtp-in.l.google.com, DNS:alt2.gmr-smtp-in.l.google.com, DNS:alt3.gmr-smtp-in.l.google.com, DNS:alt4.gmr-smtp-in.l.google.com, DNS:mx1.smtp.goog, DNS:mx2.smtp.goog, DNS:mx3.smtp.goog, DNS:mx4.smtp.goog, DNS:aspmx2.googlemail.com, DNS:aspmx3.googlemail.com, DNS:aspmx4.googlemail.com, DNS:aspmx5.googlemail.com, DNS:gmr-mx.google.com
+2023-03-13 15:32:34,035 - MECSA-ST - DEBUG - CRL obtained ONLINE. http://crls.pki.goog/gts1c3/QOvJ0N1sT2A.crl
+2023-03-13 15:32:34,043 - MECSA-ST - DEBUG - certificate is NOT self-signed [(b'C', b'US'), (b'O', b'Google Trust Services LLC'), (b'CN', b'GTS Root R1')] (unable to get local issuer certificate)
+2023-03-13 15:32:34,044 - MECSA-ST - DEBUG - certificate is NOT self-signed [(b'C', b'BE'), (b'O', b'GlobalSign nv-sa'), (b'OU', b'Root CA'), (b'CN', b'GlobalSign Root CA')] (unable to get local issuer certificate)
+2023-03-13 15:32:34,045 - MECSA-ST - WARNING - FAILED CA validation! subject: [(b'CN', b'mx.google.com')], issuer: [(b'C', b'US'), (b'O', b'Google Trust Services LLC'), (b'CN', b'GTS CA 1C3')] (unable to get issuer certificate)
+2023-03-13 15:32:34,046 - MECSA-ST - DEBUG - *** SAN Exact MATCH!: smtp.google.com - DNS:mx.google.com, DNS:smtp.google.com, DNS:aspmx.l.google.com, DNS:alt1.aspmx.l.google.com, DNS:alt2.aspmx.l.google.com, DNS:alt3.aspmx.l.google.com, DNS:alt4.aspmx.l.google.com, DNS:gmail-smtp-in.l.google.com, DNS:alt1.gmail-smtp-in.l.google.com, DNS:alt2.gmail-smtp-in.l.google.com, DNS:alt3.gmail-smtp-in.l.google.com, DNS:alt4.gmail-smtp-in.l.google.com, DNS:gmr-smtp-in.l.google.com, DNS:alt1.gmr-smtp-in.l.google.com, DNS:alt2.gmr-smtp-in.l.google.com, DNS:alt3.gmr-smtp-in.l.google.com, DNS:alt4.gmr-smtp-in.l.google.com, DNS:mx1.smtp.goog, DNS:mx2.smtp.goog, DNS:mx3.smtp.goog, DNS:mx4.smtp.goog, DNS:aspmx2.googlemail.com, DNS:aspmx3.googlemail.com, DNS:aspmx4.googlemail.com, DNS:aspmx5.googlemail.com, DNS:gmr-mx.google.com
+2023-03-13 15:32:34,047 - MECSA-ST - DEBUG - CRL obtained from CACHE. http://crls.pki.goog/gts1c3/QOvJ0N1sT2A.crl
+2023-03-13 15:32:34,054 - MECSA-ST - DEBUG - certificate is NOT self-signed [(b'C', b'US'), (b'O', b'Google Trust Services LLC'), (b'CN', b'GTS Root R1')] (unable to get local issuer certificate)
+2023-03-13 15:32:34,056 - MECSA-ST - DEBUG - certificate is NOT self-signed [(b'C', b'BE'), (b'O', b'GlobalSign nv-sa'), (b'OU', b'Root CA'), (b'CN', b'GlobalSign Root CA')] (unable to get local issuer certificate)
+2023-03-13 15:32:34,056 - MECSA-ST - WARNING - FAILED CA validation! subject: [(b'CN', b'mx.google.com')], issuer: [(b'C', b'US'), (b'O', b'Google Trust Services LLC'), (b'CN', b'GTS CA 1C3')] (unable to get issuer certificate)
+2023-03-13 15:32:34,057 - MECSA-ST - DEBUG - *** SAN Exact MATCH!: smtp.google.com - DNS:mx.google.com, DNS:smtp.google.com, DNS:aspmx.l.google.com, DNS:alt1.aspmx.l.google.com, DNS:alt2.aspmx.l.google.com, DNS:alt3.aspmx.l.google.com, DNS:alt4.aspmx.l.google.com, DNS:gmail-smtp-in.l.google.com, DNS:alt1.gmail-smtp-in.l.google.com, DNS:alt2.gmail-smtp-in.l.google.com, DNS:alt3.gmail-smtp-in.l.google.com, DNS:alt4.gmail-smtp-in.l.google.com, DNS:gmr-smtp-in.l.google.com, DNS:alt1.gmr-smtp-in.l.google.com, DNS:alt2.gmr-smtp-in.l.google.com, DNS:alt3.gmr-smtp-in.l.google.com, DNS:alt4.gmr-smtp-in.l.google.com, DNS:mx1.smtp.goog, DNS:mx2.smtp.goog, DNS:mx3.smtp.goog, DNS:mx4.smtp.goog, DNS:aspmx2.googlemail.com, DNS:aspmx3.googlemail.com, DNS:aspmx4.googlemail.com, DNS:aspmx5.googlemail.com, DNS:gmr-mx.google.com
+2023-03-13 15:32:34,059 - MECSA-ST - DEBUG - CRL obtained from CACHE. http://crls.pki.goog/gts1c3/QOvJ0N1sT2A.crl
+2023-03-13 15:32:34,065 - MECSA-ST - DEBUG - certificate is NOT self-signed [(b'C', b'US'), (b'O', b'Google Trust Services LLC'), (b'CN', b'GTS Root R1')] (unable to get local issuer certificate)
+2023-03-13 15:32:34,066 - MECSA-ST - DEBUG - certificate is NOT self-signed [(b'C', b'BE'), (b'O', b'GlobalSign nv-sa'), (b'OU', b'Root CA'), (b'CN', b'GlobalSign Root CA')] (unable to get local issuer certificate)
+2023-03-13 15:32:34,066 - MECSA-ST - WARNING - FAILED CA validation! subject: [(b'CN', b'mx.google.com')], issuer: [(b'C', b'US'), (b'O', b'Google Trust Services LLC'), (b'CN', b'GTS CA 1C3')] (unable to get issuer certificate)
+2023-03-13 15:32:34,068 - MECSA-ST - DEBUG - *** SAN Exact MATCH!: smtp.google.com - DNS:mx.google.com, DNS:smtp.google.com, DNS:aspmx.l.google.com, DNS:alt1.aspmx.l.google.com, DNS:alt2.aspmx.l.google.com, DNS:alt3.aspmx.l.google.com, DNS:alt4.aspmx.l.google.com, DNS:gmail-smtp-in.l.google.com, DNS:alt1.gmail-smtp-in.l.google.com, DNS:alt2.gmail-smtp-in.l.google.com, DNS:alt3.gmail-smtp-in.l.google.com, DNS:alt4.gmail-smtp-in.l.google.com, DNS:gmr-smtp-in.l.google.com, DNS:alt1.gmr-smtp-in.l.google.com, DNS:alt2.gmr-smtp-in.l.google.com, DNS:alt3.gmr-smtp-in.l.google.com, DNS:alt4.gmr-smtp-in.l.google.com, DNS:mx1.smtp.goog, DNS:mx2.smtp.goog, DNS:mx3.smtp.goog, DNS:mx4.smtp.goog, DNS:aspmx2.googlemail.com, DNS:aspmx3.googlemail.com, DNS:aspmx4.googlemail.com, DNS:aspmx5.googlemail.com, DNS:gmr-mx.google.com
+2023-03-13 15:32:34,070 - MECSA-ST - DEBUG - CRL obtained from CACHE. http://crls.pki.goog/gts1c3/QOvJ0N1sT2A.crl
+2023-03-13 15:32:34,076 - MECSA-ST - DEBUG - certificate is NOT self-signed [(b'C', b'US'), (b'O', b'Google Trust Services LLC'), (b'CN', b'GTS Root R1')] (unable to get local issuer certificate)
+2023-03-13 15:32:34,077 - MECSA-ST - DEBUG - certificate is NOT self-signed [(b'C', b'BE'), (b'O', b'GlobalSign nv-sa'), (b'OU', b'Root CA'), (b'CN', b'GlobalSign Root CA')] (unable to get local issuer certificate)
+2023-03-13 15:32:34,077 - MECSA-ST - WARNING - FAILED CA validation! subject: [(b'CN', b'mx.google.com')], issuer: [(b'C', b'US'), (b'O', b'Google Trust Services LLC'), (b'CN', b'GTS CA 1C3')] (unable to get issuer certificate)
+2023-03-13 15:32:34,078 - MECSA-ST - INFO - --------> Init SPF test
+2023-03-13 15:32:34,078 - MECSA-ST - DEBUG - sending DNS TXT request for domain google.com
+2023-03-13 15:32:34,219 - MECSA-ST - DEBUG - SPF-SYNTAX-CHECK: softfail 250 domain owner discourages use of this host
+2023-03-13 15:32:34,219 - MECSA-ST - INFO - --------> Init DKIM test
+2023-03-13 15:32:34,310 - MECSA-ST - INFO - DKIM for domain _domainkey.google.com with NS (['216.239.36.10', '216.239.34.10', '216.239.32.10', '216.239.38.10'])
+2023-03-13 15:32:34,356 - MECSA-ST - WARNING - NoAnswer: _domainkey.google.com [DKIM]
+2023-03-13 15:32:34,356 - MECSA-ST - INFO - --------> Init TLS RPT test
+2023-03-13 15:32:34,356 - MECSA-ST - DEBUG - sending DNS TXT request for domain google.com
+2023-03-13 15:32:34,383 - MECSA-ST - INFO - --------> Init DMARC test
+2023-03-13 15:32:34,411 - MECSA-ST - INFO - --------> Init TLSA test
+2023-03-13 15:32:35,650 - MECSA-ST - WARNING - ['test_tlsa, NoAnswer: smtp.google.com [TLSA]']
+2023-03-13 15:32:35,650 - MECSA-ST - INFO - --------> Init DNSSEC test (['TXT', 'TXT', 'DMARC'])
+2023-03-13 15:32:35,650 - MECSA-ST - DEBUG - Sending DNS request for type google.com. and domain MX
+2023-03-13 15:32:36,061 - MECSA-ST - DEBUG - Sending DNS request for type smtp.google.com and domain A
+2023-03-13 15:32:36,378 - MECSA-ST - DEBUG - Sending DNS request for type smtp.google.com and domain A
+2023-03-13 15:32:36,673 - MECSA-ST - DEBUG - Sending DNS request for type smtp.google.com and domain A
+2023-03-13 15:32:36,981 - MECSA-ST - DEBUG - Sending DNS request for type smtp.google.com and domain A
+2023-03-13 15:32:37,391 - MECSA-ST - DEBUG - Sending DNS request for type google.com. and domain TXT
+2023-03-13 15:32:37,802 - MECSA-ST - DEBUG - Sending DNS request for type _dmarc.google.com. and domain TXT
+2023-03-13 15:32:38,022 - MECSA-ST - INFO - DNSSEC-TEST [MX]: check if domain google.com. is DNSSEC
+2023-03-13 15:32:38,022 - MECSA-ST - DEBUG - -----> DNSSEC Testing google.com.
+2023-03-13 15:32:38,022 - MECSA-ST - DEBUG - Select SOA results NOT found in Cache for google.com.
+2023-03-13 15:32:38,834 - MECSA-ST - DEBUG - [SOA Resolver] Domain google.com. IS SOA.
+2023-03-13 15:32:38,834 - MECSA-ST - DEBUG - Select SOA results NOT found in Cache for com.
+2023-03-13 15:32:38,990 - MECSA-ST - DEBUG - [SOA Resolver] Domain com. IS SOA.
+2023-03-13 15:32:38,991 - MECSA-ST - DEBUG - Select SOA results NOT found in Cache for .
+2023-03-13 15:32:39,142 - MECSA-ST - DEBUG - [SOA Resolver] Domain . IS SOA.
+2023-03-13 15:32:39,142 - MECSA-ST - DEBUG -  Chain of children-parent: [{'children': {'domain': 'com.', 'ns': '192.5.6.30,192.35.51.30,192.55.83.30,192.42.93.30,192.26.92.30,192.31.80.30,192.12.94.30,192.52.178.30,192.41.162.30,192.54.112.30,192.33.14.30,192.48.79.30,192.43.172.30'}, 'parent': {'domain': '.', 'ns': '192.33.4.12,198.41.0.4,202.12.27.33,193.0.14.129,199.7.83.42,192.112.36.4,199.9.14.201,192.36.148.17,199.7.91.13,198.97.190.53,192.203.230.10,192.5.5.241,192.58.128.30'}}, {'children': {'domain': 'google.com.', 'ns': '216.239.36.10,216.239.38.10,216.239.34.10,216.239.32.10'}, 'parent': {'domain': 'com.', 'ns': '192.5.6.30,192.35.51.30,192.55.83.30,192.42.93.30,192.26.92.30,192.31.80.30,192.12.94.30,192.52.178.30,192.41.162.30,192.54.112.30,192.33.14.30,192.48.79.30,192.43.172.30'}}]
+2023-03-13 15:32:39,142 - MECSA-ST - DEBUG - Trust Chain: [{'children': {'domain': 'com.', 'ns': '192.5.6.30,192.35.51.30,192.55.83.30,192.42.93.30,192.26.92.30,192.31.80.30,192.12.94.30,192.52.178.30,192.41.162.30,192.54.112.30,192.33.14.30,192.48.79.30,192.43.172.30'}, 'parent': {'domain': '.', 'ns': '192.33.4.12,198.41.0.4,202.12.27.33,193.0.14.129,199.7.83.42,192.112.36.4,199.9.14.201,192.36.148.17,199.7.91.13,198.97.190.53,192.203.230.10,192.5.5.241,192.58.128.30'}}, {'children': {'domain': 'google.com.', 'ns': '216.239.36.10,216.239.38.10,216.239.34.10,216.239.32.10'}, 'parent': {'domain': 'com.', 'ns': '192.5.6.30,192.35.51.30,192.55.83.30,192.42.93.30,192.26.92.30,192.31.80.30,192.12.94.30,192.52.178.30,192.41.162.30,192.54.112.30,192.33.14.30,192.48.79.30,192.43.172.30'}}] 
+2023-03-13 15:32:39,848 - MECSA-ST - DEBUG - com. has DS records? True
+2023-03-13 15:32:39,904 - MECSA-ST - WARNING - Validating DNSKEYS com. (module 'dns' has no attribute 'dnssec')
+2023-03-13 15:32:39,904 - MECSA-ST - DEBUG - com. has DNSKEYS? False
+2023-03-13 15:32:39,904 - MECSA-ST - INFO - ---> Init MTA-STS test on domain google.com
+2023-03-13 15:32:39,904 - MECSA-ST - DEBUG - sending DNS TXT request for domain _mta-sts.google.com
+2023-03-13 15:32:40,462 - MECSA-ST - DEBUG - DNS-MTA-STS-SYNTAX-CHECK: v=STSv1; id=20210803T010101; 
+2023-03-13 15:32:40,463 - MECSA-ST - DEBUG - sending POLICY request for domain mta-sts.google.com/.well-known/mta-sts.txt 
+2023-03-13 15:32:40,566 - MECSA-ST - DEBUG - KEY: version; VALUE:  STSv1
+2023-03-13 15:32:40,566 - MECSA-ST - DEBUG - KEY: mode; VALUE:  enforce
+2023-03-13 15:32:40,566 - MECSA-ST - DEBUG - KEY: mx; VALUE:  smtp.google.com
+2023-03-13 15:32:40,566 - MECSA-ST - DEBUG - KEY: mx; VALUE:  aspmx.l.google.com
+2023-03-13 15:32:40,566 - MECSA-ST - DEBUG - KEY: mx; VALUE:  *.aspmx.l.google.com
+2023-03-13 15:32:40,566 - MECSA-ST - DEBUG - KEY: max_age; VALUE:  86400
+2023-03-13 15:32:40,566 - MECSA-ST - DEBUG - Content/Type: text/plain
+2023-03-13 15:32:40,566 - MECSA-ST - DEBUG - request POLICY response:  {'version': 'STSv1', 'mode': 'enforce', 'mx': 'smtp.google.com,aspmx.l.google.com,*.aspmx.l.google.com', 'max_age': '86400', 'error': None} 
+2023-03-13 15:32:40,566 - MECSA-ST - DEBUG - POLICY-MTA-STS-SYNTAX-CHECK: {'version': 'STSv1', 'mode': 'enforce', 'mx': 'smtp.google.com,aspmx.l.google.com,*.aspmx.l.google.com', 'max_age': '86400', 'error': None} (v=STSv1; id=20210803T010101;)
+2023-03-13 15:32:40,566 - MECSA-ST - DEBUG - [MTA-STS] Testing if MX smtp.google.com matches Policy smtp.google.com
+2023-03-13 15:32:40,566 - MECSA-ST - DEBUG - [MTA-STS] Exact MATCH!: smtp.google.com - smtp.google.com
+2023-03-13 15:32:40,567 - MECSA-ST - DEBUG - [MTA-STS] Testing if MX smtp.google.com matches Policy smtp.google.com
+2023-03-13 15:32:40,567 - MECSA-ST - DEBUG - [MTA-STS] Exact MATCH!: smtp.google.com - smtp.google.com
+2023-03-13 15:32:40,567 - MECSA-ST - DEBUG - [MTA-STS] Testing if MX smtp.google.com matches Policy smtp.google.com
+2023-03-13 15:32:40,567 - MECSA-ST - DEBUG - [MTA-STS] Exact MATCH!: smtp.google.com - smtp.google.com
+2023-03-13 15:32:40,567 - MECSA-ST - DEBUG - [MTA-STS] Testing if MX smtp.google.com matches Policy smtp.google.com
+2023-03-13 15:32:40,567 - MECSA-ST - DEBUG - [MTA-STS] Exact MATCH!: smtp.google.com - smtp.google.com
+2023-03-13 15:32:40,568 - MECSA-ST - INFO - Summary confidentiality protocols supported: starttls,mta-sts
+2023-03-13 15:32:40,568 - MECSA-ST - DEBUG - Found coincidence in the scoring table for 'confidentiality' - starttls,mta-sts 6
+2023-03-13 15:32:40,568 - MECSA-ST - INFO - Summary spoofing protocols supported: spf,spf_policy,dkim,dmarc,dmarc_policy
+2023-03-13 15:32:40,568 - MECSA-ST - DEBUG - Found coincidence in the scoring table for 'spoofing' - spf,spf_policy,dkim,dmarc,dmarc_policy 8
+2023-03-13 15:32:40,568 - MECSA-ST - INFO - Summary integrity protocols supported: dkim,dmarc,dmarc_policy
+2023-03-13 15:32:40,569 - MECSA-ST - DEBUG - Found coincidence in the scoring table for 'integrity' - dkim,dmarc,dmarc_policy 7
+2023-03-13 15:32:40,569 - MECSA-ST - INFO - 
+
+
+
+---- REPORT FOR DOMAIN google.com -----
+2023-03-13 15:32:40,569 - MECSA-ST - INFO - ---- domain has 4 MX records. 
+2023-03-13 15:32:40,569 - MECSA-ST - INFO - ---- STARTTLS ENABLED smtp.google.com 142.250.27.26 10   
+2023-03-13 15:32:40,569 - MECSA-ST - INFO - -------- StartTLS announced: True
+2023-03-13 15:32:40,569 - MECSA-ST - INFO - -------- REQUIRETLS DISABLED
+2023-03-13 15:32:40,569 - MECSA-ST - INFO - -------- Using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits) (protocol, cipher, keysize)
+2023-03-13 15:32:40,569 - MECSA-ST - INFO - -------- x509 CA validated False
+2023-03-13 15:32:40,569 - MECSA-ST - INFO - -------- x509 FQDN match MX True
+2023-03-13 15:32:40,569 - MECSA-ST - INFO - -------- x509 Date Valid  True
+2023-03-13 15:32:40,569 - MECSA-ST - INFO - -------- x509 Revocated False
+2023-03-13 15:32:40,569 - MECSA-ST - INFO - -------- DANE DISABLED
+2023-03-13 15:32:40,570 - MECSA-ST - INFO - -------- TLSA record False
+2023-03-13 15:32:40,570 - MECSA-ST - INFO - -------- MTA-STS MX COMPLIES with POLICY
+2023-03-13 15:32:40,570 - MECSA-ST - INFO - ---- STARTTLS ENABLED smtp.google.com 142.250.102.27 10   
+2023-03-13 15:32:40,570 - MECSA-ST - INFO - -------- StartTLS announced: True
+2023-03-13 15:32:40,570 - MECSA-ST - INFO - -------- REQUIRETLS DISABLED
+2023-03-13 15:32:40,570 - MECSA-ST - INFO - -------- Using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits) (protocol, cipher, keysize)
+2023-03-13 15:32:40,570 - MECSA-ST - INFO - -------- x509 CA validated False
+2023-03-13 15:32:40,570 - MECSA-ST - INFO - -------- x509 FQDN match MX True
+2023-03-13 15:32:40,570 - MECSA-ST - INFO - -------- x509 Date Valid  True
+2023-03-13 15:32:40,570 - MECSA-ST - INFO - -------- x509 Revocated False
+2023-03-13 15:32:40,570 - MECSA-ST - INFO - -------- DANE DISABLED
+2023-03-13 15:32:40,570 - MECSA-ST - INFO - -------- TLSA record False
+2023-03-13 15:32:40,570 - MECSA-ST - INFO - -------- MTA-STS MX COMPLIES with POLICY
+2023-03-13 15:32:40,570 - MECSA-ST - INFO - ---- STARTTLS ENABLED smtp.google.com 142.250.102.26 10   
+2023-03-13 15:32:40,571 - MECSA-ST - INFO - -------- StartTLS announced: True
+2023-03-13 15:32:40,571 - MECSA-ST - INFO - -------- REQUIRETLS DISABLED
+2023-03-13 15:32:40,571 - MECSA-ST - INFO - -------- Using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits) (protocol, cipher, keysize)
+2023-03-13 15:32:40,571 - MECSA-ST - INFO - -------- x509 CA validated False
+2023-03-13 15:32:40,571 - MECSA-ST - INFO - -------- x509 FQDN match MX True
+2023-03-13 15:32:40,571 - MECSA-ST - INFO - -------- x509 Date Valid  True
+2023-03-13 15:32:40,571 - MECSA-ST - INFO - -------- x509 Revocated False
+2023-03-13 15:32:40,571 - MECSA-ST - INFO - -------- DANE DISABLED
+2023-03-13 15:32:40,571 - MECSA-ST - INFO - -------- TLSA record False
+2023-03-13 15:32:40,571 - MECSA-ST - INFO - -------- MTA-STS MX COMPLIES with POLICY
+2023-03-13 15:32:40,571 - MECSA-ST - INFO - ---- STARTTLS ENABLED smtp.google.com 142.250.27.27 10   
+2023-03-13 15:32:40,571 - MECSA-ST - INFO - -------- StartTLS announced: True
+2023-03-13 15:32:40,571 - MECSA-ST - INFO - -------- REQUIRETLS DISABLED
+2023-03-13 15:32:40,571 - MECSA-ST - INFO - -------- Using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits) (protocol, cipher, keysize)
+2023-03-13 15:32:40,572 - MECSA-ST - INFO - -------- x509 CA validated False
+2023-03-13 15:32:40,572 - MECSA-ST - INFO - -------- x509 FQDN match MX True
+2023-03-13 15:32:40,572 - MECSA-ST - INFO - -------- x509 Date Valid  True
+2023-03-13 15:32:40,572 - MECSA-ST - INFO - -------- x509 Revocated False
+2023-03-13 15:32:40,572 - MECSA-ST - INFO - -------- DANE DISABLED
+2023-03-13 15:32:40,572 - MECSA-ST - INFO - -------- TLSA record False
+2023-03-13 15:32:40,572 - MECSA-ST - INFO - -------- MTA-STS MX COMPLIES with POLICY
+2023-03-13 15:32:40,572 - MECSA-ST - INFO - ---- SPF ENABLED
+2023-03-13 15:32:40,572 - MECSA-ST - INFO - -------- spf record: v=spf1 include:_spf.google.com ~all 
+2023-03-13 15:32:40,573 - MECSA-ST - INFO - ---- TLS RPT ENABLED
+2023-03-13 15:32:40,573 - MECSA-ST - INFO - -------- tlsrpt record: v=TLSRPTv1;rua=mailto:sts-reports@google.com 
+2023-03-13 15:32:40,573 - MECSA-ST - INFO - ---- DKIM ENABLED
+2023-03-13 15:32:40,573 - MECSA-ST - INFO - -------- test response: NoAnswer: _domainkey.google.com [DKIM] 
+2023-03-13 15:32:40,573 - MECSA-ST - INFO - ---- DMARC ENABLED
+2023-03-13 15:32:40,573 - MECSA-ST - INFO - -------- dmarc record: v=DMARC1; p=reject; rua=mailto:mailauth-reports@google.com
+2023-03-13 15:32:40,573 - MECSA-ST - INFO - ---- DNSSEC DISABLED
+2023-03-13 15:32:40,573 - MECSA-ST - INFO - -------- dnssec MX False
+2023-03-13 15:32:40,573 - MECSA-ST - INFO - -------- dnssec MX-A False
+2023-03-13 15:32:40,573 - MECSA-ST - INFO - -------- dnssec TXT False
+2023-03-13 15:32:40,573 - MECSA-ST - INFO - -------- dnssec DMARC False
+2023-03-13 15:32:40,573 - MECSA-ST - INFO - -------- error Validating DNSKEYS com. (module 'dns' has no attribute 'dnssec')
+2023-03-13 15:32:40,573 - MECSA-ST - INFO - ---- MTA-STS ENABLED :
+2023-03-13 15:32:40,574 - MECSA-ST - INFO - -------- DNS Record      : v=STSv1; id=20210803T010101;
+2023-03-13 15:32:40,574 - MECSA-ST - INFO - -------- Policy Version  : STSv1
+2023-03-13 15:32:40,574 - MECSA-ST - INFO - -------- Policy Mode     : enforce
+2023-03-13 15:32:40,574 - MECSA-ST - INFO - -------- Policy MX       : smtp.google.com,aspmx.l.google.com,*.aspmx.l.google.com
+2023-03-13 15:32:40,574 - MECSA-ST - INFO - -------- Policy max-age  : 86400
+2023-03-13 15:32:40,574 - MECSA-ST - INFO - ---------------------------------------------------------------------------
+
+2023-03-13 15:32:40,574 - MECSA-ST - INFO - ---> SUMMARY REPORT for domain google.com  --------------------------------------
+2023-03-13 15:32:40,574 - MECSA-ST - INFO - ---> 
+2023-03-13 15:32:40,574 - MECSA-ST - INFO - ---> Confidentiality 3.0
+2023-03-13 15:32:40,574 - MECSA-ST - INFO - ---> Spoofing        4.0
+2023-03-13 15:32:40,574 - MECSA-ST - INFO - ---> Integrity       3.5
+2023-03-13 15:32:40,574 - MECSA-ST - INFO - ---> 
+2023-03-13 15:32:40,574 - MECSA-ST - INFO - ---> **** Confidentiality evaluated on: starttls,x509,dane,dnssec,mta-sts
+2023-03-13 15:32:40,574 - MECSA-ST - INFO - ---> **** Missing                     : x509,dane,dnssec
+2023-03-13 15:32:40,574 - MECSA-ST - INFO - ---> ****  ****
+2023-03-13 15:32:40,574 - MECSA-ST - INFO - ---> **** Spoofing evaluated on       : spf,spf_policy,dkim,dmarc,dmarc_policy,dnssec
+2023-03-13 15:32:40,574 - MECSA-ST - INFO - ---> **** Missing                     : dnssec
+2023-03-13 15:32:40,575 - MECSA-ST - INFO - ---> ****  ****
+2023-03-13 15:32:40,575 - MECSA-ST - INFO - ---> **** Integrity evaluated on      : dkim,dmarc,dmarc_policy,dnssec
+2023-03-13 15:32:40,575 - MECSA-ST - INFO - ---> **** Missing                     : dnssec
+2023-03-13 15:32:40,575 - MECSA-ST - INFO - ---> ****  ****
+2023-03-13 15:32:40,575 - MECSA-ST - INFO - ---> **** These results might differ from the ones given by the MECSA platform ****
+2023-03-13 15:32:40,575 - MECSA-ST - INFO - ---> **** because we have less data. MECSA also has outbound tests:            ****
+2023-03-13 15:32:40,575 - MECSA-ST - INFO - ---> **** _ StartTLS check on email delivery                                   ****
+2023-03-13 15:32:40,575 - MECSA-ST - INFO - ---> **** _ SPF policy verification on delivery servers                        ****
+2023-03-13 15:32:40,575 - MECSA-ST - INFO - ---> **** _ DKIM signature check                                               ****
+2023-03-13 15:32:40,575 - MECSA-ST - INFO - ---> ****                                                                      ****
+2023-03-13 15:32:40,575 - MECSA-ST - INFO - ---> **** https://mecsa.jrc.ec.europa.eu                                       ****
+2023-03-13 15:32:40,575 - MECSA-ST - INFO - ---> 
+2023-03-13 15:32:40,575 - MECSA-ST - INFO - ---> END of TEST -----------------------------------------------------------
+
+2023-03-15 08:58:45,498 - MECSA-ST - INFO - Joint Research Centre (JRC) - E.3 Cyber and Digital Citizen's Security
+2023-03-15 08:58:45,499 - MECSA-ST - INFO - mecsa-st v2.5
+2023-03-15 08:58:45,499 - MECSA-ST - INFO - 
+2023-03-15 08:58:45,520 - MECSA-ST - ERROR - loading CAs from /etc/ssl/certs/ca-certificates.crt ([Errno 2] No such file or directory)
+2023-03-15 08:58:45,532 - MECSA-ST - DEBUG - ---- TLDS LIST SIZE 10406 -----
+2023-03-15 08:58:45,533 - MECSA-ST - INFO - ---> Init test on domain google.com
+2023-03-15 08:58:45,533 - MECSA-ST - INFO - --------> Init StartTLS test
+2023-03-15 08:58:45,533 - MECSA-ST - DEBUG - sending DNS MX request for domain google.com
+2023-03-15 08:58:45,557 - MECSA-ST - DEBUG - google.com has 1 MX records
+2023-03-15 08:58:45,558 - MECSA-ST - DEBUG - sending DNS A request for MX smtp.google.com
+2023-03-15 08:58:45,587 - MECSA-ST - DEBUG - smtp.google.com has 4 IP addresses of type A
+2023-03-15 08:58:45,706 - MECSA-ST - DEBUG - Server response: 220 b'mx.google.com ESMTP w13-20020a170906480d00b008d17b125783si5007292ejq.835 - gsmtp'
+2023-03-15 08:58:45,706 - MECSA-ST - DEBUG - processing STARTTLS... for MX smtp.google.com, IP 142.250.27.26
+2023-03-15 08:58:45,739 - MECSA-ST - DEBUG - ESMTP features announced: ({'size': '157286400', '8bitmime': '', 'starttls': '', 'enhancedstatuscodes': '', 'pipelining': '', 'chunking': '', 'smtputf8': ''})
+2023-03-15 08:58:45,739 - MECSA-ST - DEBUG - Starting STARTTLS...
+2023-03-15 08:58:45,768 - MECSA-ST - DEBUG - STARTTLS reply: b'2.0.0 Ready to start TLS'
+2023-03-15 08:58:45,769 - MECSA-ST - DEBUG - smtp.google.com, 142.250.27.26  Supports StartTLS
+2023-03-15 08:58:45,831 - MECSA-ST - DEBUG - Certificate: <X509Name object '/CN=mx.google.com'>
+2023-03-15 08:58:45,831 - MECSA-ST - DEBUG - Certificate: <X509Name object '/C=US/O=Google Trust Services LLC/CN=GTS CA 1C3'>
+2023-03-15 08:58:45,831 - MECSA-ST - DEBUG - Certificate: <X509Name object '/C=US/O=Google Trust Services LLC/CN=GTS Root R1'>
+2023-03-15 08:58:45,882 - MECSA-ST - DEBUG - Server response: 220 b'mx.google.com ESMTP uz15-20020a170907118f00b008dc4d55dda4si4957833ejb.705 - gsmtp'
+2023-03-15 08:58:45,882 - MECSA-ST - DEBUG - processing STARTTLS... for MX smtp.google.com, IP 142.250.27.27
+2023-03-15 08:58:45,946 - MECSA-ST - DEBUG - ESMTP features announced: ({'size': '157286400', '8bitmime': '', 'starttls': '', 'enhancedstatuscodes': '', 'pipelining': '', 'chunking': '', 'smtputf8': ''})
+2023-03-15 08:58:45,946 - MECSA-ST - DEBUG - Starting STARTTLS...
+2023-03-15 08:58:46,036 - MECSA-ST - DEBUG - STARTTLS reply: b'2.0.0 Ready to start TLS'
+2023-03-15 08:58:46,036 - MECSA-ST - DEBUG - smtp.google.com, 142.250.27.27  Supports StartTLS
+2023-03-15 08:58:46,091 - MECSA-ST - DEBUG - Certificate: <X509Name object '/CN=mx.google.com'>
+2023-03-15 08:58:46,091 - MECSA-ST - DEBUG - Certificate: <X509Name object '/C=US/O=Google Trust Services LLC/CN=GTS CA 1C3'>
+2023-03-15 08:58:46,092 - MECSA-ST - DEBUG - Certificate: <X509Name object '/C=US/O=Google Trust Services LLC/CN=GTS Root R1'>
+2023-03-15 08:58:46,212 - MECSA-ST - DEBUG - Server response: 220 b'mx.google.com ESMTP e16-20020a056402105000b004fac11e70adsi5036632edu.637 - gsmtp'
+2023-03-15 08:58:46,212 - MECSA-ST - DEBUG - processing STARTTLS... for MX smtp.google.com, IP 142.250.102.26
+2023-03-15 08:58:46,244 - MECSA-ST - DEBUG - ESMTP features announced: ({'size': '157286400', '8bitmime': '', 'starttls': '', 'enhancedstatuscodes': '', 'pipelining': '', 'chunking': '', 'smtputf8': ''})
+2023-03-15 08:58:46,245 - MECSA-ST - DEBUG - Starting STARTTLS...
+2023-03-15 08:58:46,275 - MECSA-ST - DEBUG - STARTTLS reply: b'2.0.0 Ready to start TLS'
+2023-03-15 08:58:46,276 - MECSA-ST - DEBUG - smtp.google.com, 142.250.102.26  Supports StartTLS
+2023-03-15 08:58:46,311 - MECSA-ST - DEBUG - Certificate: <X509Name object '/CN=mx.google.com'>
+2023-03-15 08:58:46,311 - MECSA-ST - DEBUG - Certificate: <X509Name object '/C=US/O=Google Trust Services LLC/CN=GTS CA 1C3'>
+2023-03-15 08:58:46,311 - MECSA-ST - DEBUG - Certificate: <X509Name object '/C=US/O=Google Trust Services LLC/CN=GTS Root R1'>
+2023-03-15 08:58:46,366 - MECSA-ST - DEBUG - Server response: 220 b'mx.google.com ESMTP a7-20020a170906468700b0091de5284eaasi5254313ejr.6 - gsmtp'
+2023-03-15 08:58:46,366 - MECSA-ST - DEBUG - processing STARTTLS... for MX smtp.google.com, IP 142.250.102.27
+2023-03-15 08:58:46,399 - MECSA-ST - DEBUG - ESMTP features announced: ({'size': '157286400', '8bitmime': '', 'starttls': '', 'enhancedstatuscodes': '', 'pipelining': '', 'chunking': '', 'smtputf8': ''})
+2023-03-15 08:58:46,399 - MECSA-ST - DEBUG - Starting STARTTLS...
+2023-03-15 08:58:46,429 - MECSA-ST - DEBUG - STARTTLS reply: b'2.0.0 Ready to start TLS'
+2023-03-15 08:58:46,429 - MECSA-ST - DEBUG - smtp.google.com, 142.250.102.27  Supports StartTLS
+2023-03-15 08:58:46,463 - MECSA-ST - DEBUG - Certificate: <X509Name object '/CN=mx.google.com'>
+2023-03-15 08:58:46,463 - MECSA-ST - DEBUG - Certificate: <X509Name object '/C=US/O=Google Trust Services LLC/CN=GTS CA 1C3'>
+2023-03-15 08:58:46,464 - MECSA-ST - DEBUG - Certificate: <X509Name object '/C=US/O=Google Trust Services LLC/CN=GTS Root R1'>
+2023-03-15 08:58:46,465 - MECSA-ST - INFO - --------> Init x509 test
+2023-03-15 08:58:46,469 - MECSA-ST - DEBUG - *** SAN Exact MATCH!: smtp.google.com - DNS:mx.google.com, DNS:smtp.google.com, DNS:aspmx.l.google.com, DNS:alt1.aspmx.l.google.com, DNS:alt2.aspmx.l.google.com, DNS:alt3.aspmx.l.google.com, DNS:alt4.aspmx.l.google.com, DNS:gmail-smtp-in.l.google.com, DNS:alt1.gmail-smtp-in.l.google.com, DNS:alt2.gmail-smtp-in.l.google.com, DNS:alt3.gmail-smtp-in.l.google.com, DNS:alt4.gmail-smtp-in.l.google.com, DNS:gmr-smtp-in.l.google.com, DNS:alt1.gmr-smtp-in.l.google.com, DNS:alt2.gmr-smtp-in.l.google.com, DNS:alt3.gmr-smtp-in.l.google.com, DNS:alt4.gmr-smtp-in.l.google.com, DNS:mx1.smtp.goog, DNS:mx2.smtp.goog, DNS:mx3.smtp.goog, DNS:mx4.smtp.goog, DNS:aspmx2.googlemail.com, DNS:aspmx3.googlemail.com, DNS:aspmx4.googlemail.com, DNS:aspmx5.googlemail.com, DNS:gmr-mx.google.com
+2023-03-15 08:58:46,563 - MECSA-ST - DEBUG - CRL obtained ONLINE. http://crls.pki.goog/gts1c3/QOvJ0N1sT2A.crl
+2023-03-15 08:58:46,577 - MECSA-ST - DEBUG - certificate is NOT self-signed [(b'C', b'US'), (b'O', b'Google Trust Services LLC'), (b'CN', b'GTS Root R1')] (unable to get local issuer certificate)
+2023-03-15 08:58:46,578 - MECSA-ST - DEBUG - certificate is NOT self-signed [(b'C', b'BE'), (b'O', b'GlobalSign nv-sa'), (b'OU', b'Root CA'), (b'CN', b'GlobalSign Root CA')] (unable to get local issuer certificate)
+2023-03-15 08:58:46,579 - MECSA-ST - WARNING - FAILED CA validation! subject: [(b'CN', b'mx.google.com')], issuer: [(b'C', b'US'), (b'O', b'Google Trust Services LLC'), (b'CN', b'GTS CA 1C3')] (unable to get issuer certificate)
+2023-03-15 08:58:46,580 - MECSA-ST - DEBUG - *** SAN Exact MATCH!: smtp.google.com - DNS:mx.google.com, DNS:smtp.google.com, DNS:aspmx.l.google.com, DNS:alt1.aspmx.l.google.com, DNS:alt2.aspmx.l.google.com, DNS:alt3.aspmx.l.google.com, DNS:alt4.aspmx.l.google.com, DNS:gmail-smtp-in.l.google.com, DNS:alt1.gmail-smtp-in.l.google.com, DNS:alt2.gmail-smtp-in.l.google.com, DNS:alt3.gmail-smtp-in.l.google.com, DNS:alt4.gmail-smtp-in.l.google.com, DNS:gmr-smtp-in.l.google.com, DNS:alt1.gmr-smtp-in.l.google.com, DNS:alt2.gmr-smtp-in.l.google.com, DNS:alt3.gmr-smtp-in.l.google.com, DNS:alt4.gmr-smtp-in.l.google.com, DNS:mx1.smtp.goog, DNS:mx2.smtp.goog, DNS:mx3.smtp.goog, DNS:mx4.smtp.goog, DNS:aspmx2.googlemail.com, DNS:aspmx3.googlemail.com, DNS:aspmx4.googlemail.com, DNS:aspmx5.googlemail.com, DNS:gmr-mx.google.com
+2023-03-15 08:58:46,582 - MECSA-ST - DEBUG - CRL obtained from CACHE. http://crls.pki.goog/gts1c3/QOvJ0N1sT2A.crl
+2023-03-15 08:58:46,598 - MECSA-ST - DEBUG - certificate is NOT self-signed [(b'C', b'US'), (b'O', b'Google Trust Services LLC'), (b'CN', b'GTS Root R1')] (unable to get local issuer certificate)
+2023-03-15 08:58:46,599 - MECSA-ST - DEBUG - certificate is NOT self-signed [(b'C', b'BE'), (b'O', b'GlobalSign nv-sa'), (b'OU', b'Root CA'), (b'CN', b'GlobalSign Root CA')] (unable to get local issuer certificate)
+2023-03-15 08:58:46,600 - MECSA-ST - WARNING - FAILED CA validation! subject: [(b'CN', b'mx.google.com')], issuer: [(b'C', b'US'), (b'O', b'Google Trust Services LLC'), (b'CN', b'GTS CA 1C3')] (unable to get issuer certificate)
+2023-03-15 08:58:46,603 - MECSA-ST - DEBUG - *** SAN Exact MATCH!: smtp.google.com - DNS:mx.google.com, DNS:smtp.google.com, DNS:aspmx.l.google.com, DNS:alt1.aspmx.l.google.com, DNS:alt2.aspmx.l.google.com, DNS:alt3.aspmx.l.google.com, DNS:alt4.aspmx.l.google.com, DNS:gmail-smtp-in.l.google.com, DNS:alt1.gmail-smtp-in.l.google.com, DNS:alt2.gmail-smtp-in.l.google.com, DNS:alt3.gmail-smtp-in.l.google.com, DNS:alt4.gmail-smtp-in.l.google.com, DNS:gmr-smtp-in.l.google.com, DNS:alt1.gmr-smtp-in.l.google.com, DNS:alt2.gmr-smtp-in.l.google.com, DNS:alt3.gmr-smtp-in.l.google.com, DNS:alt4.gmr-smtp-in.l.google.com, DNS:mx1.smtp.goog, DNS:mx2.smtp.goog, DNS:mx3.smtp.goog, DNS:mx4.smtp.goog, DNS:aspmx2.googlemail.com, DNS:aspmx3.googlemail.com, DNS:aspmx4.googlemail.com, DNS:aspmx5.googlemail.com, DNS:gmr-mx.google.com
+2023-03-15 08:58:46,604 - MECSA-ST - DEBUG - CRL obtained from CACHE. http://crls.pki.goog/gts1c3/QOvJ0N1sT2A.crl
+2023-03-15 08:58:46,620 - MECSA-ST - DEBUG - certificate is NOT self-signed [(b'C', b'US'), (b'O', b'Google Trust Services LLC'), (b'CN', b'GTS Root R1')] (unable to get local issuer certificate)
+2023-03-15 08:58:46,622 - MECSA-ST - DEBUG - certificate is NOT self-signed [(b'C', b'BE'), (b'O', b'GlobalSign nv-sa'), (b'OU', b'Root CA'), (b'CN', b'GlobalSign Root CA')] (unable to get local issuer certificate)
+2023-03-15 08:58:46,624 - MECSA-ST - WARNING - FAILED CA validation! subject: [(b'CN', b'mx.google.com')], issuer: [(b'C', b'US'), (b'O', b'Google Trust Services LLC'), (b'CN', b'GTS CA 1C3')] (unable to get issuer certificate)
+2023-03-15 08:58:46,625 - MECSA-ST - DEBUG - *** SAN Exact MATCH!: smtp.google.com - DNS:mx.google.com, DNS:smtp.google.com, DNS:aspmx.l.google.com, DNS:alt1.aspmx.l.google.com, DNS:alt2.aspmx.l.google.com, DNS:alt3.aspmx.l.google.com, DNS:alt4.aspmx.l.google.com, DNS:gmail-smtp-in.l.google.com, DNS:alt1.gmail-smtp-in.l.google.com, DNS:alt2.gmail-smtp-in.l.google.com, DNS:alt3.gmail-smtp-in.l.google.com, DNS:alt4.gmail-smtp-in.l.google.com, DNS:gmr-smtp-in.l.google.com, DNS:alt1.gmr-smtp-in.l.google.com, DNS:alt2.gmr-smtp-in.l.google.com, DNS:alt3.gmr-smtp-in.l.google.com, DNS:alt4.gmr-smtp-in.l.google.com, DNS:mx1.smtp.goog, DNS:mx2.smtp.goog, DNS:mx3.smtp.goog, DNS:mx4.smtp.goog, DNS:aspmx2.googlemail.com, DNS:aspmx3.googlemail.com, DNS:aspmx4.googlemail.com, DNS:aspmx5.googlemail.com, DNS:gmr-mx.google.com
+2023-03-15 08:58:46,627 - MECSA-ST - DEBUG - CRL obtained from CACHE. http://crls.pki.goog/gts1c3/QOvJ0N1sT2A.crl
+2023-03-15 08:58:46,638 - MECSA-ST - DEBUG - certificate is NOT self-signed [(b'C', b'US'), (b'O', b'Google Trust Services LLC'), (b'CN', b'GTS Root R1')] (unable to get local issuer certificate)
+2023-03-15 08:58:46,639 - MECSA-ST - DEBUG - certificate is NOT self-signed [(b'C', b'BE'), (b'O', b'GlobalSign nv-sa'), (b'OU', b'Root CA'), (b'CN', b'GlobalSign Root CA')] (unable to get local issuer certificate)
+2023-03-15 08:58:46,640 - MECSA-ST - WARNING - FAILED CA validation! subject: [(b'CN', b'mx.google.com')], issuer: [(b'C', b'US'), (b'O', b'Google Trust Services LLC'), (b'CN', b'GTS CA 1C3')] (unable to get issuer certificate)
+2023-03-15 08:58:46,640 - MECSA-ST - INFO - --------> Init SPF test
+2023-03-15 08:58:46,640 - MECSA-ST - DEBUG - sending DNS TXT request for domain google.com
+2023-03-15 08:58:46,845 - MECSA-ST - DEBUG - SPF-SYNTAX-CHECK: softfail 250 domain owner discourages use of this host
+2023-03-15 08:58:46,845 - MECSA-ST - INFO - --------> Init DKIM test
+2023-03-15 08:58:46,951 - MECSA-ST - INFO - DKIM for domain _domainkey.google.com with NS (['216.239.32.10', '216.239.38.10', '216.239.34.10', '216.239.36.10'])
+2023-03-15 08:58:46,980 - MECSA-ST - WARNING - NoAnswer: _domainkey.google.com [DKIM]
+2023-03-15 08:58:46,980 - MECSA-ST - INFO - --------> Init TLS RPT test
+2023-03-15 08:58:46,980 - MECSA-ST - DEBUG - sending DNS TXT request for domain google.com
+2023-03-15 08:58:47,006 - MECSA-ST - INFO - --------> Init DMARC test
+2023-03-15 08:58:47,034 - MECSA-ST - INFO - --------> Init TLSA test
+2023-03-15 08:58:48,182 - MECSA-ST - WARNING - ['test_tlsa, NoAnswer: smtp.google.com [TLSA]']
+2023-03-15 08:58:48,183 - MECSA-ST - INFO - --------> Init DNSSEC test (['TXT', 'TXT', 'DMARC'])
+2023-03-15 08:58:48,183 - MECSA-ST - DEBUG - Sending DNS request for type google.com. and domain MX
+2023-03-15 08:58:48,204 - MECSA-ST - DEBUG - Sending DNS request for type smtp.google.com and domain A
+2023-03-15 08:58:48,223 - MECSA-ST - DEBUG - Sending DNS request for type smtp.google.com and domain A
+2023-03-15 08:58:48,244 - MECSA-ST - DEBUG - Sending DNS request for type smtp.google.com and domain A
+2023-03-15 08:58:48,278 - MECSA-ST - DEBUG - Sending DNS request for type smtp.google.com and domain A
+2023-03-15 08:58:48,317 - MECSA-ST - DEBUG - Sending DNS request for type google.com. and domain TXT
+2023-03-15 08:58:48,337 - MECSA-ST - DEBUG - Sending DNS request for type _dmarc.google.com. and domain TXT
+2023-03-15 08:58:48,372 - MECSA-ST - INFO - DNSSEC-TEST [MX]: check if domain google.com. is DNSSEC
+2023-03-15 08:58:48,372 - MECSA-ST - DEBUG - -----> DNSSEC Testing google.com.
+2023-03-15 08:58:48,372 - MECSA-ST - DEBUG - Select SOA results NOT found in Cache for google.com.
+2023-03-15 08:58:48,508 - MECSA-ST - DEBUG - [SOA Resolver] Domain google.com. IS SOA.
+2023-03-15 08:58:48,508 - MECSA-ST - DEBUG - Select SOA results NOT found in Cache for com.
+2023-03-15 08:58:48,662 - MECSA-ST - DEBUG - [SOA Resolver] Domain com. IS SOA.
+2023-03-15 08:58:48,662 - MECSA-ST - DEBUG - Select SOA results NOT found in Cache for .
+2023-03-15 08:58:48,813 - MECSA-ST - DEBUG - [SOA Resolver] Domain . IS SOA.
+2023-03-15 08:58:48,813 - MECSA-ST - DEBUG -  Chain of children-parent: [{'children': {'domain': 'com.', 'ns': '192.54.112.30,192.31.80.30,192.5.6.30,192.43.172.30,192.26.92.30,192.33.14.30,192.55.83.30,192.12.94.30,192.42.93.30,192.41.162.30,192.52.178.30,192.48.79.30,192.35.51.30'}, 'parent': {'domain': '.', 'ns': '192.112.36.4,192.58.128.30,192.203.230.10,199.7.83.42,199.7.91.13,198.41.0.4,199.9.14.201,192.36.148.17,202.12.27.33,198.97.190.53,192.33.4.12,193.0.14.129,192.5.5.241'}}, {'children': {'domain': 'google.com.', 'ns': '216.239.36.10,216.239.32.10,216.239.38.10,216.239.34.10'}, 'parent': {'domain': 'com.', 'ns': '192.54.112.30,192.31.80.30,192.5.6.30,192.43.172.30,192.26.92.30,192.33.14.30,192.55.83.30,192.12.94.30,192.42.93.30,192.41.162.30,192.52.178.30,192.48.79.30,192.35.51.30'}}]
+2023-03-15 08:58:48,813 - MECSA-ST - DEBUG - Trust Chain: [{'children': {'domain': 'com.', 'ns': '192.54.112.30,192.31.80.30,192.5.6.30,192.43.172.30,192.26.92.30,192.33.14.30,192.55.83.30,192.12.94.30,192.42.93.30,192.41.162.30,192.52.178.30,192.48.79.30,192.35.51.30'}, 'parent': {'domain': '.', 'ns': '192.112.36.4,192.58.128.30,192.203.230.10,199.7.83.42,199.7.91.13,198.41.0.4,199.9.14.201,192.36.148.17,202.12.27.33,198.97.190.53,192.33.4.12,193.0.14.129,192.5.5.241'}}, {'children': {'domain': 'google.com.', 'ns': '216.239.36.10,216.239.32.10,216.239.38.10,216.239.34.10'}, 'parent': {'domain': 'com.', 'ns': '192.54.112.30,192.31.80.30,192.5.6.30,192.43.172.30,192.26.92.30,192.33.14.30,192.55.83.30,192.12.94.30,192.42.93.30,192.41.162.30,192.52.178.30,192.48.79.30,192.35.51.30'}}] 
+2023-03-15 08:58:49,454 - MECSA-ST - DEBUG - com. has DS records? True
+2023-03-15 08:58:49,499 - MECSA-ST - WARNING - Validating DNSKEYS com. (module 'dns' has no attribute 'dnssec')
+2023-03-15 08:58:49,500 - MECSA-ST - DEBUG - com. has DNSKEYS? False
+2023-03-15 08:58:49,500 - MECSA-ST - INFO - ---> Init MTA-STS test on domain google.com
+2023-03-15 08:58:49,500 - MECSA-ST - DEBUG - sending DNS TXT request for domain _mta-sts.google.com
+2023-03-15 08:58:49,529 - MECSA-ST - DEBUG - DNS-MTA-STS-SYNTAX-CHECK: v=STSv1; id=20210803T010101; 
+2023-03-15 08:58:49,529 - MECSA-ST - DEBUG - sending POLICY request for domain mta-sts.google.com/.well-known/mta-sts.txt 
+2023-03-15 08:58:49,652 - MECSA-ST - DEBUG - KEY: version; VALUE:  STSv1
+2023-03-15 08:58:49,652 - MECSA-ST - DEBUG - KEY: mode; VALUE:  enforce
+2023-03-15 08:58:49,652 - MECSA-ST - DEBUG - KEY: mx; VALUE:  smtp.google.com
+2023-03-15 08:58:49,652 - MECSA-ST - DEBUG - KEY: mx; VALUE:  aspmx.l.google.com
+2023-03-15 08:58:49,652 - MECSA-ST - DEBUG - KEY: mx; VALUE:  *.aspmx.l.google.com
+2023-03-15 08:58:49,652 - MECSA-ST - DEBUG - KEY: max_age; VALUE:  86400
+2023-03-15 08:58:49,652 - MECSA-ST - DEBUG - Content/Type: text/plain
+2023-03-15 08:58:49,652 - MECSA-ST - DEBUG - request POLICY response:  {'version': 'STSv1', 'mode': 'enforce', 'mx': 'smtp.google.com,aspmx.l.google.com,*.aspmx.l.google.com', 'max_age': '86400', 'error': None} 
+2023-03-15 08:58:49,652 - MECSA-ST - DEBUG - POLICY-MTA-STS-SYNTAX-CHECK: {'version': 'STSv1', 'mode': 'enforce', 'mx': 'smtp.google.com,aspmx.l.google.com,*.aspmx.l.google.com', 'max_age': '86400', 'error': None} (v=STSv1; id=20210803T010101;)
+2023-03-15 08:58:49,652 - MECSA-ST - DEBUG - [MTA-STS] Testing if MX smtp.google.com matches Policy smtp.google.com
+2023-03-15 08:58:49,652 - MECSA-ST - DEBUG - [MTA-STS] Exact MATCH!: smtp.google.com - smtp.google.com
+2023-03-15 08:58:49,652 - MECSA-ST - DEBUG - [MTA-STS] Testing if MX smtp.google.com matches Policy smtp.google.com
+2023-03-15 08:58:49,652 - MECSA-ST - DEBUG - [MTA-STS] Exact MATCH!: smtp.google.com - smtp.google.com
+2023-03-15 08:58:49,653 - MECSA-ST - DEBUG - [MTA-STS] Testing if MX smtp.google.com matches Policy smtp.google.com
+2023-03-15 08:58:49,653 - MECSA-ST - DEBUG - [MTA-STS] Exact MATCH!: smtp.google.com - smtp.google.com
+2023-03-15 08:58:49,653 - MECSA-ST - DEBUG - [MTA-STS] Testing if MX smtp.google.com matches Policy smtp.google.com
+2023-03-15 08:58:49,653 - MECSA-ST - DEBUG - [MTA-STS] Exact MATCH!: smtp.google.com - smtp.google.com
+2023-03-15 08:58:49,654 - MECSA-ST - INFO - Summary confidentiality protocols supported: starttls,mta-sts
+2023-03-15 08:58:49,654 - MECSA-ST - DEBUG - Found coincidence in the scoring table for 'confidentiality' - starttls,mta-sts 6
+2023-03-15 08:58:49,654 - MECSA-ST - INFO - Summary spoofing protocols supported: spf,spf_policy,dkim,dmarc,dmarc_policy
+2023-03-15 08:58:49,654 - MECSA-ST - DEBUG - Found coincidence in the scoring table for 'spoofing' - spf,spf_policy,dkim,dmarc,dmarc_policy 8
+2023-03-15 08:58:49,654 - MECSA-ST - INFO - Summary integrity protocols supported: dkim,dmarc,dmarc_policy
+2023-03-15 08:58:49,655 - MECSA-ST - DEBUG - Found coincidence in the scoring table for 'integrity' - dkim,dmarc,dmarc_policy 7
+2023-03-15 08:58:49,655 - MECSA-ST - INFO - 
+
+
+
+---- REPORT FOR DOMAIN google.com -----
+2023-03-15 08:58:49,655 - MECSA-ST - INFO - ---- domain has 4 MX records. 
+2023-03-15 08:58:49,655 - MECSA-ST - INFO - ---- STARTTLS ENABLED smtp.google.com 142.250.27.26 10   
+2023-03-15 08:58:49,655 - MECSA-ST - INFO - -------- StartTLS announced: True
+2023-03-15 08:58:49,655 - MECSA-ST - INFO - -------- REQUIRETLS DISABLED
+2023-03-15 08:58:49,655 - MECSA-ST - INFO - -------- Using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits) (protocol, cipher, keysize)
+2023-03-15 08:58:49,655 - MECSA-ST - INFO - -------- x509 CA validated False
+2023-03-15 08:58:49,655 - MECSA-ST - INFO - -------- x509 FQDN match MX True
+2023-03-15 08:58:49,655 - MECSA-ST - INFO - -------- x509 Date Valid  True
+2023-03-15 08:58:49,655 - MECSA-ST - INFO - -------- x509 Revocated False
+2023-03-15 08:58:49,655 - MECSA-ST - INFO - -------- DANE DISABLED
+2023-03-15 08:58:49,655 - MECSA-ST - INFO - -------- TLSA record False
+2023-03-15 08:58:49,656 - MECSA-ST - INFO - -------- MTA-STS MX COMPLIES with POLICY
+2023-03-15 08:58:49,656 - MECSA-ST - INFO - ---- STARTTLS ENABLED smtp.google.com 142.250.27.27 10   
+2023-03-15 08:58:49,656 - MECSA-ST - INFO - -------- StartTLS announced: True
+2023-03-15 08:58:49,656 - MECSA-ST - INFO - -------- REQUIRETLS DISABLED
+2023-03-15 08:58:49,656 - MECSA-ST - INFO - -------- Using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits) (protocol, cipher, keysize)
+2023-03-15 08:58:49,656 - MECSA-ST - INFO - -------- x509 CA validated False
+2023-03-15 08:58:49,656 - MECSA-ST - INFO - -------- x509 FQDN match MX True
+2023-03-15 08:58:49,656 - MECSA-ST - INFO - -------- x509 Date Valid  True
+2023-03-15 08:58:49,656 - MECSA-ST - INFO - -------- x509 Revocated False
+2023-03-15 08:58:49,656 - MECSA-ST - INFO - -------- DANE DISABLED
+2023-03-15 08:58:49,656 - MECSA-ST - INFO - -------- TLSA record False
+2023-03-15 08:58:49,656 - MECSA-ST - INFO - -------- MTA-STS MX COMPLIES with POLICY
+2023-03-15 08:58:49,656 - MECSA-ST - INFO - ---- STARTTLS ENABLED smtp.google.com 142.250.102.26 10   
+2023-03-15 08:58:49,656 - MECSA-ST - INFO - -------- StartTLS announced: True
+2023-03-15 08:58:49,656 - MECSA-ST - INFO - -------- REQUIRETLS DISABLED
+2023-03-15 08:58:49,657 - MECSA-ST - INFO - -------- Using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits) (protocol, cipher, keysize)
+2023-03-15 08:58:49,657 - MECSA-ST - INFO - -------- x509 CA validated False
+2023-03-15 08:58:49,657 - MECSA-ST - INFO - -------- x509 FQDN match MX True
+2023-03-15 08:58:49,657 - MECSA-ST - INFO - -------- x509 Date Valid  True
+2023-03-15 08:58:49,657 - MECSA-ST - INFO - -------- x509 Revocated False
+2023-03-15 08:58:49,657 - MECSA-ST - INFO - -------- DANE DISABLED
+2023-03-15 08:58:49,657 - MECSA-ST - INFO - -------- TLSA record False
+2023-03-15 08:58:49,657 - MECSA-ST - INFO - -------- MTA-STS MX COMPLIES with POLICY
+2023-03-15 08:58:49,657 - MECSA-ST - INFO - ---- STARTTLS ENABLED smtp.google.com 142.250.102.27 10   
+2023-03-15 08:58:49,658 - MECSA-ST - INFO - -------- StartTLS announced: True
+2023-03-15 08:58:49,658 - MECSA-ST - INFO - -------- REQUIRETLS DISABLED
+2023-03-15 08:58:49,658 - MECSA-ST - INFO - -------- Using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits) (protocol, cipher, keysize)
+2023-03-15 08:58:49,658 - MECSA-ST - INFO - -------- x509 CA validated False
+2023-03-15 08:58:49,658 - MECSA-ST - INFO - -------- x509 FQDN match MX True
+2023-03-15 08:58:49,658 - MECSA-ST - INFO - -------- x509 Date Valid  True
+2023-03-15 08:58:49,658 - MECSA-ST - INFO - -------- x509 Revocated False
+2023-03-15 08:58:49,658 - MECSA-ST - INFO - -------- DANE DISABLED
+2023-03-15 08:58:49,658 - MECSA-ST - INFO - -------- TLSA record False
+2023-03-15 08:58:49,658 - MECSA-ST - INFO - -------- MTA-STS MX COMPLIES with POLICY
+2023-03-15 08:58:49,659 - MECSA-ST - INFO - ---- SPF ENABLED
+2023-03-15 08:58:49,659 - MECSA-ST - INFO - -------- spf record: v=spf1 include:_spf.google.com ~all 
+2023-03-15 08:58:49,659 - MECSA-ST - INFO - ---- TLS RPT ENABLED
+2023-03-15 08:58:49,659 - MECSA-ST - INFO - -------- tlsrpt record: v=TLSRPTv1;rua=mailto:sts-reports@google.com 
+2023-03-15 08:58:49,659 - MECSA-ST - INFO - ---- DKIM ENABLED
+2023-03-15 08:58:49,659 - MECSA-ST - INFO - -------- test response: NoAnswer: _domainkey.google.com [DKIM] 
+2023-03-15 08:58:49,659 - MECSA-ST - INFO - ---- DMARC ENABLED
+2023-03-15 08:58:49,659 - MECSA-ST - INFO - -------- dmarc record: v=DMARC1; p=reject; rua=mailto:mailauth-reports@google.com
+2023-03-15 08:58:49,659 - MECSA-ST - INFO - ---- DNSSEC DISABLED
+2023-03-15 08:58:49,660 - MECSA-ST - INFO - -------- dnssec MX False
+2023-03-15 08:58:49,660 - MECSA-ST - INFO - -------- dnssec MX-A False
+2023-03-15 08:58:49,660 - MECSA-ST - INFO - -------- dnssec TXT False
+2023-03-15 08:58:49,660 - MECSA-ST - INFO - -------- dnssec DMARC False
+2023-03-15 08:58:49,660 - MECSA-ST - INFO - -------- error Validating DNSKEYS com. (module 'dns' has no attribute 'dnssec')
+2023-03-15 08:58:49,660 - MECSA-ST - INFO - ---- MTA-STS ENABLED :
+2023-03-15 08:58:49,660 - MECSA-ST - INFO - -------- DNS Record      : v=STSv1; id=20210803T010101;
+2023-03-15 08:58:49,660 - MECSA-ST - INFO - -------- Policy Version  : STSv1
+2023-03-15 08:58:49,660 - MECSA-ST - INFO - -------- Policy Mode     : enforce
+2023-03-15 08:58:49,660 - MECSA-ST - INFO - -------- Policy MX       : smtp.google.com,aspmx.l.google.com,*.aspmx.l.google.com
+2023-03-15 08:58:49,660 - MECSA-ST - INFO - -------- Policy max-age  : 86400
+2023-03-15 08:58:49,660 - MECSA-ST - INFO - ---------------------------------------------------------------------------
+
+2023-03-15 08:58:49,660 - MECSA-ST - INFO - ---> SUMMARY REPORT for domain google.com  --------------------------------------
+2023-03-15 08:58:49,660 - MECSA-ST - INFO - ---> 
+2023-03-15 08:58:49,660 - MECSA-ST - INFO - ---> Confidentiality 3.0
+2023-03-15 08:58:49,660 - MECSA-ST - INFO - ---> Spoofing        4.0
+2023-03-15 08:58:49,660 - MECSA-ST - INFO - ---> Integrity       3.5
+2023-03-15 08:58:49,660 - MECSA-ST - INFO - ---> 
+2023-03-15 08:58:49,661 - MECSA-ST - INFO - ---> **** Confidentiality evaluated on: starttls,x509,dane,dnssec,mta-sts
+2023-03-15 08:58:49,661 - MECSA-ST - INFO - ---> **** Missing                     : x509,dane,dnssec
+2023-03-15 08:58:49,661 - MECSA-ST - INFO - ---> ****  ****
+2023-03-15 08:58:49,661 - MECSA-ST - INFO - ---> **** Spoofing evaluated on       : spf,spf_policy,dkim,dmarc,dmarc_policy,dnssec
+2023-03-15 08:58:49,661 - MECSA-ST - INFO - ---> **** Missing                     : dnssec
+2023-03-15 08:58:49,661 - MECSA-ST - INFO - ---> ****  ****
+2023-03-15 08:58:49,661 - MECSA-ST - INFO - ---> **** Integrity evaluated on      : dkim,dmarc,dmarc_policy,dnssec
+2023-03-15 08:58:49,661 - MECSA-ST - INFO - ---> **** Missing                     : dnssec
+2023-03-15 08:58:49,661 - MECSA-ST - INFO - ---> ****  ****
+2023-03-15 08:58:49,661 - MECSA-ST - INFO - ---> **** These results might differ from the ones given by the MECSA platform ****
+2023-03-15 08:58:49,661 - MECSA-ST - INFO - ---> **** because we have less data. MECSA also has outbound tests:            ****
+2023-03-15 08:58:49,661 - MECSA-ST - INFO - ---> **** _ StartTLS check on email delivery                                   ****
+2023-03-15 08:58:49,661 - MECSA-ST - INFO - ---> **** _ SPF policy verification on delivery servers                        ****
+2023-03-15 08:58:49,661 - MECSA-ST - INFO - ---> **** _ DKIM signature check                                               ****
+2023-03-15 08:58:49,661 - MECSA-ST - INFO - ---> ****                                                                      ****
+2023-03-15 08:58:49,661 - MECSA-ST - INFO - ---> **** https://mecsa.jrc.ec.europa.eu                                       ****
+2023-03-15 08:58:49,661 - MECSA-ST - INFO - ---> 
+2023-03-15 08:58:49,662 - MECSA-ST - INFO - ---> END of TEST -----------------------------------------------------------
+
+2023-03-15 09:09:01,346 - MECSA-ST - INFO - Joint Research Centre (JRC) - E.3 Cyber and Digital Citizen's Security
+2023-03-15 09:09:01,348 - MECSA-ST - INFO - mecsa-st v2.5
+2023-03-15 09:09:01,348 - MECSA-ST - INFO - 
+2023-03-15 09:09:01,422 - MECSA-ST - ERROR - loading CAs from /etc/ssl/certs/ca-certificates.crt ([Errno 2] No such file or directory)
+2023-03-15 09:09:01,431 - MECSA-ST - DEBUG - ---- TLDS LIST SIZE 10406 -----
+2023-03-15 09:09:01,431 - MECSA-ST - INFO - ---> Init test on domain google.com
+2023-03-15 09:09:01,431 - MECSA-ST - INFO - --------> Init StartTLS test
+2023-03-15 09:09:01,431 - MECSA-ST - DEBUG - sending DNS MX request for domain google.com
+2023-03-15 09:09:01,453 - MECSA-ST - DEBUG - google.com has 1 MX records
+2023-03-15 09:09:01,453 - MECSA-ST - DEBUG - sending DNS A request for MX smtp.google.com
+2023-03-15 09:09:01,464 - MECSA-ST - DEBUG - smtp.google.com has 4 IP addresses of type A
+2023-03-15 09:09:01,517 - MECSA-ST - DEBUG - Server response: 220 b'mx.google.com ESMTP nb36-20020a1709071ca400b0092f657cef1dsi249149ejc.881 - gsmtp'
+2023-03-15 09:09:01,517 - MECSA-ST - DEBUG - processing STARTTLS... for MX smtp.google.com, IP 142.250.27.26
+2023-03-15 09:09:01,546 - MECSA-ST - DEBUG - ESMTP features announced: ({'size': '157286400', '8bitmime': '', 'starttls': '', 'enhancedstatuscodes': '', 'pipelining': '', 'chunking': '', 'smtputf8': ''})
+2023-03-15 09:09:01,546 - MECSA-ST - DEBUG - Starting STARTTLS...
+2023-03-15 09:09:01,572 - MECSA-ST - DEBUG - STARTTLS reply: b'2.0.0 Ready to start TLS'
+2023-03-15 09:09:01,572 - MECSA-ST - DEBUG - smtp.google.com, 142.250.27.26  Supports StartTLS
+2023-03-15 09:09:01,811 - MECSA-ST - DEBUG - Certificate: <X509Name object '/CN=mx.google.com'>
+2023-03-15 09:09:01,811 - MECSA-ST - DEBUG - Certificate: <X509Name object '/C=US/O=Google Trust Services LLC/CN=GTS CA 1C3'>
+2023-03-15 09:09:01,811 - MECSA-ST - DEBUG - Certificate: <X509Name object '/C=US/O=Google Trust Services LLC/CN=GTS Root R1'>
+2023-03-15 09:09:01,863 - MECSA-ST - DEBUG - Server response: 220 b'mx.google.com ESMTP q21-20020a1709066ad500b008c0f56c2b50si4773151ejs.421 - gsmtp'
+2023-03-15 09:09:01,864 - MECSA-ST - DEBUG - processing STARTTLS... for MX smtp.google.com, IP 142.250.27.27
+2023-03-15 09:09:01,892 - MECSA-ST - DEBUG - ESMTP features announced: ({'size': '157286400', '8bitmime': '', 'starttls': '', 'enhancedstatuscodes': '', 'pipelining': '', 'chunking': '', 'smtputf8': ''})
+2023-03-15 09:09:01,892 - MECSA-ST - DEBUG - Starting STARTTLS...
+2023-03-15 09:09:01,918 - MECSA-ST - DEBUG - STARTTLS reply: b'2.0.0 Ready to start TLS'
+2023-03-15 09:09:01,919 - MECSA-ST - DEBUG - smtp.google.com, 142.250.27.27  Supports StartTLS
+2023-03-15 09:09:01,949 - MECSA-ST - DEBUG - Certificate: <X509Name object '/CN=mx.google.com'>
+2023-03-15 09:09:01,950 - MECSA-ST - DEBUG - Certificate: <X509Name object '/C=US/O=Google Trust Services LLC/CN=GTS CA 1C3'>
+2023-03-15 09:09:01,950 - MECSA-ST - DEBUG - Certificate: <X509Name object '/C=US/O=Google Trust Services LLC/CN=GTS Root R1'>
+2023-03-15 09:09:02,014 - MECSA-ST - DEBUG - Server response: 220 b'mx.google.com ESMTP w9-20020a50fa89000000b004c698b50197si4742813edr.342 - gsmtp'
+2023-03-15 09:09:02,014 - MECSA-ST - DEBUG - processing STARTTLS... for MX smtp.google.com, IP 142.250.102.27
+2023-03-15 09:09:02,049 - MECSA-ST - DEBUG - ESMTP features announced: ({'size': '157286400', '8bitmime': '', 'starttls': '', 'enhancedstatuscodes': '', 'pipelining': '', 'chunking': '', 'smtputf8': ''})
+2023-03-15 09:09:02,049 - MECSA-ST - DEBUG - Starting STARTTLS...
+2023-03-15 09:09:02,083 - MECSA-ST - DEBUG - STARTTLS reply: b'2.0.0 Ready to start TLS'
+2023-03-15 09:09:02,083 - MECSA-ST - DEBUG - smtp.google.com, 142.250.102.27  Supports StartTLS
+2023-03-15 09:09:02,120 - MECSA-ST - DEBUG - Certificate: <X509Name object '/CN=mx.google.com'>
+2023-03-15 09:09:02,120 - MECSA-ST - DEBUG - Certificate: <X509Name object '/C=US/O=Google Trust Services LLC/CN=GTS CA 1C3'>
+2023-03-15 09:09:02,120 - MECSA-ST - DEBUG - Certificate: <X509Name object '/C=US/O=Google Trust Services LLC/CN=GTS Root R1'>
+2023-03-15 09:09:02,187 - MECSA-ST - DEBUG - Server response: 220 b'mx.google.com ESMTP b18-20020a05640202d200b004c125eb673csi4866235edx.23 - gsmtp'
+2023-03-15 09:09:02,187 - MECSA-ST - DEBUG - processing STARTTLS... for MX smtp.google.com, IP 142.250.102.26
+2023-03-15 09:09:02,223 - MECSA-ST - DEBUG - ESMTP features announced: ({'size': '157286400', '8bitmime': '', 'starttls': '', 'enhancedstatuscodes': '', 'pipelining': '', 'chunking': '', 'smtputf8': ''})
+2023-03-15 09:09:02,223 - MECSA-ST - DEBUG - Starting STARTTLS...
+2023-03-15 09:09:02,258 - MECSA-ST - DEBUG - STARTTLS reply: b'2.0.0 Ready to start TLS'
+2023-03-15 09:09:02,258 - MECSA-ST - DEBUG - smtp.google.com, 142.250.102.26  Supports StartTLS
+2023-03-15 09:09:02,295 - MECSA-ST - DEBUG - Certificate: <X509Name object '/CN=mx.google.com'>
+2023-03-15 09:09:02,296 - MECSA-ST - DEBUG - Certificate: <X509Name object '/C=US/O=Google Trust Services LLC/CN=GTS CA 1C3'>
+2023-03-15 09:09:02,296 - MECSA-ST - DEBUG - Certificate: <X509Name object '/C=US/O=Google Trust Services LLC/CN=GTS Root R1'>
+2023-03-15 09:09:02,296 - MECSA-ST - INFO - --------> Init x509 test
+2023-03-15 09:09:02,299 - MECSA-ST - DEBUG - *** SAN Exact MATCH!: smtp.google.com - DNS:mx.google.com, DNS:smtp.google.com, DNS:aspmx.l.google.com, DNS:alt1.aspmx.l.google.com, DNS:alt2.aspmx.l.google.com, DNS:alt3.aspmx.l.google.com, DNS:alt4.aspmx.l.google.com, DNS:gmail-smtp-in.l.google.com, DNS:alt1.gmail-smtp-in.l.google.com, DNS:alt2.gmail-smtp-in.l.google.com, DNS:alt3.gmail-smtp-in.l.google.com, DNS:alt4.gmail-smtp-in.l.google.com, DNS:gmr-smtp-in.l.google.com, DNS:alt1.gmr-smtp-in.l.google.com, DNS:alt2.gmr-smtp-in.l.google.com, DNS:alt3.gmr-smtp-in.l.google.com, DNS:alt4.gmr-smtp-in.l.google.com, DNS:mx1.smtp.goog, DNS:mx2.smtp.goog, DNS:mx3.smtp.goog, DNS:mx4.smtp.goog, DNS:aspmx2.googlemail.com, DNS:aspmx3.googlemail.com, DNS:aspmx4.googlemail.com, DNS:aspmx5.googlemail.com, DNS:gmr-mx.google.com
+2023-03-15 09:09:02,348 - MECSA-ST - DEBUG - CRL obtained ONLINE. http://crls.pki.goog/gts1c3/QOvJ0N1sT2A.crl
+2023-03-15 09:09:02,362 - MECSA-ST - DEBUG - certificate is NOT self-signed [(b'C', b'US'), (b'O', b'Google Trust Services LLC'), (b'CN', b'GTS Root R1')] (unable to get local issuer certificate)
+2023-03-15 09:09:02,363 - MECSA-ST - DEBUG - certificate is NOT self-signed [(b'C', b'BE'), (b'O', b'GlobalSign nv-sa'), (b'OU', b'Root CA'), (b'CN', b'GlobalSign Root CA')] (unable to get local issuer certificate)
+2023-03-15 09:09:02,364 - MECSA-ST - WARNING - FAILED CA validation! subject: [(b'CN', b'mx.google.com')], issuer: [(b'C', b'US'), (b'O', b'Google Trust Services LLC'), (b'CN', b'GTS CA 1C3')] (unable to get issuer certificate)
+2023-03-15 09:09:02,365 - MECSA-ST - DEBUG - *** SAN Exact MATCH!: smtp.google.com - DNS:mx.google.com, DNS:smtp.google.com, DNS:aspmx.l.google.com, DNS:alt1.aspmx.l.google.com, DNS:alt2.aspmx.l.google.com, DNS:alt3.aspmx.l.google.com, DNS:alt4.aspmx.l.google.com, DNS:gmail-smtp-in.l.google.com, DNS:alt1.gmail-smtp-in.l.google.com, DNS:alt2.gmail-smtp-in.l.google.com, DNS:alt3.gmail-smtp-in.l.google.com, DNS:alt4.gmail-smtp-in.l.google.com, DNS:gmr-smtp-in.l.google.com, DNS:alt1.gmr-smtp-in.l.google.com, DNS:alt2.gmr-smtp-in.l.google.com, DNS:alt3.gmr-smtp-in.l.google.com, DNS:alt4.gmr-smtp-in.l.google.com, DNS:mx1.smtp.goog, DNS:mx2.smtp.goog, DNS:mx3.smtp.goog, DNS:mx4.smtp.goog, DNS:aspmx2.googlemail.com, DNS:aspmx3.googlemail.com, DNS:aspmx4.googlemail.com, DNS:aspmx5.googlemail.com, DNS:gmr-mx.google.com
+2023-03-15 09:09:02,367 - MECSA-ST - DEBUG - CRL obtained from CACHE. http://crls.pki.goog/gts1c3/QOvJ0N1sT2A.crl
+2023-03-15 09:09:02,373 - MECSA-ST - DEBUG - certificate is NOT self-signed [(b'C', b'US'), (b'O', b'Google Trust Services LLC'), (b'CN', b'GTS Root R1')] (unable to get local issuer certificate)
+2023-03-15 09:09:02,373 - MECSA-ST - DEBUG - certificate is NOT self-signed [(b'C', b'BE'), (b'O', b'GlobalSign nv-sa'), (b'OU', b'Root CA'), (b'CN', b'GlobalSign Root CA')] (unable to get local issuer certificate)
+2023-03-15 09:09:02,374 - MECSA-ST - WARNING - FAILED CA validation! subject: [(b'CN', b'mx.google.com')], issuer: [(b'C', b'US'), (b'O', b'Google Trust Services LLC'), (b'CN', b'GTS CA 1C3')] (unable to get issuer certificate)
+2023-03-15 09:09:02,375 - MECSA-ST - DEBUG - *** SAN Exact MATCH!: smtp.google.com - DNS:mx.google.com, DNS:smtp.google.com, DNS:aspmx.l.google.com, DNS:alt1.aspmx.l.google.com, DNS:alt2.aspmx.l.google.com, DNS:alt3.aspmx.l.google.com, DNS:alt4.aspmx.l.google.com, DNS:gmail-smtp-in.l.google.com, DNS:alt1.gmail-smtp-in.l.google.com, DNS:alt2.gmail-smtp-in.l.google.com, DNS:alt3.gmail-smtp-in.l.google.com, DNS:alt4.gmail-smtp-in.l.google.com, DNS:gmr-smtp-in.l.google.com, DNS:alt1.gmr-smtp-in.l.google.com, DNS:alt2.gmr-smtp-in.l.google.com, DNS:alt3.gmr-smtp-in.l.google.com, DNS:alt4.gmr-smtp-in.l.google.com, DNS:mx1.smtp.goog, DNS:mx2.smtp.goog, DNS:mx3.smtp.goog, DNS:mx4.smtp.goog, DNS:aspmx2.googlemail.com, DNS:aspmx3.googlemail.com, DNS:aspmx4.googlemail.com, DNS:aspmx5.googlemail.com, DNS:gmr-mx.google.com
+2023-03-15 09:09:02,377 - MECSA-ST - DEBUG - CRL obtained from CACHE. http://crls.pki.goog/gts1c3/QOvJ0N1sT2A.crl
+2023-03-15 09:09:02,383 - MECSA-ST - DEBUG - certificate is NOT self-signed [(b'C', b'US'), (b'O', b'Google Trust Services LLC'), (b'CN', b'GTS Root R1')] (unable to get local issuer certificate)
+2023-03-15 09:09:02,384 - MECSA-ST - DEBUG - certificate is NOT self-signed [(b'C', b'BE'), (b'O', b'GlobalSign nv-sa'), (b'OU', b'Root CA'), (b'CN', b'GlobalSign Root CA')] (unable to get local issuer certificate)
+2023-03-15 09:09:02,384 - MECSA-ST - WARNING - FAILED CA validation! subject: [(b'CN', b'mx.google.com')], issuer: [(b'C', b'US'), (b'O', b'Google Trust Services LLC'), (b'CN', b'GTS CA 1C3')] (unable to get issuer certificate)
+2023-03-15 09:09:02,385 - MECSA-ST - DEBUG - *** SAN Exact MATCH!: smtp.google.com - DNS:mx.google.com, DNS:smtp.google.com, DNS:aspmx.l.google.com, DNS:alt1.aspmx.l.google.com, DNS:alt2.aspmx.l.google.com, DNS:alt3.aspmx.l.google.com, DNS:alt4.aspmx.l.google.com, DNS:gmail-smtp-in.l.google.com, DNS:alt1.gmail-smtp-in.l.google.com, DNS:alt2.gmail-smtp-in.l.google.com, DNS:alt3.gmail-smtp-in.l.google.com, DNS:alt4.gmail-smtp-in.l.google.com, DNS:gmr-smtp-in.l.google.com, DNS:alt1.gmr-smtp-in.l.google.com, DNS:alt2.gmr-smtp-in.l.google.com, DNS:alt3.gmr-smtp-in.l.google.com, DNS:alt4.gmr-smtp-in.l.google.com, DNS:mx1.smtp.goog, DNS:mx2.smtp.goog, DNS:mx3.smtp.goog, DNS:mx4.smtp.goog, DNS:aspmx2.googlemail.com, DNS:aspmx3.googlemail.com, DNS:aspmx4.googlemail.com, DNS:aspmx5.googlemail.com, DNS:gmr-mx.google.com
+2023-03-15 09:09:02,386 - MECSA-ST - DEBUG - CRL obtained from CACHE. http://crls.pki.goog/gts1c3/QOvJ0N1sT2A.crl
+2023-03-15 09:09:02,393 - MECSA-ST - DEBUG - certificate is NOT self-signed [(b'C', b'US'), (b'O', b'Google Trust Services LLC'), (b'CN', b'GTS Root R1')] (unable to get local issuer certificate)
+2023-03-15 09:09:02,393 - MECSA-ST - DEBUG - certificate is NOT self-signed [(b'C', b'BE'), (b'O', b'GlobalSign nv-sa'), (b'OU', b'Root CA'), (b'CN', b'GlobalSign Root CA')] (unable to get local issuer certificate)
+2023-03-15 09:09:02,394 - MECSA-ST - WARNING - FAILED CA validation! subject: [(b'CN', b'mx.google.com')], issuer: [(b'C', b'US'), (b'O', b'Google Trust Services LLC'), (b'CN', b'GTS CA 1C3')] (unable to get issuer certificate)
+2023-03-15 09:09:02,394 - MECSA-ST - INFO - --------> Init SPF test
+2023-03-15 09:09:02,394 - MECSA-ST - DEBUG - sending DNS TXT request for domain google.com
+2023-03-15 09:09:02,533 - MECSA-ST - DEBUG - SPF-SYNTAX-CHECK: softfail 250 domain owner discourages use of this host
+2023-03-15 09:09:02,533 - MECSA-ST - INFO - --------> Init DKIM test
+2023-03-15 09:09:02,588 - MECSA-ST - INFO - DKIM for domain _domainkey.google.com with NS (['216.239.36.10', '216.239.32.10', '216.239.38.10', '216.239.34.10'])
+2023-03-15 09:09:02,633 - MECSA-ST - WARNING - NoAnswer: _domainkey.google.com [DKIM]
+2023-03-15 09:09:02,634 - MECSA-ST - INFO - --------> Init TLS RPT test
+2023-03-15 09:09:02,634 - MECSA-ST - DEBUG - sending DNS TXT request for domain google.com
+2023-03-15 09:09:02,660 - MECSA-ST - INFO - --------> Init DMARC test
+2023-03-15 09:09:02,671 - MECSA-ST - INFO - --------> Init TLSA test
+2023-03-15 09:09:07,674 - MECSA-ST - WARNING - ['test_tlsa, Timeout: smtp.google.com  [TLSA]']
+2023-03-15 09:09:07,674 - MECSA-ST - INFO - --------> Init DNSSEC test (['TXT', 'TXT', 'DMARC'])
+2023-03-15 09:09:07,675 - MECSA-ST - DEBUG - Sending DNS request for type google.com. and domain MX
+2023-03-15 09:09:07,694 - MECSA-ST - DEBUG - Sending DNS request for type smtp.google.com and domain A
+2023-03-15 09:09:07,712 - MECSA-ST - DEBUG - Sending DNS request for type smtp.google.com and domain A
+2023-03-15 09:09:07,731 - MECSA-ST - DEBUG - Sending DNS request for type smtp.google.com and domain A
+2023-03-15 09:09:07,750 - MECSA-ST - DEBUG - Sending DNS request for type smtp.google.com and domain A
+2023-03-15 09:09:07,768 - MECSA-ST - DEBUG - Sending DNS request for type google.com. and domain TXT
+2023-03-15 09:09:07,788 - MECSA-ST - DEBUG - Sending DNS request for type _dmarc.google.com. and domain TXT
+2023-03-15 09:09:07,806 - MECSA-ST - INFO - DNSSEC-TEST [MX]: check if domain google.com. is DNSSEC
+2023-03-15 09:09:07,807 - MECSA-ST - DEBUG - -----> DNSSEC Testing google.com.
+2023-03-15 09:09:07,807 - MECSA-ST - DEBUG - Select SOA results NOT found in Cache for google.com.
+2023-03-15 09:09:07,913 - MECSA-ST - DEBUG - [SOA Resolver] Domain google.com. IS SOA.
+2023-03-15 09:09:07,913 - MECSA-ST - DEBUG - Select SOA results NOT found in Cache for com.
+2023-03-15 09:09:08,071 - MECSA-ST - DEBUG - [SOA Resolver] Domain com. IS SOA.
+2023-03-15 09:09:08,071 - MECSA-ST - DEBUG - Select SOA results NOT found in Cache for .
+2023-03-15 09:09:08,211 - MECSA-ST - DEBUG - [SOA Resolver] Domain . IS SOA.
+2023-03-15 09:09:08,211 - MECSA-ST - DEBUG -  Chain of children-parent: [{'children': {'domain': 'com.', 'ns': '192.12.94.30,192.54.112.30,192.26.92.30,192.43.172.30,192.5.6.30,192.33.14.30,192.41.162.30,192.55.83.30,192.48.79.30,192.52.178.30,192.35.51.30,192.42.93.30,192.31.80.30'}, 'parent': {'domain': '.', 'ns': '192.112.36.4,192.58.128.30,192.203.230.10,199.7.83.42,199.7.91.13,198.41.0.4,199.9.14.201,192.36.148.17,202.12.27.33,198.97.190.53,192.33.4.12,193.0.14.129,192.5.5.241'}}, {'children': {'domain': 'google.com.', 'ns': '216.239.34.10,216.239.36.10,216.239.32.10,216.239.38.10'}, 'parent': {'domain': 'com.', 'ns': '192.12.94.30,192.54.112.30,192.26.92.30,192.43.172.30,192.5.6.30,192.33.14.30,192.41.162.30,192.55.83.30,192.48.79.30,192.52.178.30,192.35.51.30,192.42.93.30,192.31.80.30'}}]
+2023-03-15 09:09:08,211 - MECSA-ST - DEBUG - Trust Chain: [{'children': {'domain': 'com.', 'ns': '192.12.94.30,192.54.112.30,192.26.92.30,192.43.172.30,192.5.6.30,192.33.14.30,192.41.162.30,192.55.83.30,192.48.79.30,192.52.178.30,192.35.51.30,192.42.93.30,192.31.80.30'}, 'parent': {'domain': '.', 'ns': '192.112.36.4,192.58.128.30,192.203.230.10,199.7.83.42,199.7.91.13,198.41.0.4,199.9.14.201,192.36.148.17,202.12.27.33,198.97.190.53,192.33.4.12,193.0.14.129,192.5.5.241'}}, {'children': {'domain': 'google.com.', 'ns': '216.239.34.10,216.239.36.10,216.239.32.10,216.239.38.10'}, 'parent': {'domain': 'com.', 'ns': '192.12.94.30,192.54.112.30,192.26.92.30,192.43.172.30,192.5.6.30,192.33.14.30,192.41.162.30,192.55.83.30,192.48.79.30,192.52.178.30,192.35.51.30,192.42.93.30,192.31.80.30'}}] 
+2023-03-15 09:09:08,864 - MECSA-ST - DEBUG - com. has DS records? True
+2023-03-15 09:09:08,915 - MECSA-ST - WARNING - Validating DNSKEYS com. (module 'dns' has no attribute 'dnssec')
+2023-03-15 09:09:08,915 - MECSA-ST - DEBUG - com. has DNSKEYS? False
+2023-03-15 09:09:08,915 - MECSA-ST - INFO - ---> Init MTA-STS test on domain google.com
+2023-03-15 09:09:08,915 - MECSA-ST - DEBUG - sending DNS TXT request for domain _mta-sts.google.com
+2023-03-15 09:09:08,957 - MECSA-ST - DEBUG - DNS-MTA-STS-SYNTAX-CHECK: v=STSv1; id=20210803T010101; 
+2023-03-15 09:09:08,957 - MECSA-ST - DEBUG - sending POLICY request for domain mta-sts.google.com/.well-known/mta-sts.txt 
+2023-03-15 09:09:09,037 - MECSA-ST - DEBUG - KEY: version; VALUE:  STSv1
+2023-03-15 09:09:09,037 - MECSA-ST - DEBUG - KEY: mode; VALUE:  enforce
+2023-03-15 09:09:09,037 - MECSA-ST - DEBUG - KEY: mx; VALUE:  smtp.google.com
+2023-03-15 09:09:09,037 - MECSA-ST - DEBUG - KEY: mx; VALUE:  aspmx.l.google.com
+2023-03-15 09:09:09,037 - MECSA-ST - DEBUG - KEY: mx; VALUE:  *.aspmx.l.google.com
+2023-03-15 09:09:09,037 - MECSA-ST - DEBUG - KEY: max_age; VALUE:  86400
+2023-03-15 09:09:09,037 - MECSA-ST - DEBUG - Content/Type: text/plain
+2023-03-15 09:09:09,037 - MECSA-ST - DEBUG - request POLICY response:  {'version': 'STSv1', 'mode': 'enforce', 'mx': 'smtp.google.com,aspmx.l.google.com,*.aspmx.l.google.com', 'max_age': '86400', 'error': None} 
+2023-03-15 09:09:09,037 - MECSA-ST - DEBUG - POLICY-MTA-STS-SYNTAX-CHECK: {'version': 'STSv1', 'mode': 'enforce', 'mx': 'smtp.google.com,aspmx.l.google.com,*.aspmx.l.google.com', 'max_age': '86400', 'error': None} (v=STSv1; id=20210803T010101;)
+2023-03-15 09:09:09,038 - MECSA-ST - DEBUG - [MTA-STS] Testing if MX smtp.google.com matches Policy smtp.google.com
+2023-03-15 09:09:09,038 - MECSA-ST - DEBUG - [MTA-STS] Exact MATCH!: smtp.google.com - smtp.google.com
+2023-03-15 09:09:09,038 - MECSA-ST - DEBUG - [MTA-STS] Testing if MX smtp.google.com matches Policy smtp.google.com
+2023-03-15 09:09:09,038 - MECSA-ST - DEBUG - [MTA-STS] Exact MATCH!: smtp.google.com - smtp.google.com
+2023-03-15 09:09:09,038 - MECSA-ST - DEBUG - [MTA-STS] Testing if MX smtp.google.com matches Policy smtp.google.com
+2023-03-15 09:09:09,038 - MECSA-ST - DEBUG - [MTA-STS] Exact MATCH!: smtp.google.com - smtp.google.com
+2023-03-15 09:09:09,038 - MECSA-ST - DEBUG - [MTA-STS] Testing if MX smtp.google.com matches Policy smtp.google.com
+2023-03-15 09:09:09,038 - MECSA-ST - DEBUG - [MTA-STS] Exact MATCH!: smtp.google.com - smtp.google.com
+2023-03-15 09:09:09,039 - MECSA-ST - INFO - Summary confidentiality protocols supported: starttls,mta-sts
+2023-03-15 09:09:09,039 - MECSA-ST - DEBUG - Found coincidence in the scoring table for 'confidentiality' - starttls,mta-sts 6
+2023-03-15 09:09:09,039 - MECSA-ST - INFO - Summary spoofing protocols supported: spf,spf_policy,dkim,dmarc,dmarc_policy
+2023-03-15 09:09:09,039 - MECSA-ST - DEBUG - Found coincidence in the scoring table for 'spoofing' - spf,spf_policy,dkim,dmarc,dmarc_policy 8
+2023-03-15 09:09:09,039 - MECSA-ST - INFO - Summary integrity protocols supported: dkim,dmarc,dmarc_policy
+2023-03-15 09:09:09,040 - MECSA-ST - DEBUG - Found coincidence in the scoring table for 'integrity' - dkim,dmarc,dmarc_policy 7
+2023-03-15 09:09:09,040 - MECSA-ST - INFO - 
+
+
+
+---- REPORT FOR DOMAIN google.com -----
+2023-03-15 09:09:09,040 - MECSA-ST - INFO - ---- domain has 4 MX records. 
+2023-03-15 09:09:09,040 - MECSA-ST - INFO - ---- STARTTLS ENABLED smtp.google.com 142.250.27.26 10   
+2023-03-15 09:09:09,040 - MECSA-ST - INFO - -------- StartTLS announced: True
+2023-03-15 09:09:09,040 - MECSA-ST - INFO - -------- REQUIRETLS DISABLED
+2023-03-15 09:09:09,040 - MECSA-ST - INFO - -------- Using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits) (protocol, cipher, keysize)
+2023-03-15 09:09:09,040 - MECSA-ST - INFO - -------- x509 CA validated False
+2023-03-15 09:09:09,040 - MECSA-ST - INFO - -------- x509 FQDN match MX True
+2023-03-15 09:09:09,040 - MECSA-ST - INFO - -------- x509 Date Valid  True
+2023-03-15 09:09:09,040 - MECSA-ST - INFO - -------- x509 Revocated False
+2023-03-15 09:09:09,040 - MECSA-ST - INFO - -------- DANE DISABLED
+2023-03-15 09:09:09,041 - MECSA-ST - INFO - -------- TLSA record False
+2023-03-15 09:09:09,041 - MECSA-ST - INFO - -------- MTA-STS MX COMPLIES with POLICY
+2023-03-15 09:09:09,041 - MECSA-ST - INFO - ---- STARTTLS ENABLED smtp.google.com 142.250.27.27 10   
+2023-03-15 09:09:09,041 - MECSA-ST - INFO - -------- StartTLS announced: True
+2023-03-15 09:09:09,041 - MECSA-ST - INFO - -------- REQUIRETLS DISABLED
+2023-03-15 09:09:09,041 - MECSA-ST - INFO - -------- Using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits) (protocol, cipher, keysize)
+2023-03-15 09:09:09,041 - MECSA-ST - INFO - -------- x509 CA validated False
+2023-03-15 09:09:09,041 - MECSA-ST - INFO - -------- x509 FQDN match MX True
+2023-03-15 09:09:09,041 - MECSA-ST - INFO - -------- x509 Date Valid  True
+2023-03-15 09:09:09,041 - MECSA-ST - INFO - -------- x509 Revocated False
+2023-03-15 09:09:09,041 - MECSA-ST - INFO - -------- DANE DISABLED
+2023-03-15 09:09:09,042 - MECSA-ST - INFO - -------- TLSA record False
+2023-03-15 09:09:09,042 - MECSA-ST - INFO - -------- MTA-STS MX COMPLIES with POLICY
+2023-03-15 09:09:09,042 - MECSA-ST - INFO - ---- STARTTLS ENABLED smtp.google.com 142.250.102.27 10   
+2023-03-15 09:09:09,042 - MECSA-ST - INFO - -------- StartTLS announced: True
+2023-03-15 09:09:09,042 - MECSA-ST - INFO - -------- REQUIRETLS DISABLED
+2023-03-15 09:09:09,042 - MECSA-ST - INFO - -------- Using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits) (protocol, cipher, keysize)
+2023-03-15 09:09:09,042 - MECSA-ST - INFO - -------- x509 CA validated False
+2023-03-15 09:09:09,042 - MECSA-ST - INFO - -------- x509 FQDN match MX True
+2023-03-15 09:09:09,042 - MECSA-ST - INFO - -------- x509 Date Valid  True
+2023-03-15 09:09:09,042 - MECSA-ST - INFO - -------- x509 Revocated False
+2023-03-15 09:09:09,042 - MECSA-ST - INFO - -------- DANE DISABLED
+2023-03-15 09:09:09,042 - MECSA-ST - INFO - -------- TLSA record False
+2023-03-15 09:09:09,042 - MECSA-ST - INFO - -------- MTA-STS MX COMPLIES with POLICY
+2023-03-15 09:09:09,042 - MECSA-ST - INFO - ---- STARTTLS ENABLED smtp.google.com 142.250.102.26 10   
+2023-03-15 09:09:09,043 - MECSA-ST - INFO - -------- StartTLS announced: True
+2023-03-15 09:09:09,043 - MECSA-ST - INFO - -------- REQUIRETLS DISABLED
+2023-03-15 09:09:09,043 - MECSA-ST - INFO - -------- Using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits) (protocol, cipher, keysize)
+2023-03-15 09:09:09,043 - MECSA-ST - INFO - -------- x509 CA validated False
+2023-03-15 09:09:09,043 - MECSA-ST - INFO - -------- x509 FQDN match MX True
+2023-03-15 09:09:09,043 - MECSA-ST - INFO - -------- x509 Date Valid  True
+2023-03-15 09:09:09,043 - MECSA-ST - INFO - -------- x509 Revocated False
+2023-03-15 09:09:09,043 - MECSA-ST - INFO - -------- DANE DISABLED
+2023-03-15 09:09:09,043 - MECSA-ST - INFO - -------- TLSA record False
+2023-03-15 09:09:09,043 - MECSA-ST - INFO - -------- MTA-STS MX COMPLIES with POLICY
+2023-03-15 09:09:09,043 - MECSA-ST - INFO - ---- SPF ENABLED
+2023-03-15 09:09:09,043 - MECSA-ST - INFO - -------- spf record: v=spf1 include:_spf.google.com ~all 
+2023-03-15 09:09:09,043 - MECSA-ST - INFO - ---- TLS RPT ENABLED
+2023-03-15 09:09:09,044 - MECSA-ST - INFO - -------- tlsrpt record: v=TLSRPTv1;rua=mailto:sts-reports@google.com 
+2023-03-15 09:09:09,044 - MECSA-ST - INFO - ---- DKIM ENABLED
+2023-03-15 09:09:09,044 - MECSA-ST - INFO - -------- test response: NoAnswer: _domainkey.google.com [DKIM] 
+2023-03-15 09:09:09,044 - MECSA-ST - INFO - ---- DMARC ENABLED
+2023-03-15 09:09:09,044 - MECSA-ST - INFO - -------- dmarc record: v=DMARC1; p=reject; rua=mailto:mailauth-reports@google.com
+2023-03-15 09:09:09,044 - MECSA-ST - INFO - ---- DNSSEC DISABLED
+2023-03-15 09:09:09,044 - MECSA-ST - INFO - -------- dnssec MX False
+2023-03-15 09:09:09,044 - MECSA-ST - INFO - -------- dnssec MX-A False
+2023-03-15 09:09:09,044 - MECSA-ST - INFO - -------- dnssec TXT False
+2023-03-15 09:09:09,044 - MECSA-ST - INFO - -------- dnssec DMARC False
+2023-03-15 09:09:09,044 - MECSA-ST - INFO - -------- error Validating DNSKEYS com. (module 'dns' has no attribute 'dnssec')
+2023-03-15 09:09:09,044 - MECSA-ST - INFO - ---- MTA-STS ENABLED :
+2023-03-15 09:09:09,045 - MECSA-ST - INFO - -------- DNS Record      : v=STSv1; id=20210803T010101;
+2023-03-15 09:09:09,045 - MECSA-ST - INFO - -------- Policy Version  : STSv1
+2023-03-15 09:09:09,045 - MECSA-ST - INFO - -------- Policy Mode     : enforce
+2023-03-15 09:09:09,045 - MECSA-ST - INFO - -------- Policy MX       : smtp.google.com,aspmx.l.google.com,*.aspmx.l.google.com
+2023-03-15 09:09:09,045 - MECSA-ST - INFO - -------- Policy max-age  : 86400
+2023-03-15 09:09:09,045 - MECSA-ST - INFO - ---------------------------------------------------------------------------
+
+2023-03-15 09:09:09,045 - MECSA-ST - INFO - ---> SUMMARY REPORT for domain google.com  --------------------------------------
+2023-03-15 09:09:09,045 - MECSA-ST - INFO - ---> 
+2023-03-15 09:09:09,045 - MECSA-ST - INFO - ---> Confidentiality 3.0
+2023-03-15 09:09:09,045 - MECSA-ST - INFO - ---> Spoofing        4.0
+2023-03-15 09:09:09,045 - MECSA-ST - INFO - ---> Integrity       3.5
+2023-03-15 09:09:09,045 - MECSA-ST - INFO - ---> 
+2023-03-15 09:09:09,045 - MECSA-ST - INFO - ---> **** Confidentiality evaluated on: starttls,x509,dane,dnssec,mta-sts
+2023-03-15 09:09:09,045 - MECSA-ST - INFO - ---> **** Missing                     : x509,dane,dnssec
+2023-03-15 09:09:09,046 - MECSA-ST - INFO - ---> ****  ****
+2023-03-15 09:09:09,046 - MECSA-ST - INFO - ---> **** Spoofing evaluated on       : spf,spf_policy,dkim,dmarc,dmarc_policy,dnssec
+2023-03-15 09:09:09,046 - MECSA-ST - INFO - ---> **** Missing                     : dnssec
+2023-03-15 09:09:09,046 - MECSA-ST - INFO - ---> ****  ****
+2023-03-15 09:09:09,046 - MECSA-ST - INFO - ---> **** Integrity evaluated on      : dkim,dmarc,dmarc_policy,dnssec
+2023-03-15 09:09:09,046 - MECSA-ST - INFO - ---> **** Missing                     : dnssec
+2023-03-15 09:09:09,046 - MECSA-ST - INFO - ---> ****  ****
+2023-03-15 09:09:09,046 - MECSA-ST - INFO - ---> **** These results might differ from the ones given by the MECSA platform ****
+2023-03-15 09:09:09,046 - MECSA-ST - INFO - ---> **** because we have less data. MECSA also has outbound tests:            ****
+2023-03-15 09:09:09,046 - MECSA-ST - INFO - ---> **** _ StartTLS check on email delivery                                   ****
+2023-03-15 09:09:09,046 - MECSA-ST - INFO - ---> **** _ SPF policy verification on delivery servers                        ****
+2023-03-15 09:09:09,046 - MECSA-ST - INFO - ---> **** _ DKIM signature check                                               ****
+2023-03-15 09:09:09,046 - MECSA-ST - INFO - ---> ****                                                                      ****
+2023-03-15 09:09:09,047 - MECSA-ST - INFO - ---> **** https://mecsa.jrc.ec.europa.eu                                       ****
+2023-03-15 09:09:09,047 - MECSA-ST - INFO - ---> 
+2023-03-15 09:09:09,047 - MECSA-ST - INFO - ---> END of TEST -----------------------------------------------------------
+

@@ -19,7 +19,7 @@ __author__ = 'Joint Research Centre (JRC) - E.3 Cyber and Digital Citizen\'s Sec
 
 
 import dns.resolver
-import spf
+import spf as pyspf
 
 
 class Spf(object):
@@ -60,7 +60,7 @@ class Spf(object):
         '''
         try:
             check_result, check_code, check_description = (None, None, None)
-            q = spf.query(s='postmaster@%s' % domain, h=domain, i='127.0.0.1')
+            q = pyspf.query(s='postmaster@%s' % domain, h=domain, i='127.0.0.1')
             check_result, check_code, check_description = q.check(spf=spf_text)
             self.logger.debug("SPF-SYNTAX-CHECK: %s %s %s" % (str(check_result), str(check_code), str(check_description)))
             if check_result in ["none", "permerror", "temperror"]:

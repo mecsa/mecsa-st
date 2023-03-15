@@ -33,17 +33,17 @@ import ssl
 import io
 import OpenSSL
 import ipaddress
-from test_starttls import test_in_starttls
-from test_x509 import test_x509
-from test_x509 import cache_x509
-from test_spf import test_spf
-from test_dmarc import test_dmarc
-from test_dane import test_dane
-from test_dnssec import test_dnssec
-from test_dnssec import cache_dnssec
-from test_dkim import test_dkim
-from test_tlsrpt import test_tlsrpt
-from test_mtasts import test_mta_sts
+from starttls_checks import starttls
+from x509_checks import x509
+from x509_checks import cache_x509
+from spf_checks import spf
+from dmarc_checks import dmarc
+from dane_checks import dane
+from dnssec_checks import dnssec
+from dnssec_checks import cache_dnssec
+from dkim_checks import dkim
+from tlsrpt_checks import tlsrpt
+from mtasts_checks import mta_sts
 from commons import scoring
 
 def banner():
@@ -211,7 +211,7 @@ def execute_starttls(logger, domain, ipv6_addresses):
 
     logger.info('--------> Init StartTLS test')
 
-    tester = test_in_starttls.TestStartTLS(logger)
+    tester = starttls.TestStartTLS(logger)
     servers_ipv4, servers_ipv6 = tester.init_test(domain, ipv6_addresses)
     test_results_ipv4 = []
     test_results_ipv6 = []
@@ -232,10 +232,10 @@ def execute_starttls(logger, domain, ipv6_addresses):
 
 def execute_x509(logger, root_cas, results, cache):
     logger.info('--------> Init x509 test')
-    x509 = test_x509.TestCertificate(logger, root_cas, cache_x509=cache)
+    x509_test = x509.TestCertificate(logger, root_cas, cache_x509=cache)
     for line in results:
         if line['ir_starttls']:
-            x509.test_certificate(line)
+            x509_test.test_certificate(line)
     return results
 
 
@@ -252,7 +252,7 @@ def execute_spf(logger, domain):
 
     logger.info('--------> Init SPF test')
     row = init_spf_row(domain)
-    tester = test_spf.Spf(logger)
+    tester = spf.Spf(logger)
 
     spf_row = tester.test_spf(domain)
 
@@ -271,7 +271,7 @@ def execute_tlsrpt(logger, domain):
 
     logger.info('--------> Init TLS RPT test')
     row = init_tlsrpt_row(domain)
-    tester = test_tlsrpt.Tlsrpt(logger)
+    tester = tlsrpt.Tlsrpt(logger)
 
     tlsrpt_row = tester.test_tlsrpt(domain)
 
@@ -280,7 +280,7 @@ def execute_tlsrpt(logger, domain):
 
 def execute_dkim(logger, domain, record_type):
     logger.info('--------> Init DKIM test')
-    tester = test_dkim.DkimTest(logger)
+    tester = dkim.DkimTest(logger)
 
     has_dkim, dkim_txt = tester.test_dkim(domain, record_type)
 
@@ -305,7 +305,7 @@ def execute_dmarc(logger, domain, tlds_list):
 
     logger.info('--------> Init DMARC test')
     row = init_dmarc_row(domain)
-    tester = test_dmarc.Dmarc(logger, tlds_list)
+    tester = dmarc.Dmarc(logger, tlds_list)
 
     dmarc_row = tester.test_dmarc(domain)
 
@@ -328,7 +328,7 @@ def execute_dane(logger, reports, root_cas):
     """
     logger.info('--------> Init TLSA test')
 
-    tester = test_dane.DaneTLSA(logger, root_cas)
+    tester = dane.DaneTLSA(logger, root_cas)
     tested = {}
     for report in reports:
         try:
@@ -385,7 +385,7 @@ def execute_dnssec(logger, domain, records, i_reports, cache=None):
     """
     logger.info("--------> Init DNSSEC test ({0})".format(records))
 
-    tester = test_dnssec.Dnssec(logger, cache)
+    tester = dnssec.Dnssec(logger, cache)
 
     mxs = []
     for report in i_reports:
@@ -418,7 +418,7 @@ def execute_mta_sts(logger, domain, records):
     row_mta_sts = None
     try:
         logger.info('---> Init MTA-STS test on domain {0}'.format(domain))
-        tester = test_mta_sts.MtaSts(logger)
+        tester = mta_sts.MtaSts(logger)
         row_mta_sts = tester.test_mta_sts(domain)
         if row_mta_sts['has_mta_sts']:
             tester.validate_policy(row_mta_sts['mta_sts_policy'], records)

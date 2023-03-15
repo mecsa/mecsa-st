@@ -1,6 +1,6 @@
 import hashlib
 import json
-from test_spf import test_spf
+from spf_checks import spf
 
 
 def load_score_function(logger):
@@ -304,7 +304,7 @@ class ScoreOperations():
                         if 'redirect=' in spf_record:
                             try:
                                 self.logger.info("SPF policy is redirected!")
-                                tester = test_spf.Spf(self.logger)
+                                tester = spf.Spf(self.logger)
                                 redirect_domain = spf_record.split("redirect=")[1].split()[0]
                                 self.logger.info("----> spf redirection {0}".format(redirect_domain))
                                 _, spf_record, _ = tester.fecth_spf(redirect_domain)                   
