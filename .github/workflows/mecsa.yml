@@ -34,3 +34,4 @@ jobs:
           pytest tests/test_spf.py
           pytest tests/test_starttls.py
           pytest tests/test_dnssec.py
+          pytest tests/test_mta_sts.py
