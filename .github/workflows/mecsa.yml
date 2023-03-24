@@ -30,3 +30,6 @@ jobs:
       - name: Test with pytest
         run: |
           pytest tests/test_dane.py
+          pytest tests/test_dmarc.py
+          pytest tests/test_spf.py
+          pytest tests/test_starttls.py
