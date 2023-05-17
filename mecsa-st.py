@@ -48,10 +48,11 @@ from mtasts_checks import mta_sts
 from commons import scoring
 
 class Result_object:
-    def __init__(self, domain, starttls = None, spf = None, dkim = None, dmarc = None, dane = None, dnssec = None, scores = None):
+    def __init__(self, domain, starttls = None, spf = None, spf_policy = None, dkim = None, dmarc = None, dane = None, dnssec = None, scores = None):
         self.domain = domain
         self.starttls = starttls
         self.spf = spf
+        self.spf_policy = spf_policy
         self.dkim = dkim
         self.dmarc = dmarc
         self.dane = dane
@@ -613,13 +614,22 @@ def run_full_tests(logger, domain, filepath, ipv6_addresses):
                                                                             report['ir_mx_priority']))
                     logger.info('-------- Error: ({0})'.format(report['ir_error']))
 
-            if spf_report['has_spf'] and spf_report['spf_syntax_check']:
+            if spf_report['has_spf']:
                 res_obj.spf = True
                 logger.info('---- SPF ENABLED')
-                logger.info('-------- spf record: {0} '.format(spf_report['spf_record']))
+                if spf_report['spf_syntax_check']:
+                    logger.info('-------- spf record: {0} '.format(spf_report['spf_record']))
+                    logger.info('---- SPF POLICY ENABLED')
+                    res_obj.spf_policy = True
+                else:
+                    logger.info('---- SPF POLICY DISABLED')
+                    res_obj.spf_policy = False
             else:
                 res_obj.spf = False
+                res_obj.spf_policy = False
                 logger.info('---- SPF DISABLED')
+
+            if not res_obj.spf or not res_obj.spf_policy:
                 logger.info('-------- Errors ({0})'.format(spf_report['spf_error']))
                 logger.info('-------- Syntax check ({0})'.format(spf_report['spf_syntax_response']))
 
