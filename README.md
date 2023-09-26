@@ -117,6 +117,7 @@ optional arguments:
   -l LOG, --log LOG     specify path and name of logfile. Default is mecsa-st.log
   -c CERTIFICATES, --certificates CERTIFICATES specify path from where to load the CA certificates. Default is '/etc/ssl/certs/ca-certificates.crt'
   -v6, --ipv6           specify whether IPv6 addresses of the MX hosts should be checked along with IPv4. Default is IPv4 only. If the local host does not support IPv6, the IPv6 tests will time out.
+  -json, --json         results in json format
 ```
 
 ![screenshot](https://github.com/mecsa/mecsa-st/blob/master/media/execution_sample.gif)
