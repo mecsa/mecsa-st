@@ -19,6 +19,7 @@ __author__ = 'Joint Research Centre (JRC) - E.3 Cyber and Digital Citizen\'s Sec
 
 import dns
 import dns.resolver
+import dns.dnssec
 import hashlib
 import struct
 import base64
